@@ -1,1 +1,56 @@
-<p>login works!</p>
+<div class="d-flex justify-content-center align-items-center min-h-100">
+  <div class="w-50">
+    <h1 class="color-primary">Login</h1>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <label class="form-label" for="email">Username</label>
+      <input
+        class="form-control"
+        name="email"
+        formControlName="email"
+        type="text"
+        placeholder="Email..."
+      />
+      <div
+        *ngIf="
+          loginForm.controls.email.invalid &&
+          (loginForm.controls.email.touched || loginForm.controls.email.dirty)
+        "
+        class="text-danger"
+      >
+        Invalid email
+      </div>
+      <label class="form-label" for="password">Password</label>
+      <input
+        class="form-control"
+        formControlName="password"
+        type="password"
+        placeholder="Password..."
+      />
+      <div
+        *ngIf="
+          loginForm.controls.password.invalid &&
+          (loginForm.controls.password.touched ||
+            loginForm.controls.password.dirty)
+        "
+        class="text-danger"
+      >
+        Password should have min length of 4
+      </div>
+      <div *ngIf="authError" class="text-danger pt-3">{{ authError }}</div>
+      <button
+        class="btn btn-primary mt-3"
+        type="submit"
+        [disabled]="!loginForm.valid || loading"
+      >
+        <div
+          *ngIf="loading; else submitText"
+          class="spinner-border text-light"
+          role="status"
+        >
+          <span class="sr-only"></span>
+        </div>
+        <ng-template #submitText> Submit </ng-template>
+      </button>
+    </form>
+  </div>
+</div>

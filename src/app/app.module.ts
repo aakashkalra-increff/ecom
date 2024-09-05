@@ -10,6 +10,8 @@ import { CartComponent } from './pages/cart/cart.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FooterComponent } from './components/footer/footer.component';
 import { LoginComponent } from './pages/login/login.component';
+import { ProductCardComponent } from './components/product-card/product-card.component';
+import { ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     AppComponent,
@@ -18,12 +20,14 @@ import { LoginComponent } from './pages/login/login.component';
     NavbarComponent,
     CartComponent,
     FooterComponent,
-    LoginComponent
+    LoginComponent,
+    ProductCardComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

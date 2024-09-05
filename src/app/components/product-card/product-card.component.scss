@@ -1,0 +1,19 @@
+.card{
+  border-radius: 0px;
+}
+button{
+  border-radius: 0px;
+}
+.card-body{
+  padding: 0px;
+}
+.cart-buttons{
+  display: inline-block;
+  height: 25px;
+  width: 25px;
+  margin: 0px 10px;
+  &:hover{
+    border: 1px solid white;
+  }
+}
+
