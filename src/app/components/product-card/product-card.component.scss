@@ -1,19 +1,36 @@
-.card{
+.card {
+  border-radius: 0px;
+  border: none;
+  background-color: transparent;
+  &:hover {
+    z-index: 5px;
+    background-color: white;
+  }
+}
+button {
   border-radius: 0px;
 }
-button{
-  border-radius: 0px;
-}
-.card-body{
+.card-body {
   padding: 0px;
+  &:hover {
+    box-shadow: 0px 10px rgb(255, 255, 255);
+  }
 }
-.cart-buttons{
+.cart-buttons {
   display: inline-block;
   height: 25px;
   width: 25px;
   margin: 0px 10px;
-  &:hover{
+  &:hover {
     border: 1px solid white;
   }
 }
+.card-img {
+  border-radius: 0px;
+}
 
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

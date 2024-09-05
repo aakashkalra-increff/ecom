@@ -1,4 +1,21 @@
 img{
-  height: 500px;
-  width: 60%;
+  height: 100%;
+  width: 100%;
+  &:hover{
+    transform: scale(1.05);
+    transition: all 500ms;
+  }
+}
+.img{
+  height: 25em;
+  width: 100%;
+  overflow: hidden;
+  cursor:-webkit-zoom-in;
+}
+.material-icons{
+  vertical-align:bottom;
+}
+.btn{
+  border-radius: 0px;
+  padding: 0.75rem;
 }

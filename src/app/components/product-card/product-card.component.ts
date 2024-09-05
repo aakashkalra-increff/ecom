@@ -11,16 +11,17 @@ import { CartItem } from 'src/app/services/cart/cartItem';
 export class ProductCardComponent {
   @Input() product?: Product;
   cartItem?: CartItem;
+  showButton = false;
   constructor(private cartService: CartService) {}
   ngOnInit() {
     this.cartService.getItems().subscribe((res) => {
-      this.cartItem = res.find((item) => item.id === this.product?.clientSkuId);
+      this.cartItem = res.find((item) => item.id === this.product?.skuId);
     });
   }
   decrementQuantity(){
-    this.cartService.decrementQuantity(this.product?.clientSkuId!)
+    this.cartService.decrementQuantity(this.product?.skuId!)
   }
   incrementQuantity(){
-    this.cartService.incrementQuantity(this.product?.clientSkuId!)
+    this.cartService.incrementQuantity(this.product?.skuId!)
   }
 }

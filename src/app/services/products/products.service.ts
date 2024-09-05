@@ -16,7 +16,7 @@ export class ProductsService {
       .get<Product[]>(this.url)
       .pipe(
         map((products) =>
-          products.find(({ clientSkuId }) => clientSkuId === id)
+          products.find(({ skuId }) => skuId === id)
         )
       );
   }

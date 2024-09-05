@@ -1,26 +1,48 @@
 <div class="card">
-  <div [routerLink]="['/product/', product?.clientSkuId]">
+  <div [routerLink]="['/product/', product?.skuId]">
     <img
       class="card-img"
-      [src]="product?.imageUrl"
+      [src]="product?.searchImage"
       alt="..."
-      style="height: 200px"
+      style="height: 15rem"
     />
-    <div class="card-body p-3">
+    <div class="card-body px-2 py-2">
       <div class="card-title">
-        <b>{{ product?.name }}</b>
+        <b>{{ product?.brand }}</b>
       </div>
-      <div class="card-subtitle">
-        <b>Rs. {{ product?.mrp }}</b>
+      <div class="card-subtitle mb-1 text-truncate">
+        {{ product?.additionalInfo }}
+      </div>
+      <div class="card-subtitle mb-1">
+        <b>Rs. {{ product?.price }}</b>
+        <span
+          *ngIf="product?.discount"
+          class="fw-light text-secondary ms-1 text-danger"
+          [style]="{ 'font-size': '12px' }"
+        >
+          MRP<del>{{ product?.mrp }}</del>
+          <span class="ms-1">{{ product?.discountDisplayLabel }}</span>
+        </span>
       </div>
     </div>
   </div>
   <button
     class="btn btn-primary w-100 d-flex align-items-center justify-content-center"
   >
-    <button class="cart-buttons btn p-0 text-white" (click)="decrementQuantity()" [disabled]="!cartItem?.quantity">-</button>
+    <button
+      class="cart-buttons btn p-0 text-white"
+      (click)="decrementQuantity()"
+      [disabled]="!cartItem?.quantity"
+    >
+      -
+    </button>
     <i class="material-icons">shopping_cart</i>
     <span class="ms-1">{{ cartItem?.quantity || 0 }}</span>
-    <button class="cart-buttons btn p-0 text-white" (click)="incrementQuantity()">+</button>
+    <button
+      class="cart-buttons btn p-0 text-white"
+      (click)="incrementQuantity()"
+    >
+      +
+    </button>
   </button>
 </div>
