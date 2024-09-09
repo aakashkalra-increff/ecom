@@ -22,8 +22,8 @@ export class ProductDetailComponent {
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id')!;
     this.productsService
-      .getProductsByID(id)
-      .subscribe((res) => (this.product = res));
+      .getProductsByID([id])
+      .subscribe((res) => (this.product = res[0]));
     this.cartService.getItems().subscribe((res) => {
       console.log(
         res,
@@ -60,6 +60,6 @@ export class ProductDetailComponent {
     }
   }
   handleRemoveItem(){
-    
+
   }
 }

@@ -11,13 +11,9 @@ export class ProductsService {
   getProducts() {
     return this.http.get<Product[]>(this.url);
   }
-  getProductsByID(id: string) {
+  getProductsByID(id: string[]) {
     return this.http
       .get<Product[]>(this.url)
-      .pipe(
-        map((products) =>
-          products.find(({ skuId }) => skuId === id)
-        )
-      );
+      .pipe(map((products) => products.filter(({ skuId }) => id.includes(skuId))));
   }
 }

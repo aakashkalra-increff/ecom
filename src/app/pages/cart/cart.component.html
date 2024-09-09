@@ -1,1 +1,78 @@
-<p>cart works!</p>
+<div class="row">
+  <div class="col-lg-8">
+    <div class="p-0 card">
+      <div class="card-header"><h4>Your Cart</h4></div>
+      <div class="card-body p-0">
+        <div class="p-3">
+          <div *ngFor="let item of items" class="row py-2">
+            <div class="col-lg-3">
+              <img [src]="item.product.searchImage" />
+            </div>
+            <div class="col-lg-9">
+              <h5 class="text-secondary">{{ item.product.category }}</h5>
+              <h5 class="card-title">
+                {{ item.product.name }}
+              </h5>
+              <div>
+                <span class="text-secondary">Quantity</span> {{ item.quantity }}
+              </div>
+              <div>
+                <h5>
+                  RS. {{ item.product.price }}
+                  <span class="text-success">{{
+                    item.product.discountDisplayLabel
+                  }}</span>
+                </h5>
+              </div>
+              <div>
+                <select
+                  class="form-select w-25"
+                  name="quantity"
+                  [value]="item.quantity"
+                  (change)="updateQuantity($event, item.id)"
+                >
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="p-0 card">
+      <div class="card-header">
+        <h4>Order Summary</h4>
+      </div>
+      <div class="card-body">
+        <div class="py-2">
+          <div class="d-flex justify-content-between px-2">
+            <h5>Items :</h5>
+            <h5>{{ itemsTotalPrice }}</h5>
+          </div>
+          <hr />
+        </div>
+        <div class="py-2">
+          <div class="d-flex justify-content-between px-2">
+            <h5>Shipping :</h5>
+            <h5>{{ deliveryCost }}</h5>
+          </div>
+          <hr />
+        </div>
+        <div class="py-2">
+          <div class="d-flex justify-content-between px-2">
+            <h5>Total Amount :</h5>
+            <h5>{{ totalCost }}</h5>
+          </div>
+          <hr />
+        </div>
+        <button class="btn btn-primary w-100 my-2">Place Order</button>
+      </div>
+    </div>
+  </div>
+</div>

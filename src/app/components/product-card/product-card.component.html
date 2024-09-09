@@ -1,11 +1,21 @@
-<div class="card">
-  <div [routerLink]="['/product/', product?.skuId]">
-    <img
-      class="card-img"
-      [src]="product?.searchImage"
-      alt="..."
-      style="height: 15rem"
-    />
+<div class="card" [routerLink]="['/product/', product?.skuId]">
+  <div>
+    <div
+      [id]="'carousel-' + product?.skuId"
+      class="carousel slide"
+      data-bs-ride="carousel"
+    >
+      <div class="carousel-inner w-100 h-100">
+        <div
+          *ngFor="let image of product?.images"
+          class="carousel-item"
+          data-bs-interval="500"
+          [ngClass]="[image.view === 'search' ? 'active' : '']"
+        >
+          <img class="card-img" [src]="image?.src" alt="..." />
+        </div>
+      </div>
+    </div>
     <div class="card-body px-2 py-2">
       <div class="card-title">
         <b>{{ product?.brand }}</b>

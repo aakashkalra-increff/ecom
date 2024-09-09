@@ -12,6 +12,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { LoginComponent } from './pages/login/login.component';
 import { ProductCardComponent } from './components/product-card/product-card.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ModalComponent } from './components/modal/modal.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -21,7 +22,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     CartComponent,
     FooterComponent,
     LoginComponent,
-    ProductCardComponent
+    ProductCardComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,
