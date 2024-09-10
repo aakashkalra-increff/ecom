@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
+import { CartService } from '../cart/cart.service';
 export interface User {
   email: string;
   password: string;
@@ -11,7 +12,10 @@ export interface User {
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(public router: Router, private http: HttpClient) {}
+  constructor(
+    public router: Router,
+    private http: HttpClient,
+  ) {}
   async logIn(email: String, password: string) {
     const users = await firstValueFrom(
       this.http.get<User[]>('../../../assets/users.json')
@@ -19,7 +23,6 @@ export class AuthService {
     const user = users.find(
       (e) => e.email === email && e.password === password
     );
-    const token = 'token';
     if (user) {
       localStorage.setItem('userId', user.userId);
     } else {
@@ -30,6 +33,9 @@ export class AuthService {
     localStorage.removeItem('userId');
   }
   isLoggedIn() {
+    return !!localStorage.getItem('userId');
+  }
+  getUserId() {
     return localStorage.getItem('userId');
   }
 }

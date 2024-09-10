@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-center align-items-center min-h-100">
-  <div class="w-50">
-    <h1 class="color-primary">Login</h1>
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <div class="w-50 card">
+    <div class="card-header"><h3 class="color-primary">Login</h3></div>
+    <form class="p-3" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <label class="form-label" for="email">Username</label>
       <input
         class="form-control"

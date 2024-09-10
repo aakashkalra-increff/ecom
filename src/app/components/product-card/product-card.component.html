@@ -1,11 +1,21 @@
-<div class="card" [routerLink]="['/product/', product?.skuId]">
-  <div>
+<app-modal
+  title="Remove Item"
+  message="Do you sure to remove the item from cart?"
+  [id]="'card-' + product?.skuId"
+  (success)="removeCartItem(product?.skuId!)"
+>
+</app-modal>
+<div class="card">
+  <div (mouseenter)="showButton = true" (mouseleave)="showButton = false">
     <div
       [id]="'carousel-' + product?.skuId"
-      class="carousel slide"
+      class="carousel slide position-relative"
       data-bs-ride="carousel"
     >
-      <div class="carousel-inner w-100 h-100">
+      <div
+        class="carousel-inner w-100 h-100"
+        [routerLink]="['/product/', product?.skuId]"
+      >
         <div
           *ngFor="let image of product?.images"
           class="carousel-item"
@@ -15,8 +25,32 @@
           <img class="card-img" [src]="image?.src" alt="..." />
         </div>
       </div>
+      <button
+        *ngIf="showButton"
+        style="background: #ccc; cursor: unset"
+        class="btn w-100 d-flex align-items-center justify-content-center position-absolute bottom-0 left-0 text-primary"
+      >
+        <button
+          class="cart-buttons btn p-0 text-primary"
+          (click)="decrementQuantity()"
+          [disabled]="!cartItem?.quantity"
+        >
+          -
+        </button>
+        <i class="material-icons">shopping_cart</i>
+        <span class="ms-1">{{ cartItem?.quantity || 0 }}</span>
+        <button
+          class="cart-buttons btn p-0 text-primary"
+          (click)="incrementQuantity()"
+        >
+          +
+        </button>
+      </button>
     </div>
-    <div class="card-body px-2 py-2">
+    <div
+      class="card-body px-2 py-2"
+      [routerLink]="['/product/', product?.skuId]"
+    >
       <div class="card-title">
         <b>{{ product?.brand }}</b>
       </div>
@@ -36,23 +70,4 @@
       </div>
     </div>
   </div>
-  <button
-    class="btn btn-primary w-100 d-flex align-items-center justify-content-center"
-  >
-    <button
-      class="cart-buttons btn p-0 text-white"
-      (click)="decrementQuantity()"
-      [disabled]="!cartItem?.quantity"
-    >
-      -
-    </button>
-    <i class="material-icons">shopping_cart</i>
-    <span class="ms-1">{{ cartItem?.quantity || 0 }}</span>
-    <button
-      class="cart-buttons btn p-0 text-white"
-      (click)="incrementQuantity()"
-    >
-      +
-    </button>
-  </button>
 </div>

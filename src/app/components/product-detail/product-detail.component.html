@@ -1,3 +1,8 @@
+<app-modal
+  title="Remove Item"
+  message="Are you sure to remove item from the cart ?"
+  (success)="removeCartItem()"
+></app-modal>
 <div class="row">
   <div class="col-lg-7 row g-2 mt-0">
     <div class="col-6" *ngFor="let image of product?.images">
@@ -60,7 +65,11 @@
         ADD TO CART
       </button>
     </ng-template>
-    <button class="btn btn-outline-primary ms-2" [disabled]="!this.cartItem" (click)="handleRemoveItem()">
+    <button
+      class="btn btn-outline-primary ms-2"
+      [disabled]="!this.cartItem"
+      (click)="openConfirmationModal()"
+    >
       REMOVE
     </button>
     <div class="my-3 lh-lg">

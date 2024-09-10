@@ -6,10 +6,10 @@ import {
   ViewChild,
   ElementRef,
 } from '@angular/core';
-import { interval } from 'rxjs';
 import { Product } from 'src/app/product';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { CartItem } from 'src/app/services/cart/cartItem';
+import { ModalComponent } from '../modal/modal.component';
 declare var $: any;
 declare var jQuery: any;
 @Component({
@@ -18,6 +18,7 @@ declare var jQuery: any;
   styleUrls: ['./product-card.component.scss'],
 })
 export class ProductCardComponent {
+  @ViewChild(ModalComponent) modal!: ModalComponent;
   @Input() product?: Product;
   cartItem?: CartItem;
   showButton = false;
@@ -27,10 +28,22 @@ export class ProductCardComponent {
   ngOnInit() {
     this.cartService.getItems().subscribe((res) => {
       this.cartItem = res.find((item) => item.id === this.product?.skuId);
+      // console.log(
+      //   res,
+      //   res.find((item) => item.id === this.product?.skuId),
+      //   this.cartItem
+      // );
     });
   }
   decrementQuantity() {
-    this.cartService.decrementQuantity(this.product?.skuId!);
+    if (this.cartItem?.quantity === 1) {
+      this.openConfirmationModal();
+    } else {
+      this.cartService.decrementQuantity(this.product?.skuId!);
+    }
+  }
+  openConfirmationModal() {
+    this.modal.open();
   }
   incrementQuantity() {
     this.cartService.incrementQuantity(this.product?.skuId!);
@@ -49,5 +62,8 @@ export class ProductCardComponent {
         $('#carousel-' + this.product?.skuId).carousel('pause');
       }
     );
+  }
+  removeCartItem(id: string) {
+    this.cartService.removeItem(id);
   }
 }

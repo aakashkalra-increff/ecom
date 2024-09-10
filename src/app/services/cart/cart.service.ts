@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { CartItem } from './cartItem';
-import { data } from 'jquery';
+import { AuthService } from '../auth/auth.service';
 @Injectable({
   providedIn: 'root',
 })
@@ -9,7 +9,8 @@ export class CartService {
   private localStorageCartKey = 'cart';
   private cartItems = new BehaviorSubject<CartItem[]>([]);
   items: Observable<CartItem[]> = this.cartItems.asObservable();
-  constructor() {
+  constructor(private authService: AuthService) {
+    this.updateLocalStorageKey();
     this.cartItems.next(
       JSON.parse(localStorage.getItem(this.localStorageCartKey)!) || []
     );
@@ -44,6 +45,11 @@ export class CartService {
     }
     this.saveItemsToLocalStorage(this.cartItems.value);
   }
+  updateLocalStorageKey() {
+    this.localStorageCartKey =
+      'cart' +
+      (this.authService.isLoggedIn() ? '/' + this.authService.getUserId() : '');
+  }
   incrementQuantity(id: string) {
     const index = this.cartItems.value.findIndex((e) => e.id === id);
     if (index > -1) {
@@ -56,5 +62,52 @@ export class CartService {
   }
   getItem(id: string) {
     return this.cartItems.getValue().find((item) => item.id === id);
+  }
+  removeItem(id: string) {
+    console.log(this.cartItems.value, id);
+    const newItems = this.cartItems.value.filter((item) => item.id !== id);
+    this.cartItems.next(newItems);
+    this.saveItemsToLocalStorage(newItems);
+  }
+  updateCart() {
+    const items = this.cartItems.value;
+    this.updateLocalStorageKey();
+    const userCartItems: CartItem[] = JSON.parse(
+      localStorage.getItem(this.localStorageCartKey)!
+    );
+    userCartItems.sort((a, b) => Number(a.id) - Number(b.id));
+    items.sort((a, b) => Number(a.id) - Number(b.id));
+    const newItems = [];
+    let i = 0,
+      j = 0;
+    while (i < userCartItems.length && j < items.length) {
+      if (userCartItems[i].id === items[j].id) {
+        newItems.push({
+          id: userCartItems[i].id,
+          quantity: userCartItems[i].quantity + items[j].quantity,
+        });
+        i++;
+        j++;
+      } else if (userCartItems[i].id < items[j].id) {
+        newItems.push(userCartItems[i]);
+        i++;
+      } else {
+        newItems.push(items[j]);
+        j++;
+      }
+    }
+    while (i < userCartItems.length) {
+      newItems.push(userCartItems[i++]);
+    }
+    while (j < items.length) {
+      newItems.push(items[j++]);
+    }
+    console.log(userCartItems, items, newItems);
+    this.cartItems.next(newItems);
+    localStorage.removeItem('cart');
+  }
+  clearLocalStorage() {
+    this.cartItems.next([]);
+    localStorage.removeItem(this.localStorageCartKey);
   }
 }

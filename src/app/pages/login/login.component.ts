@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { CartService } from 'src/app/services/cart/cart.service';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,11 @@ export class LoginComponent {
   });
   authError: string = '';
   loading: Boolean = false;
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private cartService: CartService
+  ) {}
   async onSubmit() {
     const { email, password } = this.loginForm.value;
     this.loading = true;
@@ -26,6 +31,8 @@ export class LoginComponent {
       await this.authService.logIn(email!, password!);
       this.authError = '';
       this.router.navigate(['/']);
+      console.log('hello')
+      this.cartService.updateCart();
     } catch (e) {
       this.authError = 'Invalid email or password';
     } finally {

@@ -1,29 +1,31 @@
-import { Component } from '@angular/core';
-import { event } from 'jquery';
-import { map } from 'rxjs';
+import { Component, ViewChild } from '@angular/core';
 import { CartService } from 'src/app/services/cart/cart.service';
-import { CartItem } from 'src/app/services/cart/cartItem';
 import { ProductsService } from 'src/app/services/products/products.service';
-
+import { ModalComponent } from 'src/app/components/modal/modal.component';
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.scss'],
 })
 export class CartComponent {
+  @ViewChild(ModalComponent) modal!: ModalComponent;
   items?: any[];
   itemsTotalPrice = 0;
   deliveryCost = 40;
   totalCost = 0;
   quantity = 0;
+  selectedItemId?: string | null = null;
   constructor(
     private cartService: CartService,
     private productService: ProductsService
   ) {
     this.cartService.getItems().subscribe((res) => {
       const ids = res.map(({ id }) => id);
-      this.productService.getProductsByID(ids).subscribe((items: any[]) => {
-        this.items = items.map((product, i) => ({ product, ...res[i] }));
+      this.productService.getProductsByID(ids).subscribe((products: any[]) => {
+        this.items = products.map((product) => ({
+          product,
+          ...res.find((e) => e.id === product.skuId),
+        }));
         this.itemsTotalPrice = this.items.reduce(
           (acc, item) => acc + item.product.price * item.quantity,
           0
@@ -39,5 +41,13 @@ export class CartComponent {
       id,
       quantity: Number(event.target.value)!,
     });
+  }
+  removeCartItem() {
+    this.cartService.removeItem(this.selectedItemId!);
+    this.selectedItemId = null;
+  }
+  openConfirmationModal(id: string) {
+    this.selectedItemId = id;
+    this.modal.open();
   }
 }

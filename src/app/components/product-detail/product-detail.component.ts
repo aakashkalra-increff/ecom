@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { InventoryInfo, Product } from '../../product';
 import { ProductsService } from '../../services/products/products.service';
 import { ActivatedRoute } from '@angular/router';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { CartItem } from 'src/app/services/cart/cartItem';
-import { FormControl } from '@angular/forms';
+import { ModalComponent } from '../modal/modal.component';
 @Component({
   selector: 'app-product-detail',
   templateUrl: './product-detail.component.html',
@@ -19,6 +19,7 @@ export class ProductDetailComponent {
   product?: Product;
   quantity = 1;
   cartItem?: CartItem;
+  @ViewChild(ModalComponent) modal!: ModalComponent;
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id')!;
     this.productsService
@@ -41,14 +42,6 @@ export class ProductDetailComponent {
     if (rating <= 3.0) return 'orange ';
     return 'green';
   }
-  // isAvailable(inventory: InventoryInfo[], size: string) {
-  //   console.log(
-  //     inventory,
-  //     size,
-  //     inventory.find((e) => e.label === size)
-  //   );
-  //   return inventory.find((e) => e.label === size);
-  // }
   updateQuantity(event: any) {
     console.log(event.target.value);
     this.quantity = event.target.value;
@@ -59,7 +52,10 @@ export class ProductDetailComponent {
       });
     }
   }
-  handleRemoveItem(){
-
+  openConfirmationModal() {
+    this.modal.open();
+  }
+  removeCartItem() {
+    this.cartService.removeItem(this.product?.skuId!);
   }
 }
