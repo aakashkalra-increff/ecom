@@ -32,7 +32,6 @@ export class CartComponent {
         );
         this.deliveryCost = this.itemsTotalPrice < 500 ? 40 : 0;
         this.totalCost = this.itemsTotalPrice + this.deliveryCost;
-        console.log('subscription called....', this.items);
       });
     });
   }

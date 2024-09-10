@@ -64,7 +64,6 @@ export class CartService {
     return this.cartItems.getValue().find((item) => item.id === id);
   }
   removeItem(id: string) {
-    console.log(this.cartItems.value, id);
     const newItems = this.cartItems.value.filter((item) => item.id !== id);
     this.cartItems.next(newItems);
     this.saveItemsToLocalStorage(newItems);
@@ -102,7 +101,6 @@ export class CartService {
     while (j < items.length) {
       newItems.push(items[j++]);
     }
-    console.log(userCartItems, items, newItems);
     this.cartItems.next(newItems);
     localStorage.removeItem('cart');
   }

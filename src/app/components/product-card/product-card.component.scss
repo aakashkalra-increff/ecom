@@ -34,11 +34,14 @@ button {
 }
 .card-img {
   border-radius: 0px;
-  height: 18rem;
+  height: 15rem;
 }
 
 .text-truncate {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.material-icons{
+  vertical-align:bottom;
 }

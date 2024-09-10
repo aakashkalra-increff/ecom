@@ -13,6 +13,8 @@ import { LoginComponent } from './pages/login/login.component';
 import { ProductCardComponent } from './components/product-card/product-card.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ModalComponent } from './components/modal/modal.component';
+import { FiltersComponent } from './components/filters/filters.component';
+import { CheckboxGroupComponent } from './components/checkbox-group/checkbox-group.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,7 +25,9 @@ import { ModalComponent } from './components/modal/modal.component';
     FooterComponent,
     LoginComponent,
     ProductCardComponent,
-    ModalComponent
+    ModalComponent,
+    FiltersComponent,
+    CheckboxGroupComponent
   ],
   imports: [
     BrowserModule,

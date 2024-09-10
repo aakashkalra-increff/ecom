@@ -28,11 +28,6 @@ export class ProductCardComponent {
   ngOnInit() {
     this.cartService.getItems().subscribe((res) => {
       this.cartItem = res.find((item) => item.id === this.product?.skuId);
-      // console.log(
-      //   res,
-      //   res.find((item) => item.id === this.product?.skuId),
-      //   this.cartItem
-      // );
     });
   }
   decrementQuantity() {
@@ -65,5 +60,10 @@ export class ProductCardComponent {
   }
   removeCartItem(id: string) {
     this.cartService.removeItem(id);
+  }
+  getColor(rating: number): string {
+    if (rating <= 2.0) return 'red';
+    if (rating <= 3.0) return 'orange ';
+    return 'green';
   }
 }

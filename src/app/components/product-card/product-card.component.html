@@ -68,6 +68,18 @@
           <span class="ms-1">{{ product?.discountDisplayLabel }}</span>
         </span>
       </div>
+      <div class="d-inline-block">
+        <span class="me-2 border-end border-secondary-subtle pe-2 d-inline-block">
+          <i
+            class="material-icons me-1"
+            [style]="{ color: getColor(product?.rating!) }"
+          >
+            star
+          </i>
+          <span>{{ product?.rating | number : "1.1-1" }}</span>
+        </span>
+        <span>{{ product?.reviews }} Ratings</span>
+      </div>
     </div>
   </div>
 </div>

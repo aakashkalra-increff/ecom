@@ -1,0 +1,16 @@
+<div>
+  <div class="form-check" *ngFor="let option of options">
+    <input
+      (change)="handleChange($event)"
+      class="form-check-input"
+      type="checkbox"
+      [value]="option"
+      [id]="'category-' + option"
+      name="category"
+      [checked]="checkedOptions?.includes(option)"
+    />
+    <label class="form-check-label" [for]="'category-' + option">
+      {{ option }}
+    </label>
+  </div>
+</div>

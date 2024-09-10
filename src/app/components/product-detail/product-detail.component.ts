@@ -26,10 +26,6 @@ export class ProductDetailComponent {
       .getProductsByID([id])
       .subscribe((res) => (this.product = res[0]));
     this.cartService.getItems().subscribe((res) => {
-      console.log(
-        res,
-        res.find((e) => e.id === id)
-      );
       this.cartItem = res.find((e) => e.id === id);
       this.quantity = this.cartItem?.quantity || 1;
     });
@@ -43,7 +39,6 @@ export class ProductDetailComponent {
     return 'green';
   }
   updateQuantity(event: any) {
-    console.log(event.target.value);
     this.quantity = event.target.value;
     if (this.cartItem) {
       this.cartService.updateItem({

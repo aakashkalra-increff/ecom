@@ -1,0 +1,11 @@
+.accordion-button:not(.collapsed){
+  background-color: transparent;
+}
+.clear-filters-text{
+  font-size: 14px;
+  &:hover{
+    cursor: pointer;
+    text-decoration: underline;
+
+  }
+}

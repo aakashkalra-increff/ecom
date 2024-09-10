@@ -31,7 +31,6 @@ export class LoginComponent {
       await this.authService.logIn(email!, password!);
       this.authError = '';
       this.router.navigate(['/']);
-      console.log('hello')
       this.cartService.updateCart();
     } catch (e) {
       this.authError = 'Invalid email or password';
