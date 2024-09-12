@@ -1,10 +1,20 @@
 <nav class="navbar navbar-dark bg-primary px-4 position-fixed z-3 w-100">
-  <div class="container justify-content-start">
+  <div class="d-flex align-items-center justify-content-between flex-grow-1">
     <div><a class="navbar-brand" routerLink="/">Fashion</a></div>
     <ul class="navbar-nav ms-auto">
       <li class="nav-item d-flex">
-        <a class="nav-link me-3" routerLink="/cart">
+        <span class="nav-link me-3" routerLink="/order-upload">
+          <i class="material-icons">file_upload</i>
+        </span>
+        <a class="nav-link me-3 position-relative" routerLink="/cart">
           <i class="material-icons">shopping_cart</i>
+          <span
+            *ngIf="totalCartItems"
+            class="position-absolute start-100 translate-middle badge rounded-pill border-white nav-color"
+          >
+            {{ totalCartItems }}
+            <span class="visually-hidden"></span>
+          </span>
         </a>
         <a
           class="nav-link"

@@ -5,7 +5,8 @@
   font-size: 14px;
   &:hover{
     cursor: pointer;
-    text-decoration: underline;
-
   }
+}
+.filters-container{
+  height: calc(100vh);
 }

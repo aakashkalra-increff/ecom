@@ -15,6 +15,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ModalComponent } from './components/modal/modal.component';
 import { FiltersComponent } from './components/filters/filters.component';
 import { CheckboxGroupComponent } from './components/checkbox-group/checkbox-group.component';
+import { CheckoutComponent } from './components/checkout/checkout.component';
+import { OrderUploadComponent } from './components/order-upload/order-upload.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,7 +29,9 @@ import { CheckboxGroupComponent } from './components/checkbox-group/checkbox-gro
     ProductCardComponent,
     ModalComponent,
     FiltersComponent,
-    CheckboxGroupComponent
+    CheckboxGroupComponent,
+    CheckoutComponent,
+    OrderUploadComponent
   ],
   imports: [
     BrowserModule,

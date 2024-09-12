@@ -1,11 +1,11 @@
 <div class="row px-0">
   <app-filters
-    class="col-lg-2 pe-4"
+    class="col-lg-2 col-md-3 col-sm-4"
     [filters]="filters"
     (filterchange)="filterChanged($event)"
   ></app-filters>
-  <div class="col-lg-10 row">
-    <div class="d-flex align-items-center">
+  <div class="col-lg-10 col-md-9 col-sm-8 row items-container overflow-y-scroll">
+    <div class="d-flex align-items-center justify-content-end">
       <!-- <button> Sort By - {{sort}}</button> -->
       <select class="form-select w-25" [value]="sort" (change)="changeSort($event)">
         <option value="featured">Featured</option>

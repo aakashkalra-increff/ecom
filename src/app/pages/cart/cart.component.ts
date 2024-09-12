@@ -2,6 +2,8 @@ import { Component, ViewChild } from '@angular/core';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { ProductsService } from 'src/app/services/products/products.service';
 import { ModalComponent } from 'src/app/components/modal/modal.component';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth/auth.service';
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
@@ -13,11 +15,12 @@ export class CartComponent {
   itemsTotalPrice = 0;
   deliveryCost = 40;
   totalCost = 0;
-  quantity = 0;
   selectedItemId?: string | null = null;
   constructor(
+    private router: Router,
     private cartService: CartService,
-    private productService: ProductsService
+    private productService: ProductsService,
+    private authService: AuthService
   ) {
     this.cartService.getItems().subscribe((res) => {
       const ids = res.map(({ id }) => id);
@@ -48,5 +51,22 @@ export class CartComponent {
   openConfirmationModal(id: string) {
     this.selectedItemId = id;
     this.modal.open();
+  }
+  placeOrder() {
+    this.router.navigate(['/checkout']);
+    const ordersKey = 'user/' + this.authService.getUserId() + '/current_order';
+    const orderInfo = {
+      items:
+        this.items?.map((item) => ({
+          name: item.product.name,
+          price: item.product.price,
+          quantity: item.quantity,
+          total: item.quantity * item.product.price,
+        })) || [],
+      totalCost: this.totalCost,
+      shippingCost: this.totalCost,
+      itemsTotalPrice: this.itemsTotalPrice,
+    };
+    localStorage.setItem(ordersKey, JSON.stringify(orderInfo));
   }
 }

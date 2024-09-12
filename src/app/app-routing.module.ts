@@ -6,6 +6,8 @@ import { CartComponent } from './pages/cart/cart.component';
 import { authGuard } from './services/auth/auth-guard';
 import { LoginComponent } from './pages/login/login.component';
 import { loginGuard } from './services/auth/auth-guard';
+import { CheckoutComponent } from './components/checkout/checkout.component';
+import { OrderUploadComponent } from './components/order-upload/order-upload.component';
 const routes: Routes = [
   {
     path: '',
@@ -21,8 +23,12 @@ const routes: Routes = [
   },
   {
     path: 'checkout',
-    component: CartComponent,
+    component: CheckoutComponent,
     canActivate: [authGuard],
+  },
+  {
+    path: 'order-upload',
+    component: OrderUploadComponent,
   },
   {
     path: 'login',

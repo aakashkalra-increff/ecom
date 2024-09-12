@@ -48,7 +48,7 @@
                   <option value="5">5</option>
                 </select>
                 <button
-                  class="btn btn-primary"
+                  class="btn btn-outline-primary"
                   (click)="openConfirmationModal(item.id)"
                 >
                   Remove
@@ -87,7 +87,7 @@
           </div>
           <hr />
         </div>
-        <button class="btn btn-primary w-100 my-2" routerLink="/checkout">Place Order</button>
+        <button class="btn btn-primary w-100 my-2" (click)="placeOrder()">Place Order</button>
       </div>
     </div>
   </div>

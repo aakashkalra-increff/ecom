@@ -1,0 +1,19 @@
+$primary: teal;
+@import "bootstrap/scss/bootstrap";
+// ::-webkit-file-upload-button {
+//   display: none;
+// }
+img{
+  height: 10rem;
+}
+hr{
+  margin: 0;
+}
+.cursor-pointer{
+  cursor: pointer;
+}
+label{
+  padding: 2rem 3rem;
+  border: 1px dashed $primary;
+  cursor: pointer;
+}

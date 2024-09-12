@@ -66,4 +66,7 @@ export class ProductCardComponent {
     if (rating <= 3.0) return 'orange ';
     return 'green';
   }
+  addToCart() {
+    this.cartService.addItem(this.product?.skuId!);
+  }
 }

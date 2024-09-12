@@ -26,25 +26,32 @@
         </div>
       </div>
       <button
-        *ngIf="showButton"
-        style="background: #ccc; cursor: unset"
-        class="btn w-100 d-flex align-items-center justify-content-center position-absolute bottom-0 left-0 text-primary"
+        *ngIf="showButton && cartItem"
+        style="cursor: unset"
+        class="btn btn-primary w-100 d-flex align-items-center justify-content-center position-absolute bottom-0 left-0 text-white"
       >
         <button
-          class="cart-buttons btn p-0 text-primary"
+          class="cart-buttons btn p-0 text-white"
           (click)="decrementQuantity()"
-          [disabled]="!cartItem?.quantity"
+          [disabled]="!cartItem.quantity"
         >
           -
         </button>
         <i class="material-icons">shopping_cart</i>
-        <span class="ms-1">{{ cartItem?.quantity || 0 }}</span>
+        <span class="ms-1">{{ cartItem.quantity || 0 }}</span>
         <button
-          class="cart-buttons btn p-0 text-primary"
+          class="cart-buttons btn p-0 text-white"
           (click)="incrementQuantity()"
         >
           +
         </button>
+      </button>
+      <button
+        *ngIf="showButton && !cartItem"
+        class="btn btn-primary w-100 position-absolute bottom-0 left-0 text-white"
+        (click)="addToCart()"
+      >
+        ADD TO CART
       </button>
     </div>
     <div
@@ -58,27 +65,29 @@
         {{ product?.additionalInfo }}
       </div>
       <div class="card-subtitle mb-1">
-        <b>Rs. {{ product?.price }}</b>
+        <b>₹ {{ product?.price }}</b>
         <span
           *ngIf="product?.discount"
           class="fw-light text-secondary ms-1 text-danger"
           [style]="{ 'font-size': '12px' }"
         >
-          MRP<del>{{ product?.mrp }}</del>
+          {{ "MRP " + product?.mrp }}
           <span class="ms-1">{{ product?.discountDisplayLabel }}</span>
         </span>
       </div>
       <div class="d-inline-block">
-        <span class="me-2 border-end border-secondary-subtle pe-2 d-inline-block">
+        <span
+          class="me-2 border-end border-secondary-subtle pe-2 d-inline-block"
+        >
           <i
             class="material-icons me-1"
             [style]="{ color: getColor(product?.rating!) }"
           >
             star
           </i>
-          <span>{{ product?.rating | number : "1.1-1" }}</span>
+          <span><b>{{ product?.rating | number : "1.1-1" }}</b></span>
         </span>
-        <span>{{ product?.reviews }} Ratings</span>
+        <span><b class="fs-6">{{ product?.reviews }}</b></span>
       </div>
     </div>
   </div>
