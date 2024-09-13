@@ -17,6 +17,7 @@ import { FiltersComponent } from './components/filters/filters.component';
 import { CheckboxGroupComponent } from './components/checkbox-group/checkbox-group.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { OrderUploadComponent } from './components/order-upload/order-upload.component';
+import { NotificationsComponent } from './components/notifications/notifications.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,7 +32,8 @@ import { OrderUploadComponent } from './components/order-upload/order-upload.com
     FiltersComponent,
     CheckboxGroupComponent,
     CheckoutComponent,
-    OrderUploadComponent
+    OrderUploadComponent,
+    NotificationsComponent
   ],
   imports: [
     BrowserModule,

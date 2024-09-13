@@ -1,4 +1,4 @@
-$primary: teal;
+@import "variables.scss";
 @import "bootstrap/scss/bootstrap";
 .btn{
   border-radius: 0px;
@@ -6,3 +6,4 @@ $primary: teal;
 ::-webkit-scrollbar {
   display: none;
 }
+html { font-size: 95%; }

@@ -54,7 +54,8 @@ export class CartComponent {
   }
   placeOrder() {
     this.router.navigate(['/checkout']);
-    const ordersKey = 'user/' + this.authService.getUserId() + '/current_order';
+    const userId = this.authService.getUserId();
+    const ordersKey = 'user/' + userId + '/current_order';
     const orderInfo = {
       items:
         this.items?.map((item) => ({
@@ -67,6 +68,7 @@ export class CartComponent {
       shippingCost: this.totalCost,
       itemsTotalPrice: this.itemsTotalPrice,
     };
+    localStorage.removeItem('cart/' + userId);
     localStorage.setItem(ordersKey, JSON.stringify(orderInfo));
   }
 }

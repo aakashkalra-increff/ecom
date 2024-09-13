@@ -21,6 +21,7 @@ export class OrderUploadComponent {
   itemsTotalPrice = 0;
   deliveryCost = 0;
   totalCost = 0;
+  parseError?: string;
   onChange(event: any) {
     const { files } = event.target;
     if (files[0]) {
@@ -28,27 +29,58 @@ export class OrderUploadComponent {
         header: true,
         skipEmptyLines: true,
         complete: (res) => {
-          // const columnsName = ['id', 'quantity'];
-          const ids = res.data.map((e: any) => e.id);
-          console.log(ids);
-          this.productService
-            .getProductsByID(ids)
-            .subscribe((products: any[]) => {
-              this.items = products.map((product) => ({
-                product,
-                ...Object.assign(
-                  {},
-                  res.data.find((e: any) => e.id === product.skuId)
-                ),
-              }));
-              this.itemsTotalPrice = this.items.reduce(
-                (acc: number, item: any) =>
-                  acc + item.product.price * item.quantity,
-                0
-              );
-              this.deliveryCost = this.itemsTotalPrice < 500 ? 40 : 0;
-              this.totalCost = this.itemsTotalPrice + this.deliveryCost;
-            });
+          const columnsName = ['id', 'quantity'];
+          const columnsCheck =
+            columnsName.length !== res.meta.fields?.length ||
+            columnsName.find((c, i) => c !== res.meta.fields?.at(i));
+          const valueCheck = res.data.find((e: any) => e.quantity < 1);
+          const emptyValueCheck = res.data.find(
+            (e: any) => !(e.id && e.quantity)
+          );
+          if (columnsCheck) {
+            this.parseError = 'File header names are not valid.';
+            return;
+          }
+          if (valueCheck) {
+            this.parseError = 'Item quantity must be greater than 0.';
+          }
+          if (emptyValueCheck) {
+            this.parseError = "Item id or quantity can't be empty.";
+          }
+          if (columnsCheck || valueCheck || emptyValueCheck) return;
+          const obj = {} as { [key: string]: any };
+          res.data.forEach((e: any) => {
+            const id: string = e.id;
+            const quantity: number = Number(e.quantity);
+            if (!obj[id]) obj[id] = quantity;
+            else obj[id] += quantity;
+          });
+          const ids = Object.keys(obj);
+          this.productService.getProductsByID(ids).subscribe((res: any[]) => {
+            console.log(res);
+            const products = res.map((product) => ({
+              product,
+              id: product.skuId,
+              quantity: obj[product.skuId],
+            }));
+            const invalidIds = ids.filter(
+              (id) => !products.find((p) => p.id === id)
+            );
+            if (invalidIds.length) {
+              this.parseError =
+                invalidIds.join(',') +
+                ' id(s) are invalid. Please check the products id.';
+              return;
+            }
+            this.items = products;
+            this.itemsTotalPrice = this.items.reduce(
+              (acc: number, item: any) =>
+                acc + item.product.price * item.quantity,
+              0
+            );
+            this.deliveryCost = this.itemsTotalPrice < 500 ? 40 : 0;
+            this.totalCost = this.itemsTotalPrice + this.deliveryCost;
+          });
         },
       });
     }

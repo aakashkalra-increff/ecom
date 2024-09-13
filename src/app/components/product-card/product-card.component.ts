@@ -10,6 +10,7 @@ import { Product } from 'src/app/product';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { CartItem } from 'src/app/services/cart/cartItem';
 import { ModalComponent } from '../modal/modal.component';
+import { NotificationsService } from 'src/app/services/notifications/notifications.service';
 declare var $: any;
 declare var jQuery: any;
 @Component({
@@ -24,7 +25,10 @@ export class ProductCardComponent {
   showButton = false;
   showCarousel = false;
   carousel?: any;
-  constructor(private cartService: CartService) {}
+  constructor(
+    private cartService: CartService,
+    private notificationsService: NotificationsService
+  ) {}
   ngOnInit() {
     this.cartService.getItems().subscribe((res) => {
       this.cartItem = res.find((item) => item.id === this.product?.skuId);
@@ -68,5 +72,6 @@ export class ProductCardComponent {
   }
   addToCart() {
     this.cartService.addItem(this.product?.skuId!);
+    this.notificationsService.addNotifications('Added to cart')
   }
 }

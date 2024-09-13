@@ -1,8 +1,5 @@
-<div
-  *ngIf="!items; else showItems"
-  class="d-flex align-items-center justify-content-center h-100"
->
-  <div class="w-75">
+<div class="row align-items-center justify-content-center h-100">
+  <div class="col-9">
     <label class="d-flex justify-content-center" for="file-upload">
       <i style="font-size: 10rem" class="material-icons text-primary"
         >file_upload</i
@@ -15,7 +12,7 @@
       </span>
       ) to place a order.
     </div>
-
+    <div *ngIf="parseError" class="text-danger">{{ parseError }}</div>
     <input
       class="mt-1"
       type="file"
@@ -25,45 +22,43 @@
     />
   </div>
 </div>
-<ng-template #showItems>
-  <div class="row">
-    <div class="col-lg-8">
+<div *ngIf="items?.length" class="row justify-content-center mt-3">
+  <div class="row col-lg-9">
+    <div class="ps-0 col-lg-8">
       <div class="p-0 card">
         <div class="card-header"><h4>Items</h4></div>
         <div class="card-body p-0">
-          <div class="p-3">
-            <div *ngFor="let item of items" class="row py-2">
-              <div class="col-lg-3">
-                <img
-                  class="cursor-pointer"
-                  [src]="item.product.searchImage"
-                  [routerLink]="['/product', item.id]"
-                />
+          <div *ngFor="let item of items" class="row py-2">
+            <div class="col-lg-3">
+              <img
+                class="cursor-pointer"
+                [src]="item.product.searchImage"
+                [routerLink]="['/product', item.id]"
+              />
+            </div>
+            <div class="col-lg-9">
+              <h5 class="text-secondary fs-6">{{ item.product.category }}</h5>
+              <h5 class="card-title fs-5">
+                {{ item.product.name }}
+              </h5>
+              <div class="my-2">
+                <span class="text-secondary">Quantity:</span>
+                {{ item.quantity }}
               </div>
-              <div class="col-lg-9">
-                <h5 class="text-secondary fs-6">{{ item.product.category }}</h5>
-                <h5 class="card-title fs-5">
-                  {{ item.product.name }}
+              <div class="my-2">
+                <h5 class="fs-6">
+                  RS. {{ item.product.price }}
+                  <span class="text-success">{{
+                    item.product.discountDisplayLabel
+                  }}</span>
                 </h5>
-                <div class="my-2">
-                  <span class="text-secondary">Quantity:</span>
-                  {{ item.quantity }}
-                </div>
-                <div class="my-2">
-                  <h5 class="fs-6">
-                    RS. {{ item.product.price }}
-                    <span class="text-success">{{
-                      item.product.discountDisplayLabel
-                    }}</span>
-                  </h5>
-                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-lg-4">
+    <div class="col-lg-4 pe-0">
       <div class="p-0 card">
         <div class="card-header">
           <h4>Order Summary</h4>
@@ -97,4 +92,4 @@
       </div>
     </div>
   </div>
-</ng-template>
+</div>
