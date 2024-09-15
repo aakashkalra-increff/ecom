@@ -1,13 +1,13 @@
 <div class="row px-0">
   <app-filters
-    class="col-lg-2 col-md-3 col-sm-4"
+    class="col-lg-2 col-md-3 col-sm-12 filters"
     [filters]="filters"
     (filterchange)="filterChanged($event)"
   ></app-filters>
-  <div class="col-lg-10 col-md-9 col-sm-8 row items-container overflow-y-scroll">
+  <div class="col-lg-10 col-md-9 col-sm-12 row items-container overflow-y-scroll">
     <div class="d-flex align-items-center justify-content-end">
       <!-- <button> Sort By - {{sort}}</button> -->
-      <select class="form-select w-25" [value]="sort" (change)="changeSort($event)">
+      <select class="form-select w-25 d-" [value]="sort" (change)="changeSort($event)">
         <option value="featured">Featured</option>
         <option value="price">Price - Low to High</option>
         <option value="-price">Price - High to Low</option>
@@ -15,7 +15,7 @@
       </select>
     </div>
     <div
-      class="col-lg-3 col-md-4 col-sm-6 gx-3 gy-4"
+      class="col-xl-3 col-lg-4 col-md-6 col-sm-6 gx-3 gy-4"
       *ngFor="let product of products"
     >
       <app-product-card [product]="product"></app-product-card>

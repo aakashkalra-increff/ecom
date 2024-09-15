@@ -16,6 +16,7 @@ export class CartComponent {
   deliveryCost = 40;
   totalCost = 0;
   selectedItemId?: string | null = null;
+  options = new Array(20).fill(0).map((_, i) => i + 1);
   constructor(
     private router: Router,
     private cartService: CartService,

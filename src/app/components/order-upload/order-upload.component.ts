@@ -22,8 +22,10 @@ export class OrderUploadComponent {
   deliveryCost = 0;
   totalCost = 0;
   parseError?: string;
+  file: string = '';
   onChange(event: any) {
-    const { files } = event.target;
+    const { files, value } = event.target;
+    this.file = value;
     if (files[0]) {
       Papa.parse(files[0], {
         header: true,
@@ -33,6 +35,12 @@ export class OrderUploadComponent {
           const columnsCheck =
             columnsName.length !== res.meta.fields?.length ||
             columnsName.find((c, i) => c !== res.meta.fields?.at(i));
+          const valueTypeCheck = res.data.find(
+            (e: any) => isNaN(e.quantity) || !Number.isInteger(e.quantity)
+          );
+          if(valueTypeCheck){
+            this.parseError='Quantity must be an integer.'
+          }
           const valueCheck = res.data.find((e: any) => e.quantity < 1);
           const emptyValueCheck = res.data.find(
             (e: any) => !(e.id && e.quantity)
@@ -101,5 +109,10 @@ export class OrderUploadComponent {
       itemsTotalPrice: this.itemsTotalPrice,
     };
     localStorage.setItem(ordersKey, JSON.stringify(orderInfo));
+  }
+  setEmptyValue(event: any) {
+    event.target.value = '';
+    this.items = [];
+    this.parseError = '';
   }
 }

@@ -26,9 +26,9 @@
         </div>
       </div>
       <button
-        *ngIf="showButton && cartItem"
+        *ngIf="cartItem"
         style="cursor: unset"
-        class="btn btn-primary w-100 d-flex align-items-center justify-content-center position-absolute bottom-0 left-0 text-white"
+        class="btn btn-primary button w-100 d-flex align-items-center justify-content-center position-absolute bottom-0 left-0 text-white"
       >
         <button
           class="cart-buttons btn p-0 text-white"
@@ -42,6 +42,7 @@
         <button
           class="cart-buttons btn p-0 text-white"
           (click)="incrementQuantity()"
+          [disabled]="cartItem.quantity === 20"
         >
           +
         </button>
@@ -71,7 +72,7 @@
           class="fw-light text-secondary ms-1 text-danger"
           [style]="{ 'font-size': '12px' }"
         >
-          {{ "MRP " + product?.mrp }}
+          {{"MRP "}}<del>{{ product?.mrp }}</del>
           <span class="ms-1">{{ product?.discountDisplayLabel }}</span>
         </span>
       </div>
@@ -85,9 +86,13 @@
           >
             star
           </i>
-          <span><b>{{ product?.rating | number : "1.1-1" }}</b></span>
+          <span
+            ><b>{{ product?.rating | number : "1.1-1" }}</b></span
+          >
         </span>
-        <span><b class="fs-6">{{ product?.reviews }}</b></span>
+        <span
+          ><b class="fs-6">{{ product?.reviews }}</b></span
+        >
       </div>
     </div>
   </div>

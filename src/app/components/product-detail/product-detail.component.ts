@@ -19,6 +19,7 @@ export class ProductDetailComponent {
   product?: Product;
   quantity = 1;
   cartItem?: CartItem;
+  options = new Array(20).fill(0).map((_, i) => i + 1);
   @ViewChild(ModalComponent) modal!: ModalComponent;
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id')!;
@@ -39,6 +40,10 @@ export class ProductDetailComponent {
     return 'green';
   }
   updateQuantity(event: any) {
+    console.log('handle Change Called!!');
+    const val = event.target.value;
+    console.log(val, isNaN(val), Number(val));
+    if (isNaN(val) || Number(val) < 0) return;
     this.quantity = event.target.value;
     if (this.cartItem) {
       this.cartService.updateItem({

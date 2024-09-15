@@ -18,6 +18,7 @@
       type="file"
       id="file-upload"
       accept=".csv"
+      (click)="setEmptyValue($event)"
       (change)="onChange($event)"
     />
   </div>

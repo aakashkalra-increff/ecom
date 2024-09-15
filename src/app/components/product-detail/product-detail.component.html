@@ -4,14 +4,14 @@
   (success)="removeCartItem()"
 ></app-modal>
 <div class="row px-2">
-  <div class="col-lg-7 row g-2 mt-0">
-    <div class="col-6" *ngFor="let image of product?.images">
+  <div class="col-md-7 row g-2 mt-0">
+    <div class="col-12 col-sm-6" *ngFor="let image of product?.images">
       <div class="img">
         <img [src]="image.src" />
       </div>
     </div>
   </div>
-  <div class="col-lg-5 ps-4">
+  <div class="col-md-5 ps-md-4 pt-4 pt-md-0">
     <h2>{{ product?.name }}</h2>
     <div class="border border-secondary-subtle d-inline-block px-2">
       <span class="me-2 border-end border-secondary-subtle pe-2 d-inline-block">
@@ -45,33 +45,36 @@
         [value]="quantity"
         (change)="updateQuantity($event)"
       >
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
+        <option *ngFor="let option of options" [value]="option">
+          {{ option }}
+        </option>
       </select>
     </div>
-    <button
-      class="btn btn-primary w-75"
-      *ngIf="cartItem; else addToCart"
-      routerLink="/cart"
-    >
-      <i class="material-icons"> shopping_cart </i>
-      GO TO CART
-    </button>
-    <ng-template #addToCart>
-      <button class="btn btn-primary w-75" (click)="addItem()">
-        <i class="material-icons">shopping_cart</i>
-        ADD TO CART
+    <div class="row">
+      <button
+        class="btn btn-primary col-9"
+        *ngIf="cartItem; else addToCart"
+        routerLink="/cart"
+      >
+        <i class="material-icons"> shopping_cart </i>
+        GO TO CART
       </button>
-    </ng-template>
-    <button
-      class="btn btn-outline-primary ms-2"
-      [disabled]="!this.cartItem"
-      (click)="openConfirmationModal()"
-    >
-      REMOVE
-    </button>
+      <ng-template #addToCart>
+        <button class="btn btn-primary w-75" (click)="addItem()">
+          <i class="material-icons">shopping_cart</i>
+          ADD TO CART
+        </button>
+      </ng-template>
+      <div class="col-3 ps-2">
+        <button
+          class="btn btn-outline-primary"
+          [disabled]="!this.cartItem"
+          (click)="openConfirmationModal()"
+        >
+          REMOVE
+        </button>
+      </div>
+    </div>
     <div class="my-3 lh-lg">
       100% Original Products<br />
       Pay on delivery might be available<br />

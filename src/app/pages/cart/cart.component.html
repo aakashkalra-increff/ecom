@@ -41,11 +41,9 @@
                   [value]="item.quantity"
                   (change)="updateQuantity($event, item.id)"
                 >
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
+                  <option *ngFor="let option of options" [value]="option">
+                    {{ option }}
+                  </option>
                 </select>
                 <button
                   class="btn btn-outline-primary"
@@ -60,7 +58,7 @@
       </div>
     </div>
   </div>
-  <div class="col-lg-4">
+  <div class="col-lg-4 pt-2 pt-lg-0">
     <div class="p-0 card">
       <div class="card-header">
         <h4>Order Summary</h4>
@@ -68,7 +66,7 @@
       <div class="card-body">
         <div class="py-2">
           <div class="d-flex justify-content-between px-2">
-            <h5>Items :</h5>
+            <h5>Price :</h5>
             <h5>{{ itemsTotalPrice }}</h5>
           </div>
           <hr />
@@ -83,7 +81,7 @@
         <div class="py-2">
           <div class="d-flex justify-content-between px-2">
             <h5>Total Amount :</h5>
-            <h5>{{ totalCost }}</h5>
+            <h5>₹{{ totalCost }}</h5>
           </div>
           <hr />
         </div>
