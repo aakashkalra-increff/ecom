@@ -21,7 +21,7 @@ export class OrderUploadComponent {
   itemsTotalPrice = 0;
   deliveryCost = 0;
   totalCost = 0;
-  parseError?: string;
+  parseError: string[] = [];
   file: string = '';
   onChange(event: any) {
     const { files, value } = event.target;
@@ -31,31 +31,49 @@ export class OrderUploadComponent {
         header: true,
         skipEmptyLines: true,
         complete: (res) => {
+          const error: string[] = [];
           const columnsName = ['id', 'quantity'];
           const columnsCheck =
             columnsName.length !== res.meta.fields?.length ||
             columnsName.find((c, i) => c !== res.meta.fields?.at(i));
-          const valueTypeCheck = res.data.find(
-            (e: any) => isNaN(e.quantity) || !Number.isInteger(e.quantity)
-          );
-          if(valueTypeCheck){
-            this.parseError='Quantity must be an integer.'
-          }
-          const valueCheck = res.data.find((e: any) => e.quantity < 1);
-          const emptyValueCheck = res.data.find(
-            (e: any) => !(e.id && e.quantity)
-          );
           if (columnsCheck) {
-            this.parseError = 'File header names are not valid.';
+            error.push('Error - File header names are not valid.');
+            this.parseError = error;
             return;
           }
-          if (valueCheck) {
-            this.parseError = 'Item quantity must be greater than 0.';
-          }
-          if (emptyValueCheck) {
-            this.parseError = "Item id or quantity can't be empty.";
-          }
-          if (columnsCheck || valueCheck || emptyValueCheck) return;
+          console.log(res.data);
+          res.data.forEach((e: any, i: number) => {
+            if (e.id === '') {
+              error.push(
+                'Error row - ' + Number(i + 1) + " Item id can't be empty."
+              );
+            }
+            if (e.quantity === '') {
+              error.push(
+                'Error row - ' +
+                  Number(i + 1) +
+                  " Item quantity can't be empty."
+              );
+            } else {
+              const quantity = Number(e.quantity);
+              if (isNaN(quantity) || !Number.isInteger(quantity)) {
+                error.push(
+                  'Error row - ' +
+                    Number(i + 1) +
+                    ' Item quantity must be an integer.'
+                );
+              }
+              if (quantity < 1) {
+                error.push(
+                  'Error row - ' +
+                    Number(i + 1) +
+                    ' Item quantity must be greater than 0.'
+                );
+              }
+            }
+          });
+          this.parseError = error;
+          if (error.length) return;
           const obj = {} as { [key: string]: any };
           res.data.forEach((e: any) => {
             const id: string = e.id;
@@ -64,22 +82,20 @@ export class OrderUploadComponent {
             else obj[id] += quantity;
           });
           const ids = Object.keys(obj);
-          this.productService.getProductsByID(ids).subscribe((res: any[]) => {
-            console.log(res);
-            const products = res.map((product) => ({
+          this.productService.getProductsByID(ids).subscribe((p: any[]) => {
+            const products = p.map((product) => ({
               product,
               id: product.skuId,
               quantity: obj[product.skuId],
             }));
-            const invalidIds = ids.filter(
-              (id) => !products.find((p) => p.id === id)
-            );
-            if (invalidIds.length) {
-              this.parseError =
-                invalidIds.join(',') +
-                ' id(s) are invalid. Please check the products id.';
-              return;
-            }
+            res.data.forEach((e: any, i: number) => {
+              if (!products.find(({ id }) => id === e.id)) {
+                this.parseError.push(
+                  'Error row - ' + Number(i + 1) + ' Item id is invalid.'
+                );
+              }
+            });
+            if (this.parseError.length) return;
             this.items = products;
             this.itemsTotalPrice = this.items.reduce(
               (acc: number, item: any) =>
@@ -113,6 +129,6 @@ export class OrderUploadComponent {
   setEmptyValue(event: any) {
     event.target.value = '';
     this.items = [];
-    this.parseError = '';
+    this.parseError = [];
   }
 }

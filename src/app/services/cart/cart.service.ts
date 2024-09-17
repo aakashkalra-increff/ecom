@@ -11,9 +11,14 @@ export class CartService {
   items: Observable<CartItem[]> = this.cartItems.asObservable();
   constructor(private authService: AuthService) {
     this.updateLocalStorageKey();
-    this.cartItems.next(
-      JSON.parse(localStorage.getItem(this.localStorageCartKey)!) || []
-    );
+    try {
+      this.cartItems.next(
+        JSON.parse(localStorage.getItem(this.localStorageCartKey)!) || []
+      );
+    } catch (e) {
+      this.cartItems.next([]);
+      localStorage.setItem(this.localStorageCartKey, '[]');
+    }
   }
   getItems() {
     return this.items;
@@ -71,9 +76,12 @@ export class CartService {
   updateCart() {
     const items = this.cartItems.value;
     this.updateLocalStorageKey();
-    const userCartItems: CartItem[] = JSON.parse(
-      localStorage.getItem(this.localStorageCartKey)!
-    );
+    let userCartItems: CartItem[] = [];
+    try {
+      userCartItems = JSON.parse(
+        localStorage.getItem(this.localStorageCartKey)!
+      );
+    } catch (e) {}
     userCartItems.sort((a, b) => Number(a.id) - Number(b.id));
     items.sort((a, b) => Number(a.id) - Number(b.id));
     const newItems = [];
@@ -102,9 +110,10 @@ export class CartService {
       newItems.push(items[j++]);
     }
     this.cartItems.next(newItems);
+    localStorage.setItem(this.localStorageCartKey, JSON.stringify(newItems));
     localStorage.removeItem('cart');
   }
-  clearLocalStorage() {
+  clearCart() {
     this.cartItems.next([]);
     localStorage.removeItem(this.localStorageCartKey);
   }

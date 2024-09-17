@@ -12,7 +12,9 @@
       </span>
       ) to place a order.
     </div>
-    <div *ngIf="parseError" class="text-danger">{{ parseError }}</div>
+    <div  *ngIf="parseError?.length">
+      <div *ngFor="let error of parseError" class="text-danger">{{ error }}</div>
+    </div>
     <input
       class="mt-1"
       type="file"

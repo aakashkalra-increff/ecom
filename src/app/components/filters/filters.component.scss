@@ -1,12 +1,26 @@
-.accordion-button:not(.collapsed){
+.accordion-button:not(.collapsed) {
   background-color: transparent;
 }
-.clear-filters-text{
+.clear-filters-text {
   font-size: 14px;
-  &:hover{
+  &:hover {
     cursor: pointer;
   }
 }
-.filters-container{
-  height: calc(100vh);
+.filters-container {
+  height: 100vh;
+  position: fixed;
+  top: 60px;
+  left: 0px;
+  width: 100%;
+  height: calc(100vh - 60px);
+  z-index: 10;
+}
+@media (min-width: 768px) {
+  .filters-container{
+    position: static;
+  }
+}
+.filter-btn {
+  bottom: 0px;
 }

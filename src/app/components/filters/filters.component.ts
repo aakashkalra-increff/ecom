@@ -8,7 +8,9 @@ import { ProductsService } from 'src/app/services/products/products.service';
 })
 export class FiltersComponent {
   @Output() filterchange = new EventEmitter();
+  @Output() showFilterChanged = new EventEmitter();
   @Input() filters?: any = {};
+  @Input() showFilter = false;
   categories?: string[] = [];
   brands: string[] = [];
   constructor(private productService: ProductsService) {}
@@ -33,6 +35,9 @@ export class FiltersComponent {
     this.filterchange.emit(newFilters);
   }
   clearFilters() {
-    this.filterchange.emit({})
+    this.filterchange.emit({});
+  }
+  hideFilters(){
+    this.showFilterChanged.emit(false)
   }
 }

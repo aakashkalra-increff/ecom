@@ -1,4 +1,4 @@
-img{
+.img{
   height: 100%;
   width: 100%;
   &:hover{
@@ -6,10 +6,10 @@ img{
     transition: all 500ms;
   }
 }
-.img{
-  height: 25em;
+.img-container{
   width: 100%;
   overflow: hidden;
+  aspect-ratio: 1;
   cursor:-webkit-zoom-in;
 }
 .material-icons{
@@ -18,3 +18,6 @@ img{
 .btn{
   padding: 0.75rem;
 }
+// img{
+//   aspect-ratio: 0.8;
+// }

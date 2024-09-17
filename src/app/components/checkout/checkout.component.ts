@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import * as Papa from 'papaparse';
-import { data } from 'jquery';
 @Component({
   selector: 'app-checkout',
   templateUrl: './checkout.component.html',

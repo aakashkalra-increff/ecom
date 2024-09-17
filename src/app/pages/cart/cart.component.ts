@@ -11,6 +11,8 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 })
 export class CartComponent {
   @ViewChild(ModalComponent) modal!: ModalComponent;
+  @ViewChild('clearCartModal') clearCartModal!: ModalComponent;
+  @ViewChild('placeOrderConfirmation') placeOrderConfirmation!: ModalComponent;
   items?: any[];
   itemsTotalPrice = 0;
   deliveryCost = 40;
@@ -23,21 +25,25 @@ export class CartComponent {
     private productService: ProductsService,
     private authService: AuthService
   ) {
-    this.cartService.getItems().subscribe((res) => {
-      const ids = res.map(({ id }) => id);
-      this.productService.getProductsByID(ids).subscribe((products: any[]) => {
-        this.items = products.map((product) => ({
-          product,
-          ...res.find((e) => e.id === product.skuId),
-        }));
-        this.itemsTotalPrice = this.items.reduce(
-          (acc, item) => acc + item.product.price * item.quantity,
-          0
-        );
-        this.deliveryCost = this.itemsTotalPrice < 500 ? 40 : 0;
-        this.totalCost = this.itemsTotalPrice + this.deliveryCost;
+    setTimeout(() => {
+      this.cartService.getItems().subscribe((res) => {
+        const ids = res.map(({ id }) => id);
+        this.productService
+          .getProductsByID(ids)
+          .subscribe((products: any[]) => {
+            this.items = products.map((product) => ({
+              product,
+              ...res.find((e) => e.id === product.skuId),
+            }));
+            this.itemsTotalPrice = this.items.reduce(
+              (acc, item) => acc + item.product.price * item.quantity,
+              0
+            );
+            this.deliveryCost = this.itemsTotalPrice < 500 ? 40 : 0;
+            this.totalCost = this.itemsTotalPrice + this.deliveryCost;
+          });
       });
-    });
+    }, 0);
   }
   updateQuantity(event: any, id: string) {
     this.cartService.updateItem({
@@ -53,8 +59,10 @@ export class CartComponent {
     this.selectedItemId = id;
     this.modal.open();
   }
+  openClearCartConfirmationModal() {
+    this.clearCartModal.open();
+  }
   placeOrder() {
-    this.router.navigate(['/checkout']);
     const userId = this.authService.getUserId();
     const ordersKey = 'user/' + userId + '/current_order';
     const orderInfo = {
@@ -69,7 +77,14 @@ export class CartComponent {
       shippingCost: this.totalCost,
       itemsTotalPrice: this.itemsTotalPrice,
     };
-    localStorage.removeItem('cart/' + userId);
     localStorage.setItem(ordersKey, JSON.stringify(orderInfo));
+    this.cartService.clearCart();
+    this.router.navigate(['/checkout']);
+  }
+  openPlaceOrderConfirmation() {
+    this.placeOrderConfirmation.open();
+  }
+  clearCart() {
+    this.cartService.clearCart();
   }
 }

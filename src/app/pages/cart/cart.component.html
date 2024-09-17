@@ -1,23 +1,46 @@
 <app-modal
+  [id]="'modal1'"
   title="Remove Item"
   message="Are you sure to remove item from the cart ?"
   (success)="removeCartItem()"
 ></app-modal>
+<app-modal
+  #clearCartModal
+  [id]="'clear-cart-modal'"
+  title="Clear Cart"
+  message="Are you sure to remove all items from the cart ?"
+  (success)="clearCart()"
+></app-modal>
+<app-modal
+  #placeOrderConfirmation
+  [id]="'place-order-confirmation'"
+  title="Place Order"
+  message="Are you sure to place order ?"
+  (success)="placeOrder()"
+></app-modal>
 <div class="row flex-grow-1" *ngIf="this.items?.length; else noItems">
   <div class="col-lg-8">
     <div class="p-0 card">
-      <div class="card-header"><h4>Your Cart</h4></div>
+      <div class="card-header d-flex justify-content-between">
+        <h4>Your Cart</h4>
+        <button
+          class="btn btn-outline-danger"
+          (click)="openClearCartConfirmationModal()"
+        >
+          Clear cart
+        </button>
+      </div>
       <div class="card-body p-0">
         <div class="p-3">
           <div *ngFor="let item of items" class="row py-2">
-            <div class="col-lg-3">
+            <div class="col-lg-3 col-md-4 col-sm-6">
               <img
                 class="cursor-pointer"
                 [src]="item.product.searchImage"
                 [routerLink]="['/product', item.id]"
               />
             </div>
-            <div class="col-lg-9">
+            <div class="col-lg-9 col-md-8 col-sm-6 mt-2 mt-md-0">
               <h5 class="text-secondary fs-6">{{ item.product.category }}</h5>
               <h5 class="card-title fs-5">
                 {{ item.product.name }}
@@ -46,7 +69,7 @@
                   </option>
                 </select>
                 <button
-                  class="btn btn-outline-primary"
+                  class="btn btn-outline-danger"
                   (click)="openConfirmationModal(item.id)"
                 >
                   Remove
@@ -60,7 +83,7 @@
   </div>
   <div class="col-lg-4 pt-2 pt-lg-0">
     <div class="p-0 card">
-      <div class="card-header">
+      <div class="card-header d-flex justify-content-between">
         <h4>Order Summary</h4>
       </div>
       <div class="card-body">
@@ -85,7 +108,7 @@
           </div>
           <hr />
         </div>
-        <button class="btn btn-primary w-100 my-2" (click)="placeOrder()">
+        <button class="btn btn-primary w-100 my-2" (click)="openPlaceOrderConfirmation()">
           Place Order
         </button>
       </div>

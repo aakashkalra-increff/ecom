@@ -1,7 +1,23 @@
-<div class="filters-container overflow-y-scroll">
+<div
+  class="filters-container overflow-y-scroll d-md-block bg-white p-3"
+  [ngClass]="{ 'd-none': !showFilter }"
+>
   <div class="d-flex align-items-center justify-content-between">
     <div class="fs-4"><b>Filters</b></div>
-    <div class="text-primary text clear-filters-text" (click)="clearFilters()"><b>CLEAR ALL</b></div>
+    <div class="d-flex">
+      <div
+        class="text-primary text clear-filters-text me-2"
+        (click)="clearFilters()"
+      >
+        <b>CLEAR ALL</b>
+      </div>
+      <i
+        *ngIf="showFilter"
+        class="material-icons text-primary"
+        (click)="hideFilters()"
+        >logout</i
+      >
+    </div>
   </div>
   <div>
     <div class="mb-2"><b>Gender</b></div>

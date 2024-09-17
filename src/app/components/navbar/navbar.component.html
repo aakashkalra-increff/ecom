@@ -1,12 +1,27 @@
+<app-modal
+  title="Confirm Logout"
+  message="Are you sure you want to logout?"
+  (success)="logout()"
+></app-modal>
 <nav class="navbar navbar-dark bg-primary px-4 position-fixed z-3 w-100">
   <div class="d-flex align-items-center justify-content-between flex-grow-1">
     <div><a class="navbar-brand" routerLink="/">Fashion</a></div>
     <ul class="navbar-nav ms-auto">
       <li class="nav-item d-flex">
-        <span class="nav-link me-3" routerLink="/order-upload">
+        <span
+          class="nav-link me-3"
+          routerLink="/order-upload"
+          data-bs-toggle="tooltip"
+          data-bs-title="Upload Order"
+        >
           <i class="material-icons">file_upload</i>
         </span>
-        <a class="nav-link me-3 position-relative" routerLink="/cart">
+        <a
+          class="nav-link me-3 position-relative"
+          routerLink="/cart"
+          data-bs-toggle="tooltip"
+          data-bs-title="Cart"
+        >
           <i class="material-icons">shopping_cart</i>
           <span
             *ngIf="totalCartItems"
@@ -18,13 +33,20 @@
         </a>
         <a
           class="nav-link"
-          (click)="logout()"
+          (click)="openLogoutConfirmationModal()"
           *ngIf="authService.isLoggedIn(); else loginButton"
+          data-bs-toggle="tooltip"
+          data-bs-title="Logout"
         >
           <i class="material-icons">logout</i>
         </a>
         <ng-template #loginButton>
-          <a class="nav-link" routerLink="/login">
+          <a
+            class="nav-link"
+            routerLink="/login"
+            data-bs-toggle="tooltip"
+            data-bs-title="Login"
+          >
             <i class="material-icons">login</i>
           </a>
         </ng-template>

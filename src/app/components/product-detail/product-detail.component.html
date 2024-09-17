@@ -4,11 +4,52 @@
   (success)="removeCartItem()"
 ></app-modal>
 <div class="row px-2">
-  <div class="col-md-7 row g-2 mt-0">
-    <div class="col-12 col-sm-6" *ngFor="let image of product?.images">
-      <div class="img">
-        <img [src]="image.src" />
+  <div class="col-md-7 row g-2 mt-0 justify-content-center">
+    <div
+      class="col-12 d-none d-md-block col-md-6"
+      *ngFor="let image of product?.images"
+    >
+      <div class="img-container">
+        <img [src]="image.src" class="img" />
       </div>
+    </div>
+    <div id="carousel" class="carousel slide justify-content-center d-md-none">
+      <div class="carousel-indicators">
+        <button
+          *ngFor="let image of product?.images; let i = index"
+          type="button"
+          data-bs-target="#carousel"
+          [attr.data-bs-slide-to]="i"
+          [ngClass]="{ active: i === 0 }"
+        ></button>
+      </div>
+      <div class="carousel-inner">
+        <div
+          *ngFor="let image of product?.images; let i = index"
+          class="carousel-item"
+          [ngClass]="{ active: i === 0 }"
+        >
+          <img [src]="image.src" class="d-block w-100" alt="..." />
+        </div>
+      </div>
+      <button
+        class="carousel-control-prev"
+        type="button"
+        data-bs-target="#carousel"
+        data-bs-slide="prev"
+      >
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button
+        class="carousel-control-next"
+        type="button"
+        data-bs-target="#carousel"
+        data-bs-slide="next"
+      >
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
     </div>
   </div>
   <div class="col-md-5 ps-md-4 pt-4 pt-md-0">
@@ -68,7 +109,7 @@
       <div class="col-3 ps-2">
         <button
           class="btn btn-outline-primary"
-          [disabled]="!this.cartItem"
+          [disabled]="!cartItem"
           (click)="openConfirmationModal()"
         >
           REMOVE
