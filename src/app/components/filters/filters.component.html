@@ -6,17 +6,23 @@
     <div class="fs-4"><b>Filters</b></div>
     <div class="d-flex">
       <div
-        class="text-primary text clear-filters-text me-2"
+        class="text-primary clear-filters-text me-2 d-none d-md-block"
         (click)="clearFilters()"
       >
         <b>CLEAR ALL</b>
       </div>
-      <i
-        *ngIf="showFilter"
-        class="material-icons text-primary"
-        (click)="hideFilters()"
-        >logout</i
+      <button
+        class="text clear-filters-text me-2 btn btn-sm btn-outline-primary d-md-none"
+        (click)="clearFilters()"
       >
+        <b>CLEAR ALL</b>
+      </button>
+      <button
+        class="clear-filters-text me-2 btn btn-sm btn-outline-primary d-md-none"
+        (click)="hideFilters()"
+      >
+        <b>APPLY</b>
+      </button>
     </div>
   </div>
   <div>

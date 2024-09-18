@@ -1,45 +1,54 @@
+<app-modal
+  #placeOrderConfirmationModal
+  [id]="'place-order-confirmation'"
+  title="Place Order"
+  message="Are you sure to place order ?"
+  (success)="placeOrder()"
+></app-modal>
 <div class="row align-items-center justify-content-center h-100">
-  <div class="col-9">
-    <label class="d-flex justify-content-center" for="file-upload">
+  <div class="col-lg-9 col-sm-12">
+    <label class="d-flex align-items-center flex-column" for="file-upload">
       <i style="font-size: 10rem" class="material-icons text-primary"
         >file_upload</i
       >
+      <div class="text-secondary py-1">
+        Upload CSV File (
+        <span>
+          <a href="../../../assets/sample.csv">Sample File</a>
+        </span>
+        ) to place a order.
+      </div>
+      <input
+        class="mt-1 file-input"
+        type="file"
+        id="file-upload"
+        accept=".csv"
+        (click)="setEmptyValue($event)"
+        (change)="onChange($event)"
+      />
     </label>
-    <div class="text-secondary py-1">
-      Upload CSV File (
-      <span>
-        <a href="../../../assets/sample.csv">Sample File</a>
-      </span>
-      ) to place a order.
+    <div *ngIf="parseError?.length">
+      <div *ngFor="let error of parseError" class="text-danger">
+        {{ error }}
+      </div>
     </div>
-    <div  *ngIf="parseError?.length">
-      <div *ngFor="let error of parseError" class="text-danger">{{ error }}</div>
-    </div>
-    <input
-      class="mt-1"
-      type="file"
-      id="file-upload"
-      accept=".csv"
-      (click)="setEmptyValue($event)"
-      (change)="onChange($event)"
-    />
   </div>
 </div>
 <div *ngIf="items?.length" class="row justify-content-center mt-3">
-  <div class="row col-lg-9">
-    <div class="ps-0 col-lg-8">
+  <div class="row col-lg-9 col-sm-12 justify-content-center">
+    <div class="px-0 col-lg-8 col-sm-12">
       <div class="p-0 card">
         <div class="card-header"><h4>Items</h4></div>
         <div class="card-body p-0">
           <div *ngFor="let item of items" class="row py-2">
-            <div class="col-lg-3">
+            <div class="col-4 col-sm-3">
               <img
                 class="cursor-pointer"
                 [src]="item.product.searchImage"
                 [routerLink]="['/product', item.id]"
               />
             </div>
-            <div class="col-lg-9">
+            <div class="col-8 col-sm-9">
               <h5 class="text-secondary fs-6">{{ item.product.category }}</h5>
               <h5 class="card-title fs-5">
                 {{ item.product.name }}
@@ -50,7 +59,7 @@
               </div>
               <div class="my-2">
                 <h5 class="fs-6">
-                  RS. {{ item.product.price }}
+                  ₹ {{ item.product.price }}
                   <span class="text-success">{{
                     item.product.discountDisplayLabel
                   }}</span>
@@ -61,7 +70,7 @@
         </div>
       </div>
     </div>
-    <div class="col-lg-4 pe-0">
+    <div class="ps-0 ps-lg-3 col-lg-4 col-sm-12 mt-2 mt-lg-0">
       <div class="p-0 card">
         <div class="card-header">
           <h4>Order Summary</h4>
@@ -69,26 +78,29 @@
         <div class="card-body">
           <div class="py-2">
             <div class="d-flex justify-content-between px-2">
-              <h5>Items :</h5>
-              <h5>{{ itemsTotalPrice }}</h5>
+              <h5>Price :</h5>
+              <h5>₹{{ itemsTotalPrice }}</h5>
             </div>
             <hr />
           </div>
           <div class="py-2">
             <div class="d-flex justify-content-between px-2">
               <h5>Shipping :</h5>
-              <h5>{{ deliveryCost }}</h5>
+              <h5>₹{{ deliveryCost }}</h5>
             </div>
             <hr />
           </div>
           <div class="py-2">
             <div class="d-flex justify-content-between px-2">
               <h5>Total Amount :</h5>
-              <h5>{{ totalCost }}</h5>
+              <h5>₹{{ totalCost }}</h5>
             </div>
             <hr />
           </div>
-          <button class="btn btn-primary w-100 my-2" (click)="placeOrder()">
+          <button
+            class="btn btn-primary w-100 my-2"
+            (click)="openConfirmationModal()"
+          >
             Place Order
           </button>
         </div>

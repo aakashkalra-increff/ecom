@@ -72,6 +72,6 @@ export class ProductCardComponent {
   }
   addToCart() {
     this.cartService.addItem(this.product?.skuId!);
-    this.notificationsService.addNotifications('Added to cart')
+    this.notificationsService.addNotifications('Added to cart');
   }
 }

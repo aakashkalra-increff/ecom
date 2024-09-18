@@ -12,10 +12,7 @@ export interface User {
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(
-    public router: Router,
-    private http: HttpClient,
-  ) {}
+  constructor(public router: Router, private http: HttpClient) {}
   async logIn(email: String, password: string) {
     const users = await firstValueFrom(
       this.http.get<User[]>('../../../assets/users.json')
@@ -37,5 +34,17 @@ export class AuthService {
   }
   getUserId() {
     return localStorage.getItem('userId');
+  }
+  async validateUser() {
+    if (this.isLoggedIn()) {
+      const users = await firstValueFrom(
+        this.http.get<User[]>('../../../assets/users.json')
+      );
+      const userId = localStorage.getItem('userId');
+      const user = users.find((user) => user.userId == userId);
+      if (!user) {
+        this.logOut();
+      }
+    }
   }
 }

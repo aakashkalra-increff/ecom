@@ -3,9 +3,13 @@
   message="Are you sure you want to logout?"
   (success)="logout()"
 ></app-modal>
-<nav class="navbar navbar-dark bg-primary px-4 position-fixed z-3 w-100">
+<nav class="navbar navbar-dark bg-primary px-4 position-fixed z-3 w-100 py-0">
   <div class="d-flex align-items-center justify-content-between flex-grow-1">
-    <div><a class="navbar-brand" routerLink="/">Fashion</a></div>
+    <div class="navbar-item">
+      <a routerLink="/"
+        ><img class="logo-img" src="../../../assets/New logo_white.png"/>
+      /></a>
+    </div>
     <ul class="navbar-nav ms-auto">
       <li class="nav-item d-flex">
         <span

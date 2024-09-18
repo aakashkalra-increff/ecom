@@ -1,6 +1,6 @@
-@import "../../../variables.scss";
 img{
-  height: 10rem;
+  width: 100%;
+aspect-ratio: 0.8;
 }
 hr{
   margin: 0;
@@ -10,6 +10,12 @@ hr{
 }
 label{
   padding: 2rem 3rem;
-  border: 1px dashed $primary;
+  border: 1px dashed teal;
   cursor: pointer;
+}
+::-webkit-file-upload-button {
+  display: none;
+}
+.file-input{
+  width: 100px;
 }

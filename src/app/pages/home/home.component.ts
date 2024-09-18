@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Product } from '../../product';
 import { ProductsService } from '../../services/products/products.service';
+const sortKeys = ['featured', 'price', '-price', '-rating'];
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -14,12 +15,16 @@ export class HomeComponent {
   showFilter = false;
   ngOnInit() {
     try {
-      this.filters = JSON.parse(localStorage.getItem('filters')!);
+      this.filters = JSON.parse(sessionStorage.getItem('filters')!);
     } catch (e) {
       this.filters = {};
-      this.setFiltersToLocalStorage({});
+      this.setFiltersToSessionStorage({});
     }
-    this.sort = localStorage.getItem('sort')! || 'featured';
+    const sortValue = sessionStorage.getItem('sort') || 'featured';
+    if (!sortKeys.includes(sortValue)) {
+      this.sort = 'featured';
+       sessionStorage.removeItem('sort');
+    }
     this.fetchProducts();
   }
   fetchProducts() {
@@ -29,17 +34,17 @@ export class HomeComponent {
         this.products = data;
       });
   }
-  setFiltersToLocalStorage(val: any) {
-    localStorage.setItem('filters', JSON.stringify(val));
+  setFiltersToSessionStorage(val: any) {
+    sessionStorage.setItem('filters', JSON.stringify(val));
   }
   filterChanged(val: any) {
     this.filters = val;
-    this.setFiltersToLocalStorage(this.filters);
+    this.setFiltersToSessionStorage(this.filters);
     this.fetchProducts();
   }
   changeSort(event: any) {
     this.sort = event.target.value;
-    localStorage.setItem('sort', this.sort!);
+    sessionStorage.setItem('sort', this.sort!);
     this.fetchProducts();
   }
   setShowFilter(event: boolean) {

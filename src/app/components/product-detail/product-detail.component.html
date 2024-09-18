@@ -73,8 +73,8 @@
         <b>₹</b> {{ product?.price }}
       </b>
       <span class="text-secondary align-text-bottom"
-        >MRP<del>{{ product?.mrp }}</del>
-        <span class="ms-1 text-danger ms-2">{{
+        >{{ "MRP " }}<del>{{ product?.mrp }}</del>
+        <span class="ms-1 text-success ms-2">{{
           product?.discountDisplayLabel
         }}</span>
       </span>

@@ -32,15 +32,15 @@
       </div>
       <div class="card-body p-0">
         <div class="p-3">
-          <div *ngFor="let item of items" class="row py-2">
-            <div class="col-lg-3 col-md-4 col-sm-6">
+          <div *ngFor="let item of items" class="row py-2 align-items-center">
+            <div class="col-4 col-sm-3">
               <img
                 class="cursor-pointer"
                 [src]="item.product.searchImage"
                 [routerLink]="['/product', item.id]"
               />
             </div>
-            <div class="col-lg-9 col-md-8 col-sm-6 mt-2 mt-md-0">
+            <div class="col-8 col-sm-9 mt-2 mt-md-0">
               <h5 class="text-secondary fs-6">{{ item.product.category }}</h5>
               <h5 class="card-title fs-5">
                 {{ item.product.name }}
@@ -51,7 +51,7 @@
               </div>
               <div class="my-2">
                 <h5 class="fs-6">
-                  RS. {{ item.product.price }}
+                  ₹ {{ item.product.price }}
                   <span class="text-success">{{
                     item.product.discountDisplayLabel
                   }}</span>
@@ -60,7 +60,6 @@
               <div class="my-2">
                 <select
                   class="form-select w-25 d-inline-block me-2"
-                  name="quantity"
                   [value]="item.quantity"
                   (change)="updateQuantity($event, item.id)"
                 >
@@ -90,14 +89,14 @@
         <div class="py-2">
           <div class="d-flex justify-content-between px-2">
             <h5>Price :</h5>
-            <h5>{{ itemsTotalPrice }}</h5>
+            <h5>₹{{ itemsTotalPrice }}</h5>
           </div>
           <hr />
         </div>
         <div class="py-2">
           <div class="d-flex justify-content-between px-2">
             <h5>Shipping :</h5>
-            <h5>{{ deliveryCost }}</h5>
+            <h5>₹{{ deliveryCost }}</h5>
           </div>
           <hr />
         </div>
@@ -108,7 +107,10 @@
           </div>
           <hr />
         </div>
-        <button class="btn btn-primary w-100 my-2" (click)="openPlaceOrderConfirmation()">
+        <button
+          class="btn btn-primary w-100 my-2"
+          (click)="openPlaceOrderConfirmation()"
+        >
           Place Order
         </button>
       </div>

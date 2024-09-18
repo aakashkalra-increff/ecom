@@ -12,9 +12,20 @@ export class CartService {
   constructor(private authService: AuthService) {
     this.updateLocalStorageKey();
     try {
-      this.cartItems.next(
-        JSON.parse(localStorage.getItem(this.localStorageCartKey)!) || []
+      const cartItems = JSON.parse(
+        localStorage.getItem(this.localStorageCartKey)!
       );
+      if (!cartItems) {
+        this.cartItems.next([]);
+      } else {
+        const filteredCartItems = cartItems.filter(
+          (e: CartItem) => e.id && !isNaN(e.quantity) && e.quantity >= 1
+        );
+        if (filteredCartItems.length != cartItems.length) {
+          this.saveItemsToLocalStorage(filteredCartItems);
+        }
+        this.cartItems.next(filteredCartItems);
+      }
     } catch (e) {
       this.cartItems.next([]);
       localStorage.setItem(this.localStorageCartKey, '[]');
@@ -91,7 +102,7 @@ export class CartService {
       if (userCartItems[i].id === items[j].id) {
         newItems.push({
           id: userCartItems[i].id,
-          quantity: userCartItems[i].quantity + items[j].quantity,
+          quantity: Math.min(userCartItems[i].quantity + items[j].quantity, 20),
         });
         i++;
         j++;

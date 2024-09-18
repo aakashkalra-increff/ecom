@@ -1,15 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import * as Papa from 'papaparse';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { ProductsService } from 'src/app/services/products/products.service';
+import { ModalComponent } from '../modal/modal.component';
 @Component({
   selector: 'app-order-upload',
   templateUrl: './order-upload.component.html',
   styleUrls: ['./order-upload.component.scss'],
 })
 export class OrderUploadComponent {
+  @ViewChild('placeOrderConfirmationModal') modal?: ModalComponent
   dataList?: any = null;
   constructor(
     private cartService: CartService,
@@ -125,10 +127,14 @@ export class OrderUploadComponent {
       itemsTotalPrice: this.itemsTotalPrice,
     };
     localStorage.setItem(ordersKey, JSON.stringify(orderInfo));
+    this.modal?.close()
   }
   setEmptyValue(event: any) {
     event.target.value = '';
     this.items = [];
     this.parseError = [];
+  }
+  openConfirmationModal(){
+    this.modal?.open();
   }
 }
