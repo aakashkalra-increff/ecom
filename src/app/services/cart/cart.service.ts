@@ -93,6 +93,12 @@ export class CartService {
         localStorage.getItem(this.localStorageCartKey)!
       );
     } catch (e) {}
+    const newItems = this.mergerCartItems(userCartItems, items);
+    this.cartItems.next(newItems);
+    localStorage.setItem(this.localStorageCartKey, JSON.stringify(newItems));
+    localStorage.removeItem('cart');
+  }
+  mergerCartItems(userCartItems: CartItem[], items: CartItem[]) {
     userCartItems.sort((a, b) => Number(a.id) - Number(b.id));
     items.sort((a, b) => Number(a.id) - Number(b.id));
     const newItems = [];
@@ -120,9 +126,7 @@ export class CartService {
     while (j < items.length) {
       newItems.push(items[j++]);
     }
-    this.cartItems.next(newItems);
-    localStorage.setItem(this.localStorageCartKey, JSON.stringify(newItems));
-    localStorage.removeItem('cart');
+    return newItems;
   }
   clearCart() {
     this.cartItems.next([]);
