@@ -13,6 +13,7 @@ import { ModalComponent } from '../modal/modal.component';
 import { NotificationsService } from 'src/app/services/notifications/notifications.service';
 declare var $: any;
 declare var jQuery: any;
+declare var bootstrap: any;
 @Component({
   selector: 'app-product-card',
   templateUrl: './product-card.component.html',
@@ -20,11 +21,11 @@ declare var jQuery: any;
 })
 export class ProductCardComponent {
   @ViewChild(ModalComponent) modal!: ModalComponent;
+  @ViewChild('carousel') carousel!: ElementRef;
   @Input() product?: Product;
   cartItem?: CartItem;
   showButton = false;
   showCarousel = false;
-  carousel?: any;
   constructor(
     private cartService: CartService,
     private notificationsService: NotificationsService
@@ -48,19 +49,18 @@ export class ProductCardComponent {
     this.cartService.incrementQuantity(this.product?.skuId!);
   }
   ngAfterViewInit() {
-    $('#carousel-' + this.product?.skuId).carousel('pause');
-    $('#carousel-' + this.product?.skuId).hover(
-      () => {
-        setTimeout(() => {
-          $('#carousel-' + this.product?.skuId).carousel('next', {
-            interval: 2000,
-          });
-        }, 1000);
-      },
-      () => {
-        $('#carousel-' + this.product?.skuId).carousel('pause');
-      }
-    );
+     const carouselElement = this.carousel.nativeElement;
+      const carouselInstance = new bootstrap.Carousel(carouselElement, {
+      interval: 2000,
+      pause: false
+    });
+    carouselInstance.pause()
+    carouselElement.addEventListener('mouseenter', () => {
+      carouselInstance.cycle();
+    });
+    carouselElement.addEventListener('mouseleave', () => {
+      carouselInstance.pause();
+    });
   }
   removeCartItem(id: string) {
     this.cartService.removeItem(id);

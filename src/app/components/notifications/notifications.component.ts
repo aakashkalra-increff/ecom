@@ -21,7 +21,6 @@ export class NotificationsComponent {
   }
   addNotification(index: number) {
     setTimeout(() => {
-      console.log(this.items);
       console.log($('#toast-' + index).toast('show'));
     }, 1000);
   }
