@@ -1,10 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
-import { InventoryInfo, Product } from '../../product';
+import { Product } from '../../product';
 import { ProductsService } from '../../services/products/products.service';
 import { ActivatedRoute } from '@angular/router';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { CartItem } from 'src/app/services/cart/cartItem';
 import { ModalComponent } from '../modal/modal.component';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 declare var $: any;
 @Component({
   selector: 'app-product-detail',
@@ -12,13 +13,19 @@ declare var $: any;
   styleUrls: ['./product-detail.component.scss'],
 })
 export class ProductDetailComponent {
-
-  @ViewChild(ModalComponent) modal!: ModalComponent;
+  @ViewChild('removeItemConfirmationModal')
+  removeItemConfirmationModal!: ModalComponent;
   product?: Product;
-  quantity = 1;
+
   cartItem?: CartItem;
   options = new Array(20).fill(0).map((_, i) => i + 1);
-
+  quantityForm = new FormGroup({
+    quantity: new FormControl<number>(1, [
+      Validators.min(1),
+      Validators.required,
+      Validators.pattern('^[0-9]*$'),
+    ]),
+  });
   constructor(
     private productsService: ProductsService,
     private cartService: CartService,
@@ -34,13 +41,18 @@ export class ProductDetailComponent {
       this.cartService.getItems().subscribe((res) => {
         const id = this.route.snapshot.paramMap.get('id')!;
         this.cartItem = res.find((e) => e.id === id);
-        this.quantity = Number(this.cartItem?.quantity || 1);
+        this.quantityForm.setValue({
+          quantity: Number(this.cartItem?.quantity || 1),
+        });
       });
     }, 0);
   }
 
   addItem() {
-    this.cartService.addItem(this.product?.skuId!, Number(this.quantity));
+    this.cartService.addItem(
+      this.product?.skuId!,
+      Number(this.quantityForm.value.quantity)
+    );
   }
 
   getColor(rating: number): string {
@@ -49,21 +61,17 @@ export class ProductDetailComponent {
     return 'green';
   }
 
-  updateQuantity(event: any) {
-    const val = event.target.value;
-    console.log(val, isNaN(val), Number(val));
-    if (isNaN(val) || Number(val) < 0) return;
-    this.quantity = +event.target.value;
+  updateQuantity(val: any) {
     if (this.cartItem) {
       this.cartService.updateItem({
         id: this.product?.skuId!,
-        quantity: Number(this.quantity)!,
+        quantity: Number(val)!,
       });
     }
   }
 
   openConfirmationModal() {
-    this.modal.open();
+    this.removeItemConfirmationModal.open();
   }
 
   removeCartItem() {

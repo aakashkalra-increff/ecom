@@ -4,6 +4,7 @@ import { ProductsService } from 'src/app/services/products/products.service';
 import { ModalComponent } from 'src/app/components/modal/modal.component';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
@@ -19,36 +20,43 @@ export class CartComponent {
   totalCost = 0;
   selectedItemId?: string | null = null;
   options = new Array(20).fill(0).map((_, i) => i + 1);
+  quantityForms?: any;
   constructor(
     private router: Router,
     private cartService: CartService,
     private productService: ProductsService,
     private authService: AuthService
   ) {
-    setTimeout(() => {
-      this.cartService.getItems().subscribe((res) => {
-        const ids = res.map(({ id }) => id);
-        this.productService
-          .getProductsByID(ids)
-          .subscribe((products: any[]) => {
-            this.items = products.map((product) => ({
-              product,
-              ...res.find((e) => e.id === product.skuId),
-            }));
-            this.itemsTotalPrice = this.items.reduce(
-              (acc, item) => acc + item.product.price * item.quantity,
-              0
-            );
-            this.deliveryCost = this.itemsTotalPrice < 500 ? 40 : 0;
-            this.totalCost = this.itemsTotalPrice + this.deliveryCost;
+    this.cartService.getItems().subscribe((res) => {
+      const ids = res.map(({ id }) => id);
+      this.productService.getProductsByID(ids).subscribe((products: any[]) => {
+        this.items = products.map((product) => ({
+          product,
+          ...res.find((e) => e.id === product.skuId),
+        }));
+        this.itemsTotalPrice = this.items.reduce(
+          (acc, item) => acc + item.product.price * item.quantity,
+          0
+        );
+        this.deliveryCost = this.itemsTotalPrice < 500 ? 40 : 0;
+        this.totalCost = this.itemsTotalPrice + this.deliveryCost;
+        this.quantityForms = this.items?.map((item) => {
+          return new FormGroup({
+            quantity: new FormControl<number>(item.quantity, [
+              Validators.min(1),
+              Validators.required,
+              Validators.pattern('^[0-9]*$'),
+            ]),
           });
+        });
+        console.log(res)
       });
-    }, 0);
+    });
   }
-  updateQuantity(event: any, id: string) {
+  updateQuantity(val: any, id: string) {
     this.cartService.updateItem({
       id,
-      quantity: Number(event.target.value)!,
+      quantity: val,
     });
   }
   removeCartItem() {

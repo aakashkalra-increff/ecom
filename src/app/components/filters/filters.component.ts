@@ -23,8 +23,8 @@ export class FiltersComponent {
         filters.category = filters.category.filter((c: string) =>
           this.categories?.includes(c)
         );
-        if(!filters.category.length){
-          delete filters.category
+        if (!filters.category.length) {
+          delete filters.category;
         }
         this.filterchange.emit(filters);
       }
@@ -36,8 +36,8 @@ export class FiltersComponent {
         filters.brand = filters.category.filter((b: string) =>
           this.brands?.includes(b)
         );
-        if(!filters.brand.length){
-          delete filters.brand
+        if (!filters.brand.length) {
+          delete filters.brand;
         }
         this.filterchange.emit(filters);
       }
@@ -45,7 +45,7 @@ export class FiltersComponent {
     const filters = { ...this.filters };
     if (filters.gender && !genders.includes(filters.gender)) {
       delete filters.gender;
-      this.filterchange.emit(filters)
+      this.filterchange.emit(filters);
     }
   }
   sanatizeFilters() {
@@ -68,5 +68,8 @@ export class FiltersComponent {
   }
   hideFilters() {
     this.showFilterChanged.emit(false);
+  }
+  isFitersApplied() {
+    return Object.keys(this.filters).length;
   }
 }

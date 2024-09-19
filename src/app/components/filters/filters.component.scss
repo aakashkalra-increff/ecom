@@ -1,12 +1,7 @@
 .accordion-button:not(.collapsed) {
   background-color: transparent;
 }
-.clear-filters-text {
-  font-size: 12px;
-  &:hover {
-    cursor: pointer;
-  }
-}
+
 .filters-container {
   height: 100vh;
   position: fixed;
@@ -21,11 +16,7 @@
     position: static;
   }
 }
-@media (min-width: 992px) {
-  .clear-filters-text {
-    font-size: 14px;
-  }
-}
+
 .filter-btn {
   bottom: 0px;
 }

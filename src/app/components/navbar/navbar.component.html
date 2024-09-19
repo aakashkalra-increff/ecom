@@ -3,25 +3,29 @@
   message="Are you sure you want to logout?"
   (success)="logout()"
 ></app-modal>
-<nav class="navbar navbar-dark bg-primary px-md-2 px-1  position-fixed z-3 w-100 py-0">
+<nav
+  class="navbar navbar-dark bg-primary px-md-2 px-1 position-fixed z-3 w-100 py-0"
+>
   <div class="d-flex align-items-center justify-content-between flex-grow-1">
     <div class="navbar-item">
       <a routerLink="/"
-        ><img class="logo-img" src="../../../assets/New logo_white.png"/>
+        ><img class="logo-img" src="../../../assets/New logo_white.png"
       /></a>
     </div>
-    <ul class="navbar-nav ms-auto">
+    <ul class="navbar-nav flex-row ms-auto">
       <li class="nav-item d-flex">
         <span
-          class="nav-link me-3"
+          class="nav-link me-4"
           routerLink="/order-upload"
           data-bs-toggle="tooltip"
           data-bs-title="Upload Order"
         >
           <i class="material-icons">file_upload</i>
         </span>
+      </li>
+      <li>
         <a
-          class="nav-link me-3 position-relative"
+          class="nav-link me-4 position-relative"
           routerLink="/cart"
           data-bs-toggle="tooltip"
           data-bs-title="Cart"
@@ -31,20 +35,45 @@
             *ngIf="totalCartItems"
             class="position-absolute start-100 translate-middle badge rounded-pill border-white nav-color"
           >
-            {{ totalCartItems }}
+            {{ totalCartItems > 99 ? "99+" : totalCartItems }}
             <span class="visually-hidden"></span>
           </span>
         </a>
-        <a
-          class="nav-link"
-          (click)="openLogoutConfirmationModal()"
-          *ngIf="authService.isLoggedIn(); else loginButton"
-          data-bs-toggle="tooltip"
-          data-bs-title="Logout"
+      </li>
+      <li
+        class="nav-item btn-group me-2 dropdown position-relative"
+        *ngIf="authService.isLoggedIn(); else loginButton"
+      >
+        <button
+          type="button"
+          role="button"
+          class="nav-link dropdown-toggle"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
         >
-          <i class="material-icons">logout</i>
-        </a>
-        <ng-template #loginButton>
+          <!-- data-bs-display="static" -->
+          <i class="material-icons">person</i>
+        </button>
+        <ul
+          class="dropdown-menu dropdown-menu-right"
+          style="
+            position: absolute;
+            inset: 0px auto auto 0px;
+            margin: 0px;
+            transform: translate3d(-100px, 30px, 0px);
+          "
+        >
+          <li
+            class="dropdown-item"
+            style="cursor: pointer"
+            (click)="openLogoutConfirmationModal()"
+          >
+            Logout
+          </li>
+        </ul>
+      </li>
+      <ng-template #loginButton>
+        <li class="nav-item me-2">
           <a
             class="nav-link"
             routerLink="/login"
@@ -53,8 +82,8 @@
           >
             <i class="material-icons">login</i>
           </a>
-        </ng-template>
-      </li>
+        </li>
+      </ng-template>
     </ul>
   </div>
 </nav>

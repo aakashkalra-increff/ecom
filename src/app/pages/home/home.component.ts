@@ -13,6 +13,24 @@ export class HomeComponent {
   sort?: string = 'featured';
   constructor(private productsService: ProductsService) {}
   showFilter = false;
+  sortItems: any[] = [
+    {
+      label: 'Featured',
+      value: 'featured',
+    },
+    {
+      label: 'Price : Low to High',
+      value: 'price',
+    },
+    {
+      label: 'Price : High to Low',
+      value: '-price',
+    },
+    {
+      label: 'Customer Rating',
+      value: '-rating',
+    },
+  ];
   ngOnInit() {
     try {
       this.filters = JSON.parse(sessionStorage.getItem('filters')!);
@@ -23,7 +41,7 @@ export class HomeComponent {
     const sortValue = sessionStorage.getItem('sort') || 'featured';
     if (!sortKeys.includes(sortValue)) {
       this.sort = 'featured';
-       sessionStorage.removeItem('sort');
+      sessionStorage.removeItem('sort');
     }
     this.fetchProducts();
   }
@@ -42,12 +60,15 @@ export class HomeComponent {
     this.setFiltersToSessionStorage(this.filters);
     this.fetchProducts();
   }
-  changeSort(event: any) {
-    this.sort = event.target.value;
+  changeSort(value: string) {
+    this.sort = value;
     sessionStorage.setItem('sort', this.sort!);
     this.fetchProducts();
   }
   setShowFilter(event: boolean) {
     this.showFilter = event;
+  }
+  getSortLabel() {
+    return this.sortItems.find((e) => e.value === this.sort).label;
   }
 }

@@ -32,7 +32,10 @@
       </div>
       <div class="card-body p-0">
         <div class="p-3">
-          <div *ngFor="let item of items" class="row py-2 align-items-center">
+          <div
+            *ngFor="let item of items; let i = index"
+            class="row py-2 align-items-center"
+          >
             <div class="col-4 col-sm-3">
               <img
                 class="cursor-pointer"
@@ -57,23 +60,37 @@
                   }}</span>
                 </h5>
               </div>
-              <div class="my-2">
-                <select
-                  class="form-select w-25 d-inline-block me-2"
-                  [value]="item.quantity"
-                  (change)="updateQuantity($event, item.id)"
-                >
-                  <option *ngFor="let option of options" [value]="option">
-                    {{ option }}
-                  </option>
-                </select>
+              <form
+                class="d-flex align-items-center my-3 my-2"
+                [formGroup]="quantityForms[i]"
+              >
+                <input
+                  name="quantity"
+                  type="number"
+                  min="0"
+                  class="form-control w-25 h-25"
+                  formControlName="quantity"
+                />
                 <button
-                  class="btn btn-outline-danger"
+                  type="button"
+                  class="btn btn-outline-primary btn-sm py-1 ms-1"
+                  [disabled]="
+                    !quantityForms[i].controls.quantity.valid ||
+                    item.quantity === quantityForms[i].value.quantity
+                  "
+                  (click)="
+                    updateQuantity(quantityForms[i].value.quantity, item.id)
+                  "
+                >
+                  Update
+                </button>
+                <button
+                  class="btn btn-outline-danger btn-sm ms-1"
                   (click)="openConfirmationModal(item.id)"
                 >
                   Remove
                 </button>
-              </div>
+              </form>
             </div>
           </div>
         </div>
@@ -81,7 +98,7 @@
     </div>
   </div>
   <div class="col-lg-4 pt-2 pt-lg-0">
-    <div class="p-0 card">
+    <div class="p-0 card position-sticky" style="top: 80px">
       <div class="card-header d-flex justify-content-between">
         <h4>Order Summary</h4>
       </div>

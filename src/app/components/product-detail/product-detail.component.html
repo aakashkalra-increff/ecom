@@ -1,19 +1,13 @@
 <app-modal
+  #removeItemConfirmationModal
+  [id]="'remove-item-modal'"
   title="Remove Item"
   message="Are you sure to remove item from the cart ?"
   (success)="removeCartItem()"
 ></app-modal>
-<div class="row px-2">
-  <div class="col-md-7 row g-2 mt-0 justify-content-center">
-    <div
-      class="col-12 d-none d-md-block col-md-6"
-      *ngFor="let image of product?.images"
-    >
-      <div class="img-container">
-        <img [src]="image.src" class="img" />
-      </div>
-    </div>
-    <div id="carousel" class="carousel slide justify-content-center d-md-none">
+<div class="row px-md-5 px-0 justify-content-center flex-grow-1">
+  <div class="col-lg-4 col-md-6 row g-2 mt-0 justify-content-center">
+    <div id="carousel" class="carousel slide justify-content-center h-100" data-bs-ride="carousel">
       <div class="carousel-indicators">
         <button
           *ngFor="let image of product?.images; let i = index"
@@ -23,13 +17,14 @@
           [ngClass]="{ active: i === 0 }"
         ></button>
       </div>
-      <div class="carousel-inner">
+      <div class="carousel-inner h-100 carousel-img">
         <div
           *ngFor="let image of product?.images; let i = index"
-          class="carousel-item"
+          class="carousel-item h-100"
+          data-bs-interval="2000"
           [ngClass]="{ active: i === 0 }"
         >
-          <img [src]="image.src" class="d-block w-100" alt="..." />
+          <img [src]="image.src" class="d-block w-100 h-100" alt="..." />
         </div>
       </div>
       <button
@@ -52,9 +47,9 @@
       </button>
     </div>
   </div>
-  <div class="col-md-5 ps-md-4 pt-4 pt-md-0">
-    <h2>{{ product?.name }}</h2>
-    <div class="border border-secondary-subtle d-inline-block px-2">
+  <div class="col-lg-7 col-md-6 ps-md-5 pt-4 pt-md-0">
+    <h2 class="pt-3 pb-1">{{ product?.name }}</h2>
+    <div class="border border-secondary-subtle d-inline-block mb-2">
       <span class="me-2 border-end border-secondary-subtle pe-2 d-inline-block">
         <i
           class="material-icons me-1"
@@ -72,28 +67,36 @@
       <b *ngIf="product?.discount" class="fs-4 me-2">
         <b>₹</b> {{ product?.price }}
       </b>
-      <span class="text-secondary align-text-bottom"
+      <span class="text-secondary align-text-bottom text-success"
         >{{ "MRP " }}<del>{{ product?.mrp }}</del>
-        <span class="ms-1 text-success ms-2">{{
-          product?.discountDisplayLabel
-        }}</span>
+        <span class="ms-1 ms-2">{{ product?.discountDisplayLabel }}</span>
       </span>
     </div>
-    <div class="d-flex align-items-center my-3">
+    <form class="d-flex align-items-center my-3" [formGroup]="quantityForm">
       <i class="material-icons me-3"> shopping_cart </i>
-      <select
-        class="form-select w-25 h-25"
-        [value]="quantity"
-        (change)="updateQuantity($event)"
-      >
-        <option *ngFor="let option of options" [value]="option">
-          {{ option }}
-        </option>
-      </select>
-    </div>
-    <div class="row">
+      <input
+        name="quantity"
+        type="number"
+        min="0"
+        class="form-control w-25 h-25"
+        formControlName="quantity"
+      />
       <button
-        class="btn btn-primary col-9"
+        type="button"
+        class="btn btn-outline-primary btn-sm py-1 ms-1"
+        [disabled]="
+          !quantityForm.controls.quantity.valid ||
+          cartItem.quantity === quantityForm.value.quantity
+        "
+        (click)="updateQuantity(quantityForm.value.quantity)"
+        *ngIf="cartItem"
+      >
+        Update
+      </button>
+    </form>
+    <div class="row mb-2">
+      <button
+        class="btn btn-primary col-8 ms-2"
         *ngIf="cartItem; else addToCart"
         routerLink="/cart"
       >
@@ -101,14 +104,18 @@
         GO TO CART
       </button>
       <ng-template #addToCart>
-        <button class="btn btn-primary w-75" (click)="addItem()">
+        <button
+          class="btn btn-primary w-75"
+          (click)="addItem()"
+          [disabled]="!quantityForm.controls.quantity.valid"
+        >
           <i class="material-icons">shopping_cart</i>
           ADD TO CART
         </button>
       </ng-template>
       <div class="col-3 ps-2">
         <button
-          class="btn btn-outline-primary"
+          class="btn btn-outline-danger"
           [disabled]="!cartItem"
           (click)="openConfirmationModal()"
         >
@@ -116,6 +123,7 @@
         </button>
       </div>
     </div>
+    <hr />
     <div class="my-3 lh-lg">
       100% Original Products<br />
       Pay on delivery might be available<br />
