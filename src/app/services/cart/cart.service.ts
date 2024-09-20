@@ -108,7 +108,7 @@ export class CartService {
       if (userCartItems[i].id === items[j].id) {
         newItems.push({
           id: userCartItems[i].id,
-          quantity: Math.min(userCartItems[i].quantity + items[j].quantity, 20),
+          quantity: userCartItems[i].quantity + items[j].quantity,
         });
         i++;
         j++;

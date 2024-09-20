@@ -5,32 +5,32 @@
   message="Are you sure to place order ?"
   (success)="placeOrder()"
 ></app-modal>
-<div class="row align-items-center justify-content-center h-100">
+<div class="row align-items-center justify-content-center h-100 m-2 mt-3">
   <div class="col-lg-9 col-sm-12">
     <label class="d-flex align-items-center flex-column" for="file-upload">
       <i style="font-size: 10rem" class="material-icons text-primary"
         >file_upload</i
       >
-      <div class="text-secondary py-1">
-        Upload CSV File (
-        <span>
-          <a href="../../../assets/sample.csv">Sample File</a>
-        </span>
-        ) to place a order.
-      </div>
       <input
-        class="mt-1 file-input"
-        type="file"
-        id="file-upload"
-        accept=".csv"
-        (click)="setEmptyValue($event)"
-        (change)="onChange($event)"
+      class="mt-1 file-input"
+      type="file"
+      id="file-upload"
+      accept=".csv"
+      (click)="setEmptyValue($event)"
+      (change)="onChange($event)"
       />
     </label>
-    <div *ngIf="fileParseError" class="mt-3 text-danger">
+    <div class="text-secondary py-1">
+      Upload CSV File (
+      <span>
+        <a href="../../../assets/sample.csv">Sample File</a>
+      </span>
+      ) to place a order.
+    </div>
+    <div *ngIf="fileParseError" class="mt-1 text-danger">
       {{ fileParseError }}
     </div>
-    <div *ngIf="parseError.length" class="mt-3">
+    <div *ngIf="parseError.length" class="mt-2">
       <div class="fs-3">Errors</div>
       <table class="table table-bordered">
         <thead>
@@ -51,13 +51,13 @@
     </div>
   </div>
 </div>
-<div *ngIf="items?.length" class="row justify-content-center mt-3">
+<div *ngIf="items?.length" class="row justify-content-center m-2">
   <div class="row col-lg-9 col-sm-12 justify-content-center">
     <div class="px-0 col-lg-8 col-sm-12">
       <div class="p-0 card">
         <div class="card-header"><h4>Items</h4></div>
         <div class="card-body p-0">
-          <div *ngFor="let item of items" class="row py-2">
+          <div *ngFor="let item of items" class="row p-3">
             <div class="col-4 col-sm-3">
               <img
                 class="cursor-pointer"
@@ -87,8 +87,8 @@
         </div>
       </div>
     </div>
-    <div class="ps-0 ps-lg-3 col-lg-4 col-sm-12 mt-2 mt-lg-0">
-      <div class="p-0 card">
+    <div class="ps-0 ps-lg-3 col-lg-4 col-sm-12 mt-2 pe-0 mt-lg-0">
+      <div class="p-0 card position-sticky" style="top: 60px;">
         <div class="card-header">
           <h4>Order Summary</h4>
         </div>

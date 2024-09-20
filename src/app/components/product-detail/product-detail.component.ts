@@ -6,6 +6,7 @@ import { CartService } from 'src/app/services/cart/cart.service';
 import { CartItem } from 'src/app/services/cart/cartItem';
 import { ModalComponent } from '../modal/modal.component';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { NotificationsService } from 'src/app/services/notifications/notifications.service';
 declare var $: any;
 @Component({
   selector: 'app-product-detail',
@@ -18,7 +19,7 @@ export class ProductDetailComponent {
   product?: Product;
 
   cartItem?: CartItem;
-  options = new Array(20).fill(0).map((_, i) => i + 1);
+  // options = new Array(20).fill(0).map((_, i) => i + 1);
   quantityForm = new FormGroup({
     quantity: new FormControl<number>(1, [
       Validators.min(1),
@@ -29,7 +30,8 @@ export class ProductDetailComponent {
   constructor(
     private productsService: ProductsService,
     private cartService: CartService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private notificationsService: NotificationsService
   ) {}
 
   ngOnInit() {
@@ -76,5 +78,9 @@ export class ProductDetailComponent {
 
   removeCartItem() {
     this.cartService.removeItem(this.product?.skuId!);
+    this.notificationsService.addNotifications({
+      message: this.product?.name + ' is removed from cart',
+      type: 'danger',
+    });
   }
 }

@@ -5,6 +5,7 @@ import { ModalComponent } from 'src/app/components/modal/modal.component';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { NotificationsService } from 'src/app/services/notifications/notifications.service';
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
@@ -19,13 +20,14 @@ export class CartComponent {
   deliveryCost = 40;
   totalCost = 0;
   selectedItemId?: string | null = null;
-  options = new Array(20).fill(0).map((_, i) => i + 1);
+  // options = new Array(20).fill(0).map((_, i) => i + 1);
   quantityForms?: any;
   constructor(
     private router: Router,
     private cartService: CartService,
     private productService: ProductsService,
-    private authService: AuthService
+    private authService: AuthService,
+    private notificationsService: NotificationsService
   ) {
     this.cartService.getItems().subscribe((res) => {
       const ids = res.map(({ id }) => id);
@@ -49,7 +51,7 @@ export class CartComponent {
             ]),
           });
         });
-        console.log(res)
+        console.log(res);
       });
     });
   }
@@ -61,6 +63,11 @@ export class CartComponent {
   }
   removeCartItem() {
     this.cartService.removeItem(this.selectedItemId!);
+    const item = this.items?.find((e) => e.id === this.selectedItemId);
+    this.notificationsService.addNotifications({
+      message: item.product.name + ' is removed from cart',
+      type: 'danger',
+    });
     this.selectedItemId = null;
   }
   openConfirmationModal(id: string) {

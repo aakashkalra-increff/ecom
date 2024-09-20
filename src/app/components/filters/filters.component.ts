@@ -70,6 +70,6 @@ export class FiltersComponent {
     this.showFilterChanged.emit(false);
   }
   isFitersApplied() {
-    return Object.keys(this.filters).length;
+    return Object.keys({ ...this.filters }).length;
   }
 }

@@ -3,14 +3,14 @@
     <div
       *ngFor="let notification of items; let i = index"
       [id]="['toast-' + i]"
-      class="toast bg-success text-white"
+      [class]="'toast text-white bg-' + [notification.type]"
       role="alert"
       aria-live="assertive"
       aria-atomic="true"
     >
       <div class="toast-body d-flex justify-content-between">
         <div>
-          <span>{{ notification }}</span>
+          <span>{{ notification.message }}</span>
         </div>
         <div>
           <button

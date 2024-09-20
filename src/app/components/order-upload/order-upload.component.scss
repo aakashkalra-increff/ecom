@@ -1,14 +1,14 @@
-img{
+img {
   width: 100%;
-aspect-ratio: 0.8;
+  aspect-ratio: 0.8;
 }
-hr{
+hr {
   margin: 0;
 }
-.cursor-pointer{
+.cursor-pointer {
   cursor: pointer;
 }
-label{
+label {
   padding: 2rem 3rem;
   border: 1px dashed teal;
   cursor: pointer;
@@ -16,6 +16,6 @@ label{
 ::-webkit-file-upload-button {
   display: none;
 }
-.file-input{
+.file-input {
   width: 100px;
 }

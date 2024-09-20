@@ -49,12 +49,12 @@ export class ProductCardComponent {
     this.cartService.incrementQuantity(this.product?.skuId!);
   }
   ngAfterViewInit() {
-     const carouselElement = this.carousel.nativeElement;
-      const carouselInstance = new bootstrap.Carousel(carouselElement, {
+    const carouselElement = this.carousel.nativeElement;
+    const carouselInstance = new bootstrap.Carousel(carouselElement, {
       interval: 2000,
-      pause: false
+      pause: false,
     });
-    carouselInstance.pause()
+    carouselInstance.pause();
     carouselElement.addEventListener('mouseenter', () => {
       carouselInstance.cycle();
     });
@@ -64,6 +64,10 @@ export class ProductCardComponent {
   }
   removeCartItem(id: string) {
     this.cartService.removeItem(id);
+    this.notificationsService.addNotifications({
+      message: this.product?.name + ' is removed from cart',
+      type: 'danger',
+    });
   }
   getColor(rating: number): string {
     if (rating <= 2.0) return 'red';
@@ -72,6 +76,9 @@ export class ProductCardComponent {
   }
   addToCart() {
     this.cartService.addItem(this.product?.skuId!);
-    this.notificationsService.addNotifications('Added to cart');
+    this.notificationsService.addNotifications({
+      message: this.product?.name + ' is added to cart.',
+      type: 'success',
+    });
   }
 }

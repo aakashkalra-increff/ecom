@@ -40,7 +40,8 @@ export class OrderUploadComponent {
             columnsName.length !== res.meta.fields?.length ||
             columnsName.find((c, i) => c !== res.meta.fields?.at(i));
           if (columnsCheck) {
-            this.fileParseError = 'Error - File header names are not valid.';
+            this.fileParseError =
+              'Error - File header names are not valid. First column should be id and second column should be qunatity.';
             return;
           }
           if (res.data.length > 100) {
@@ -123,6 +124,7 @@ export class OrderUploadComponent {
   setEmptyValue(event: any) {
     event.target.value = '';
     this.items = [];
+    this.fileParseError = '';
     this.parseError = [];
   }
   openConfirmationModal() {

@@ -43,7 +43,6 @@
         <button
           class="cart-buttons btn p-0 text-white"
           (click)="incrementQuantity()"
-          [disabled]="cartItem.quantity === 20"
         >
           +
         </button>
@@ -60,11 +59,11 @@
       class="card-body px-2 py-2"
       [routerLink]="['/product/', product?.skuId]"
     >
-      <div class="card-title">
+      <div class="card-title mb-1">
         <b>{{ product?.brand }}</b>
       </div>
       <div class="card-subtitle mb-1 text-truncate">
-        {{ product?.additionalInfo }}
+        {{ product?.name }}
       </div>
       <div class="card-subtitle mb-1">
         <b>₹ {{ product?.price }}</b>
