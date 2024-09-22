@@ -11,8 +11,6 @@ import { CartService } from 'src/app/services/cart/cart.service';
 import { CartItem } from 'src/app/services/cart/cartItem';
 import { ModalComponent } from '../modal/modal.component';
 import { NotificationsService } from 'src/app/services/notifications/notifications.service';
-declare var $: any;
-declare var jQuery: any;
 declare var bootstrap: any;
 @Component({
   selector: 'app-product-card',

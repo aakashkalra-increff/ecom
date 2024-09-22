@@ -20,7 +20,6 @@ export class CartComponent {
   deliveryCost = 40;
   totalCost = 0;
   selectedItemId?: string | null = null;
-  // options = new Array(20).fill(0).map((_, i) => i + 1);
   quantityForms?: any;
   constructor(
     private router: Router,
@@ -51,7 +50,6 @@ export class CartComponent {
             ]),
           });
         });
-        console.log(res);
       });
     });
   }

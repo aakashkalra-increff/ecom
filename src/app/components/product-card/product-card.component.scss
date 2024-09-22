@@ -1,6 +1,5 @@
 $carousel-transition-duration:0.1s;
 .card {
-  border-radius: 0px;
   border: none;
   background-color: white;
   cursor: pointer;
@@ -18,21 +17,16 @@ button {
 }
 .card-body {
   padding: 0px;
-  &:hover {
-    box-shadow: 0px 10px rgb(255, 255, 255);
-  }
 }
 .cart-buttons {
   display: inline-block;
   height: 25px;
   width: 25px;
   margin: 0px 10px;
-  // &:hover {
-  //   border: 1px solid white;
-  // }
 }
 .card-img {
-  border-radius: 0px;
+  // border-bottom-left-radius: 0px;
+  // border-bottom-right-radius: 0px;
   aspect-ratio: 0.8;
 }
 

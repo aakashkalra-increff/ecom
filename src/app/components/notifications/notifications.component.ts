@@ -20,12 +20,9 @@ export class NotificationsComponent {
       }
     });
   }
-  ngAfterViewInit() {
-    console.log('component rendering!!!');
-  }
   addNotification(index: number) {
     setTimeout(() => {
-      console.log($('#toast-' + index).toast('show'));
+      $('#toast-' + index).toast('show')
     }, 0);
   }
 }

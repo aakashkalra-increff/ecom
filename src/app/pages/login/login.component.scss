@@ -1,3 +1,9 @@
 .form-control{
-  border-radius: 0px;
+  // border-radius: 0px;
+}
+:host{
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

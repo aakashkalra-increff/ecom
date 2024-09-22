@@ -1,7 +1,6 @@
 @import '../../../variables.scss';
 .card{
-  border-radius: 0px;
-  border: 1px dashed black;
+  border: 1px dashed $primary;
 }
 .check-icon{
   color: $primary;

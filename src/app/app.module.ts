@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './pages/home/home.component';
-import { ProductDetailComponent } from './components/product-detail/product-detail.component';
+import { ProductDetailComponent } from './pages/product-detail/product-detail.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { CartComponent } from './pages/cart/cart.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -15,7 +15,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ModalComponent } from './components/modal/modal.component';
 import { FiltersComponent } from './components/filters/filters.component';
 import { CheckboxGroupComponent } from './components/checkbox-group/checkbox-group.component';
-import { CheckoutComponent } from './components/checkout/checkout.component';
+import { CheckoutComponent } from './pages/checkout/checkout.component';
 import { OrderUploadComponent } from './components/order-upload/order-upload.component';
 import { NotificationsComponent } from './components/notifications/notifications.component';
 @NgModule({

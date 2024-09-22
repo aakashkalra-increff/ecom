@@ -1,13 +1,13 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Product } from '../../product';
 import { ProductsService } from '../../services/products/products.service';
 import { ActivatedRoute } from '@angular/router';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { CartItem } from 'src/app/services/cart/cartItem';
-import { ModalComponent } from '../modal/modal.component';
+import { ModalComponent } from '../../components/modal/modal.component';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationsService } from 'src/app/services/notifications/notifications.service';
-declare var $: any;
+declare var bootstrap: any;
 @Component({
   selector: 'app-product-detail',
   templateUrl: './product-detail.component.html',
@@ -16,10 +16,10 @@ declare var $: any;
 export class ProductDetailComponent {
   @ViewChild('removeItemConfirmationModal')
   removeItemConfirmationModal!: ModalComponent;
+  @ViewChild('carousel') carousel!: ElementRef;
   product?: Product;
 
   cartItem?: CartItem;
-  // options = new Array(20).fill(0).map((_, i) => i + 1);
   quantityForm = new FormGroup({
     quantity: new FormControl<number>(1, [
       Validators.min(1),
@@ -39,17 +39,19 @@ export class ProductDetailComponent {
     this.productsService
       .getProductsByID([id])
       .subscribe((res) => (this.product = res[0]));
-    setTimeout(() => {
-      this.cartService.getItems().subscribe((res) => {
-        const id = this.route.snapshot.paramMap.get('id')!;
-        this.cartItem = res.find((e) => e.id === id);
-        this.quantityForm.setValue({
-          quantity: Number(this.cartItem?.quantity || 1),
-        });
+    this.cartService.getItems().subscribe((res) => {
+      const id = this.route.snapshot.paramMap.get('id')!;
+      this.cartItem = res.find((e) => e.id === id);
+      this.quantityForm.setValue({
+        quantity: Number(this.cartItem?.quantity || 1),
       });
-    }, 0);
+    });
   }
-
+  ngAfterViewInit() {
+    new bootstrap.Carousel(this.carousel.nativeElement, {
+      interval: 2000,
+    });
+  }
   addItem() {
     this.cartService.addItem(
       this.product?.skuId!,
