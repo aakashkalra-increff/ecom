@@ -29,22 +29,9 @@ export class ProductCardComponent {
     private notificationsService: NotificationsService
   ) {}
   ngOnInit() {
-    this.cartService.getItems().subscribe((res) => {
+    this.cartService.items.subscribe((res) => {
       this.cartItem = res.find((item) => item.id === this.product?.skuId);
     });
-  }
-  decrementQuantity() {
-    if (this.cartItem?.quantity === 1) {
-      this.openConfirmationModal();
-    } else {
-      this.cartService.decrementQuantity(this.product?.skuId!);
-    }
-  }
-  openConfirmationModal() {
-    this.modal.open();
-  }
-  incrementQuantity() {
-    this.cartService.incrementQuantity(this.product?.skuId!);
   }
   ngAfterViewInit() {
     const carouselElement = this.carousel.nativeElement;
@@ -60,22 +47,27 @@ export class ProductCardComponent {
       carouselInstance.pause();
     });
   }
+  decrementQuantity() {
+    if (this.cartItem?.quantity === 1) {
+      this.modal.open();
+      return;
+    }
+    this.cartService.decrementQuantity(this.product?.skuId!);
+  }
+  incrementQuantity() {
+    this.cartService.incrementQuantity(this.product?.skuId!);
+  }
   removeCartItem(id: string) {
     this.cartService.removeItem(id);
     this.notificationsService.addNotifications({
-      message: this.product?.name + ' is removed from cart',
+      message: this.product?.name + ' is removed from the cart.',
       type: 'danger',
     });
-  }
-  getColor(rating: number): string {
-    if (rating <= 2.0) return 'red';
-    if (rating <= 3.0) return 'orange ';
-    return 'green';
   }
   addToCart() {
     this.cartService.addItem(this.product?.skuId!);
     this.notificationsService.addNotifications({
-      message: this.product?.name + ' is added to cart.',
+      message: this.product?.name + ' is added to the cart.',
       type: 'success',
     });
   }

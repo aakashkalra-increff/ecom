@@ -1,6 +1,6 @@
 <app-modal
   title="Remove Item"
-  message="Do you sure to remove the item from cart?"
+  message="Are you sure you want to remove this item from cart?"
   [id]="'card-' + product?.skuId"
   (success)="removeCartItem(product?.skuId!)"
 >
@@ -28,8 +28,7 @@
       </div>
       <button
         *ngIf="cartItem"
-        style="cursor: unset"
-        class="btn btn-primary button w-100 d-flex align-items-center justify-content-center position-absolute bottom-0 left-0 text-white"
+        class="btn btn-primary button w-100 d-flex align-items-center justify-content-center position-absolute bottom-0 left-0 text-white cursor-unset"
       >
         <button
           class="cart-buttons btn p-0 text-white"
@@ -66,13 +65,13 @@
         {{ product?.name }}
       </div>
       <div class="card-subtitle mb-1">
-        <b>₹ {{ product?.price }}</b>
+        <b>₹ {{ product?.price | number }}</b>
         <span
           *ngIf="product?.discount"
           class="fw-light text-secondary ms-1 text-success"
           [style]="{ 'font-size': '12px' }"
         >
-          {{"MRP "}}<del>{{ product?.mrp }}</del>
+          <span class="mx-1">MRP</span><del>{{ product?.mrp }}</del>
           <span class="ms-1">{{ product?.discountDisplayLabel }}</span>
         </span>
       </div>
@@ -81,18 +80,20 @@
           class="me-2 border-end border-secondary-subtle pe-2 d-inline-block"
         >
           <i
-            class="material-icons me-1"
-            [style]="{ color: getColor(product?.rating!) }"
+            class="material-icons me-1 text-success"
+            [ngClass]="
+              product?.rating! <= 2.0
+                ? 'text-danger'
+                : product?.rating! <= 3.0
+                ? 'text-warning'
+                : 'text-success'
+            "
           >
             star
           </i>
-          <span
-            >{{ product?.rating | number : "1.1-1" }}</span
-          >
+          <span>{{ product?.rating | number : "1.1-1" }}</span>
         </span>
-        <span
-          >{{ product?.reviews }}</span
-        >
+        <span>{{ product?.reviews | number }} reviews</span>
       </div>
     </div>
   </div>

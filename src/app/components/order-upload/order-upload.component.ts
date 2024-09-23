@@ -105,6 +105,9 @@ export class OrderUploadComponent {
   }
   placeOrder() {
     this.router.navigate(['/checkout']);
+    if (!this.authService.isLoggedIn()) {
+      return;
+    }
     const ordersKey = 'user/' + this.authService.getUserId() + '/current_order';
     const orderInfo = {
       items:

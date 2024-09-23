@@ -1,7 +1,16 @@
-.nav-color{
+.nav-color {
   background-color: rgba(#fff, 0.55);
   color: white;
 }
-.logo-img{
+.logo-img {
   height: 50px;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+ul.logout-dropdown {
+  position: absolute;
+  inset: 0px auto auto 0px;
+  margin: 0px;
+  transform: translate3d(-100px, 45px, 0px);
 }

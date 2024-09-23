@@ -12,7 +12,8 @@ import { NotificationsService } from 'src/app/services/notifications/notificatio
   styleUrls: ['./cart.component.scss'],
 })
 export class CartComponent {
-  @ViewChild(ModalComponent) modal!: ModalComponent;
+  @ViewChild('removeItemConfirmationModal')
+  removeItemConfirmationModal!: ModalComponent;
   @ViewChild('clearCartModal') clearCartModal!: ModalComponent;
   @ViewChild('placeOrderConfirmation') placeOrderConfirmation!: ModalComponent;
   items?: any[];
@@ -21,14 +22,16 @@ export class CartComponent {
   totalCost = 0;
   selectedItemId?: string | null = null;
   quantityForms?: any;
+  loggedIn = false;
   constructor(
     private router: Router,
-    private cartService: CartService,
+    public cartService: CartService,
     private productService: ProductsService,
     private authService: AuthService,
     private notificationsService: NotificationsService
-  ) {
-    this.cartService.getItems().subscribe((res) => {
+  ) {}
+  ngOnInit() {
+    this.cartService.items.subscribe((res) => {
       const ids = res.map(({ id }) => id);
       this.productService.getProductsByID(ids).subscribe((products: any[]) => {
         this.items = products.map((product) => ({
@@ -45,6 +48,7 @@ export class CartComponent {
           return new FormGroup({
             quantity: new FormControl<number>(item.quantity, [
               Validators.min(1),
+              Validators.max(100),
               Validators.required,
               Validators.pattern('^[0-9]*$'),
             ]),
@@ -52,6 +56,7 @@ export class CartComponent {
         });
       });
     });
+    this.loggedIn = this.authService.isLoggedIn();
   }
   updateQuantity(val: any, id: string) {
     this.cartService.updateItem({
@@ -61,19 +66,16 @@ export class CartComponent {
   }
   removeCartItem() {
     this.cartService.removeItem(this.selectedItemId!);
-    const item = this.items?.find((e) => e.id === this.selectedItemId);
+    const item = this.items?.find((item) => item.id === this.selectedItemId);
     this.notificationsService.addNotifications({
-      message: item.product.name + ' is removed from cart',
+      message: item.product.name + ' is removed from the cart.',
       type: 'danger',
     });
     this.selectedItemId = null;
   }
-  openConfirmationModal(id: string) {
+  openRemoveItemConfirmationModal(id: string) {
     this.selectedItemId = id;
-    this.modal.open();
-  }
-  openClearCartConfirmationModal() {
-    this.clearCartModal.open();
+    this.removeItemConfirmationModal.open();
   }
   placeOrder() {
     const userId = this.authService.getUserId();
@@ -94,10 +96,7 @@ export class CartComponent {
     this.cartService.clearCart();
     this.router.navigate(['/checkout']);
   }
-  openPlaceOrderConfirmation() {
-    this.placeOrderConfirmation.open();
-  }
-  clearCart() {
-    this.cartService.clearCart();
+  navigateToLogin() {
+    this.router.navigate(['/login']);
   }
 }

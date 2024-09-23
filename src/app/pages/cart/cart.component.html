@@ -1,31 +1,32 @@
 <app-modal
-  [id]="'modal1'"
+  [id]="'remove-item'"
   title="Remove Item"
-  message="Are you sure to remove item from the cart ?"
+  message="Are you sure you want to remove item from the cart ?"
   (success)="removeCartItem()"
+  #removeItemConfirmationModal
 ></app-modal>
 <app-modal
   #clearCartModal
   [id]="'clear-cart-modal'"
   title="Clear Cart"
-  message="Are you sure to remove all items from the cart ?"
-  (success)="clearCart()"
+  message="Are you sure you want to remove all items from the cart ?"
+  (success)="cartService.clearCart()"
 ></app-modal>
 <app-modal
   #placeOrderConfirmation
   [id]="'place-order-confirmation'"
   title="Place Order"
-  message="Are you sure to place order ?"
+  message="Are you sure you want to place your order ?"
   (success)="placeOrder()"
 ></app-modal>
 <div class="row flex-grow-1 p-3" *ngIf="this.items?.length; else noItems">
-  <div class="col-lg-8">
+  <div class="col-lg-8 pe-md-0">
     <div class="p-0 card">
       <div class="card-header d-flex justify-content-between">
-        <h4>Your Cart</h4>
+        <div class="fs-4">Your Cart</div>
         <button
           class="btn btn-outline-danger"
-          (click)="openClearCartConfirmationModal()"
+          (click)="clearCartModal.open()"
         >
           Clear cart
         </button>
@@ -44,21 +45,21 @@
               />
             </div>
             <div class="col-8 col-sm-9 mt-2 mt-md-0">
-              <h5 class="text-secondary fs-6">{{ item.product.category }}</h5>
-              <h5 class="card-title fs-5">
+              <div class="text-secondary fs-6">{{ item.product.category }}</div>
+              <div class="card-title fs-5">
                 {{ item.product.name }}
-              </h5>
+              </div>
               <div class="my-2">
                 <span class="text-secondary">Quantity:</span>
                 {{ item.quantity }}
               </div>
               <div class="my-2">
-                <h5 class="fs-6">
-                  ₹ {{ item.product.price }}
+                <div class="fs-6">
+                  ₹ {{ item.product.price | number }}
                   <span class="text-success">{{
                     item.product.discountDisplayLabel
                   }}</span>
-                </h5>
+                </div>
               </div>
               <form
                 class="d-flex align-items-center my-3 my-2"
@@ -86,7 +87,7 @@
                 </button>
                 <button
                   class="btn btn-outline-danger btn-sm ms-1"
-                  (click)="openConfirmationModal(item.id)"
+                  (click)="openRemoveItemConfirmationModal(item.id)"
                 >
                   Remove
                 </button>
@@ -98,38 +99,47 @@
     </div>
   </div>
   <div class="col-lg-4 pt-3 pt-lg-0">
-    <div class="p-0 card position-sticky" style="top: 60px">
+    <div class="p-0 card position-sticky top-60">
       <div class="card-header d-flex justify-content-between">
-        <h4>Order Summary</h4>
+        <div class="fs-4">Order Summary</div>
       </div>
       <div class="card-body">
         <div class="py-2">
           <div class="d-flex justify-content-between px-2">
-            <h5>Price :</h5>
-            <h5>₹{{ itemsTotalPrice }}</h5>
+            <div class="fs-5">Price :</div>
+            <div class="fs-5">₹{{ itemsTotalPrice | number}}</div>
           </div>
           <hr />
         </div>
         <div class="py-2">
           <div class="d-flex justify-content-between px-2">
-            <h5>Shipping :</h5>
-            <h5>₹{{ deliveryCost }}</h5>
+            <div class="fs-5">Shipping :</div>
+              <div class="fs-5">₹{{ deliveryCost | number }}</div>
           </div>
           <hr />
         </div>
         <div class="py-2">
           <div class="d-flex justify-content-between px-2">
-            <h5>Total Amount :</h5>
-            <h5>₹{{ totalCost }}</h5>
+            <div class="fs-5">Total Amount :</div>
+            <div class="fs-5">₹{{ totalCost | number }}</div>
           </div>
           <hr />
         </div>
         <button
+          *ngIf="loggedIn; else redirectToLogin"
           class="btn btn-primary w-100 my-2"
-          (click)="openPlaceOrderConfirmation()"
+          (click)="placeOrderConfirmation.open()"
         >
           Place Order
         </button>
+        <ng-template #redirectToLogin>
+          <button
+            class="btn btn-primary w-100 my-2"
+            (click)="navigateToLogin()"
+          >
+            Login to Place Order
+          </button>
+        </ng-template>
       </div>
     </div>
   </div>
@@ -137,7 +147,7 @@
 <ng-template #noItems>
   <div class="text-center">
     <div>
-      <i class="material-icons text-primary" style="font-size: 10rem">
+      <i class="material-icons text-primary fs-10-rem">
         shopping_cart
       </i>
       <div class="text-primary fs-3">No items in the cart.</div>

@@ -4,6 +4,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { ModalComponent } from '../modal/modal.component';
 declare var $: any;
+declare var bootstrap: any;
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -17,18 +18,17 @@ export class NavbarComponent {
     private router: Router,
     private cartService: CartService
   ) {
-    this.cartService.getItems().subscribe((res) => {
+    this.cartService.items.subscribe((res) => {
       this.totalCartItems = res.reduce((acc, item) => acc + item.quantity, 0);
     });
-    $(document).ready(function(){
-      $('[data-bs-toggle="tooltip"]').tooltip();
+  }
+  ngAfterViewInit() {
+    const tooltipElements = [].slice.call(
+      document.querySelectorAll<HTMLElement>('[data-bs-toggle="tooltip"]')
+    );
+    tooltipElements.map((element) => {
+      new bootstrap.Tooltip(element);
     });
-  }
-  openLogoutConfirmationModal(){
-    this.modal?.open()
-  }
-  ngAfterViewInit(){
-    $('[data-toggle="tooltip"]').tooltip();
   }
   logout() {
     this.authService.logOut();

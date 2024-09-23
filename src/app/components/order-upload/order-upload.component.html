@@ -2,22 +2,22 @@
   #placeOrderConfirmationModal
   [id]="'place-order-confirmation'"
   title="Place Order"
-  message="Are you sure to place order ?"
+  message="Are you sure you want to place your order?"
   (success)="placeOrder()"
 ></app-modal>
 <div class="row align-items-center justify-content-center h-100 m-2 mt-3">
   <div class="col-lg-9 col-sm-12">
     <label class="d-flex align-items-center flex-column" for="file-upload">
-      <i style="font-size: 10rem" class="material-icons text-primary"
+      <i class="fs-10-rem material-icons text-primary"
         >file_upload</i
       >
       <input
-      class="mt-1 file-input"
-      type="file"
-      id="file-upload"
-      accept=".csv"
-      (click)="setEmptyValue($event)"
-      (change)="onChange($event)"
+        class="mt-1 file-input"
+        type="file"
+        id="file-upload"
+        accept=".csv"
+        (click)="setEmptyValue($event)"
+        (change)="onChange($event)"
       />
     </label>
     <div class="text-secondary py-1">
@@ -55,7 +55,7 @@
   <div class="row col-lg-9 col-sm-12 justify-content-center">
     <div class="px-0 col-lg-8 col-sm-12">
       <div class="p-0 card">
-        <div class="card-header"><h4>Items</h4></div>
+        <div class="card-header"><div class="fs-4">Items</div></div>
         <div class="card-body p-0">
           <div *ngFor="let item of items" class="row p-3">
             <div class="col-4 col-sm-3">
@@ -66,21 +66,21 @@
               />
             </div>
             <div class="col-8 col-sm-9">
-              <h5 class="text-secondary fs-6">{{ item.product.category }}</h5>
-              <h5 class="card-title fs-5">
+              <div class="text-secondary fs-6">{{ item.product.category }}</div>
+              <div class="card-title fs-5">
                 {{ item.product.name }}
-              </h5>
+              </div>
               <div class="my-2">
                 <span class="text-secondary">Quantity:</span>
                 {{ item.quantity }}
               </div>
               <div class="my-2">
-                <h5 class="fs-6">
-                  ₹ {{ item.product.price }}
+                <div class="fs-6">
+                  ₹ {{ item.product.price | number }}
                   <span class="text-success">{{
                     item.product.discountDisplayLabel
                   }}</span>
-                </h5>
+                </div>
               </div>
             </div>
           </div>
@@ -88,29 +88,29 @@
       </div>
     </div>
     <div class="ps-0 ps-lg-3 col-lg-4 col-sm-12 mt-2 pe-0 mt-lg-0">
-      <div class="p-0 card position-sticky" style="top: 60px;">
+      <div class="p-0 card position-sticky top-60">
         <div class="card-header">
-          <h4>Order Summary</h4>
+          <div class="fs-4">Order Summary</div>
         </div>
         <div class="card-body">
           <div class="py-2">
             <div class="d-flex justify-content-between px-2">
-              <h5>Price :</h5>
-              <h5>₹{{ itemsTotalPrice }}</h5>
+              <div class="fs-5">Price :</div>
+              <div class="fs-5">₹{{ itemsTotalPrice }}</div>
             </div>
             <hr />
           </div>
           <div class="py-2">
             <div class="d-flex justify-content-between px-2">
-              <h5>Shipping :</h5>
-              <h5>₹{{ deliveryCost }}</h5>
+              <div class="fs-5">Shipping :</div>
+              <div class="fs-5">₹{{ deliveryCost }}</div>
             </div>
             <hr />
           </div>
           <div class="py-2">
             <div class="d-flex justify-content-between px-2">
-              <h5>Total Amount :</h5>
-              <h5>₹{{ totalCost }}</h5>
+              <div class="fs-5">Total Amount :</div>
+              <div class="fs-5">₹{{ totalCost }}</div>
             </div>
             <hr />
           </div>

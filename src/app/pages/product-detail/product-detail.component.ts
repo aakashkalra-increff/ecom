@@ -23,6 +23,7 @@ export class ProductDetailComponent {
   quantityForm = new FormGroup({
     quantity: new FormControl<number>(1, [
       Validators.min(1),
+      Validators.max(100),
       Validators.required,
       Validators.pattern('^[0-9]*$'),
     ]),
@@ -39,9 +40,8 @@ export class ProductDetailComponent {
     this.productsService
       .getProductsByID([id])
       .subscribe((res) => (this.product = res[0]));
-    this.cartService.getItems().subscribe((res) => {
-      const id = this.route.snapshot.paramMap.get('id')!;
-      this.cartItem = res.find((e) => e.id === id);
+    this.cartService.items.subscribe((res) => {
+      this.cartItem = res.find((item) => item.id === id);
       this.quantityForm.setValue({
         quantity: Number(this.cartItem?.quantity || 1),
       });
@@ -57,31 +57,22 @@ export class ProductDetailComponent {
       this.product?.skuId!,
       Number(this.quantityForm.value.quantity)
     );
+    this.notificationsService.addNotifications({
+      message: this.product?.name + ' is added to the cart.',
+      type: 'success',
+    });
   }
-
-  getColor(rating: number): string {
-    if (rating <= 2.0) return 'red';
-    if (rating <= 3.0) return 'orange ';
-    return 'green';
-  }
-
   updateQuantity(val: any) {
-    if (this.cartItem) {
-      this.cartService.updateItem({
-        id: this.product?.skuId!,
-        quantity: Number(val)!,
-      });
-    }
+    if (!this.cartItem) return;
+    this.cartService.updateItem({
+      id: this.product?.skuId!,
+      quantity: Number(val)!,
+    });
   }
-
-  openConfirmationModal() {
-    this.removeItemConfirmationModal.open();
-  }
-
   removeCartItem() {
     this.cartService.removeItem(this.product?.skuId!);
     this.notificationsService.addNotifications({
-      message: this.product?.name + ' is removed from cart',
+      message: this.product?.name + ' is removed from the cart.',
       type: 'danger',
     });
   }

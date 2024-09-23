@@ -1,13 +1,19 @@
 <app-modal
   #removeItemConfirmationModal
-  [id]="'remove-item-modal'"
   title="Remove Item"
   message="Are you sure to remove item from the cart ?"
   (success)="removeCartItem()"
 ></app-modal>
-<div class="row px-md-5 px-0 py-2 pb-4 m-3 m-md-0 justify-content-center flex-grow-1 overflow-hidden">
+<div
+  class="row px-md-5 px-0 py-2 pb-4 m-3 m-md-0 justify-content-center flex-grow-1 overflow-hidden"
+>
   <div class="col-lg-4 col-md-6 row g-2 mt-0 justify-content-center">
-    <div id="carousel" class="carousel slide justify-content-center h-100" data-bs-ride="carousel" #carousel>
+    <div
+      id="carousel"
+      class="carousel slide justify-content-center h-100"
+      data-bs-ride="carousel"
+      #carousel
+    >
       <div class="carousel-indicators">
         <button
           *ngFor="let image of product?.images; let i = index"
@@ -17,14 +23,14 @@
           [ngClass]="{ active: i === 0 }"
         ></button>
       </div>
-      <div class="carousel-inner h-100 carousel-img">
+      <div class="carousel-inner carousel-img">
         <div
           *ngFor="let image of product?.images; let i = index"
-          class="carousel-item h-100"
+          class="carousel-item"
           data-bs-interval="2000"
           [ngClass]="{ active: i === 0 }"
         >
-          <img [src]="image.src" class="d-block w-100 h-100" alt="..." />
+          <img [src]="image.src" class="h-100 w-100" alt="..." />
         </div>
       </div>
       <button
@@ -48,32 +54,38 @@
     </div>
   </div>
   <div class="col-lg-7 col-md-6 ps-md-5 pt-4 pt-md-0">
-    <h2 class="pt-3 pb-1">{{ product?.name }}</h2>
-    <div class="border border-secondary-subtle d-inline-block mb-2">
+    <div class="pt-3 pb-1 fs-2 fw-normal">{{ product?.name }}</div>
+    <div class="d-inline-block mb-2">
       <span class="me-2 border-end border-secondary-subtle pe-2 d-inline-block">
         <i
           class="material-icons me-1"
-          [style]="{ color: getColor(product?.rating!) }"
+          [ngClass]="
+          product?.rating! <= 2.0
+            ? 'text-danger'
+            : product?.rating! <= 3.0
+            ? 'text-warning'
+            : 'text-success'
+        "
         >
           star
         </i>
         <span>{{ product?.rating | number : "1.1-1" }}</span>
       </span>
-      <span>{{ product?.reviews }} Ratings</span>
+      <span class="pe-1">{{ product?.reviews | number }} Ratings</span>
     </div>
     <hr />
-    <h6 class="text-secondary py-2">Category: {{ product?.category }}</h6>
+    <div class="fs-6 text-secondary py-2">Category: {{ product?.category }}</div>
     <div>
       <b *ngIf="product?.discount" class="fs-4 me-2">
-        <b>₹</b> {{ product?.price }}
+        ₹{{ product?.price | number }}
       </b>
       <span class="text-secondary align-text-bottom text-success"
-        >{{ "MRP " }}<del>{{ product?.mrp }}</del>
+        > <span class="mx-1">MRP</span><del>{{ product?.mrp }}</del>
         <span class="ms-1 ms-2">{{ product?.discountDisplayLabel }}</span>
       </span>
     </div>
     <form class="d-flex align-items-center my-3" [formGroup]="quantityForm">
-      <i class="material-icons me-3"> shopping_cart </i>
+      <span class="me-2 fw-bold text-secondary">Quantity :</span>
       <input
         name="quantity"
         type="number"
@@ -96,7 +108,7 @@
     </form>
     <div class="row mb-2">
       <button
-        class="btn btn-primary col-8 ms-2"
+        class="btn btn-primary btn-sm w-75"
         *ngIf="cartItem; else addToCart"
         routerLink="/cart"
       >
@@ -117,7 +129,7 @@
         <button
           class="btn btn-outline-danger"
           [disabled]="!cartItem"
-          (click)="openConfirmationModal()"
+          (click)="removeItemConfirmationModal.open()"
         >
           REMOVE
         </button>

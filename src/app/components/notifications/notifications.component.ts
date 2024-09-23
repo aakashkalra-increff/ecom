@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChildren } from '@angular/core';
 import { NotificationsService } from 'src/app/services/notifications/notifications.service';
 declare var $: any;
-export interface notificationsType{
-  message:string,
-  type:string
+declare var bootstrap: any;
+export interface notificationsType {
+  message: string;
+  type: string;
 }
 @Component({
   selector: 'app-notifications',
@@ -12,6 +13,7 @@ export interface notificationsType{
 })
 export class NotificationsComponent {
   items: notificationsType[] = [];
+  @ViewChildren('notifications') notifications?: any = [];
   constructor(private notificationsService: NotificationsService) {
     this.notificationsService.getNotifications().subscribe((res) => {
       this.items = res;
@@ -22,7 +24,9 @@ export class NotificationsComponent {
   }
   addNotification(index: number) {
     setTimeout(() => {
-      $('#toast-' + index).toast('show')
+      new bootstrap.Toast(
+        this.notifications?._results[index].nativeElement
+      ).show();
     }, 0);
   }
 }

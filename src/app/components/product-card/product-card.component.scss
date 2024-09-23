@@ -25,11 +25,15 @@ button {
   margin: 0px 10px;
 }
 .card-img {
-  // border-bottom-left-radius: 0px;
-  // border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
   aspect-ratio: 0.8;
 }
-
+@media (max-width:768px){
+  .card-img{
+    aspect-ratio: 1;
+  }
+}
 .text-truncate {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -37,4 +41,7 @@ button {
 }
 .material-icons{
   vertical-align:bottom;
+}
+.cursor-unset{
+  cursor: unset;
 }

@@ -20,25 +20,15 @@ export class FiltersComponent {
       this.categories = res;
       const filters = { ...this.filters };
       if (filters.category && Array.isArray(filters.category)) {
-        filters.category = filters.category.filter((c: string) =>
-          this.categories?.includes(c)
-        );
-        if (!filters.category.length) {
-          delete filters.category;
-        }
+        this.removeInvalidValues(filters, 'category', this.categories);
         this.filterchange.emit(filters);
       }
     });
     this.productService.getProductsBrands().subscribe((res) => {
       this.brands = res;
       const filters = { ...this.filters };
-      if (filters.brand && Array.isArray(filters.category)) {
-        filters.brand = filters.category.filter((b: string) =>
-          this.brands?.includes(b)
-        );
-        if (!filters.brand.length) {
-          delete filters.brand;
-        }
+      if (filters.brand && Array.isArray(filters.brand)) {
+        this.removeInvalidValues(filters, 'brand', this.brands);
         this.filterchange.emit(filters);
       }
     });
@@ -48,20 +38,17 @@ export class FiltersComponent {
       this.filterchange.emit(filters);
     }
   }
-  sanatizeFilters() {
-    const newFilters: any = {};
+  removeInvalidValues(obj: any, key: string, correctValues: string[]) {
+    obj[key] = obj[key].filter((e: string) => correctValues.includes(e));
+    if (!obj[key].length) {
+      delete obj[key];
+    }
   }
-  handleChange(event: Event) {
-    const name = (event.target as HTMLInputElement).name;
-    const value = (event.target as HTMLInputElement).value;
-    const newFilter = { ...this.filters, [name]: value };
-    this.filterchange.emit(newFilter);
-  }
-  handleCheckbBoxGroupChange(event: any) {
+  handleChange(event: any) {
     const name = event.name;
     const value = event.value;
-    const newFilters = { ...this.filters, [name]: value };
-    this.filterchange.emit(newFilters);
+    const newFilter = { ...this.filters, [name]: value };
+    this.filterchange.emit(newFilter);
   }
   clearFilters() {
     this.filterchange.emit({});

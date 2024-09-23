@@ -3,24 +3,32 @@
     <div class="card-header py-5">
       <div class="ps-3 py-2 d-flex align-items-center">
         <div><i class="material-icons check-icon">check_circle_outline</i></div>
-        <h1 class="ms-3 text-primary">Order Placed.</h1>
+        <div class="ms-3 fs-1 text-primary">Order Placed.</div>
       </div>
-      <div class="ps-3">
+      <div class="ps-3 d-flex">
         <button
-          class="btn btn-primary mt-3"
+          class="btn btn-primary mt-3 me-3"
           (click)="convertToCSV()"
           id="download-csv"
         >
           Download Order Details
         </button>
+        <button
+          [routerLink]="['/']"
+          routerLinkActive="router-link-active"
+          class="btn btn-primary d-flex align-items-center mt-3"
+        >
+          Keep Shopping
+          <i class="material-icons ms-2">shopping_cart</i>
+        </button>
       </div>
     </div>
   </div>
-  <div class="text-primary my-3">
+  <!-- <div class="text-primary my-3">
     <span class="fs-3">
       <button [routerLink]="['/']" routerLinkActive="router-link-active"  class="btn btn-primary d-flex align-items-center">Keep Shopping
         <i class="material-icons ms-2">shopping_cart</i>
       </button></span
     >
-  </div>
+  </div> -->
 </div>

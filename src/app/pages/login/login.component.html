@@ -1,6 +1,6 @@
 <div class="d-flex justify-content-center align-items-center min-h-100 flex-grow-1">
   <div class="w-50 card">
-    <div class="card-header"><h3 class="color-primary">Login</h3></div>
+    <div class="card-header"><div class="fs-3 color-primary">Login</div></div>
     <form class="p-3" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <label class="form-label" for="email">Username</label>
       <input
@@ -34,7 +34,7 @@
         "
         class="text-danger"
       >
-        Password should have min length of 4
+        Password should have min length of 8
       </div>
       <div *ngIf="authError" class="text-danger pt-3">{{ authError }}</div>
       <button

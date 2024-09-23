@@ -19,7 +19,7 @@ export class CartService {
         this.cartItems.next([]);
       } else {
         const filteredCartItems = cartItems.filter(
-          (e: CartItem) => e.id && !isNaN(e.quantity) && e.quantity >= 1
+          (item: CartItem) => item.id && !isNaN(item.quantity) && item.quantity >= 1
         );
         if (filteredCartItems.length != cartItems.length) {
           this.saveItemsToLocalStorage(filteredCartItems);
@@ -31,15 +31,12 @@ export class CartService {
       localStorage.setItem(this.localStorageCartKey, '[]');
     }
   }
-  getItems() {
-    return this.items;
-  }
   saveItemsToLocalStorage(data: CartItem[]) {
     localStorage.setItem(this.localStorageCartKey, JSON.stringify(data));
   }
-  updateItem(item: CartItem) {
-    const newItems = this.cartItems.value.map((e) =>
-      e.id === item.id ? item : e
+  updateItem(newItem: CartItem) {
+    const newItems = this.cartItems.value.map((item) =>
+      item.id === newItem.id ? newItem : item
     );
     this.cartItems.next(newItems);
     this.saveItemsToLocalStorage(newItems);
@@ -51,10 +48,10 @@ export class CartService {
     this.cartItems.next(newValue);
   }
   decrementQuantity(id: string) {
-    const index = this.cartItems.value.findIndex((e) => e.id === id);
+    const index = this.cartItems.value.findIndex((item) => item.id === id);
     const item = this.cartItems.value[index];
     if (item?.quantity === 1) {
-      this.cartItems.next(this.cartItems.value.filter((e) => e.id !== id));
+      this.cartItems.next(this.cartItems.value.filter((item) => item.id !== id));
     } else {
       this.cartItems.value[index] = { ...item, quantity: item.quantity - 1 };
       this.cartItems.next(this.cartItems.value);
@@ -67,7 +64,7 @@ export class CartService {
       (this.authService.isLoggedIn() ? '/' + this.authService.getUserId() : '');
   }
   incrementQuantity(id: string) {
-    const index = this.cartItems.value.findIndex((e) => e.id === id);
+    const index = this.cartItems.value.findIndex((item) => item.id === id);
     if (index > -1) {
       this.cartItems.value[index].quantity++;
     } else {

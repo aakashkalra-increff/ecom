@@ -1,8 +1,3 @@
-<app-modal
-  title="Confirm Logout"
-  message="Are you sure you want to logout?"
-  (success)="logout()"
-></app-modal>
 <nav
   class="navbar navbar-dark bg-primary px-md-2 px-1 position-fixed z-3 w-100 py-0"
 >
@@ -14,20 +9,22 @@
     </div>
     <ul class="navbar-nav flex-row ms-auto">
       <li class="nav-item d-flex">
-        <span
-          class="nav-link me-4"
+        <a
+          class="nav-link text-white me-4"
           routerLink="/order-upload"
           data-bs-toggle="tooltip"
           data-bs-title="Upload Order"
+          data-bs-placement="bottom"
         >
           <i class="material-icons">file_upload</i>
-        </span>
+        </a>
       </li>
       <li>
         <a
-          class="nav-link me-4 position-relative"
+          class="nav-link text-white me-4 position-relative"
           routerLink="/cart"
           data-bs-toggle="tooltip"
+          data-bs-placement="bottom"
           data-bs-title="Cart"
         >
           <i class="material-icons">shopping_cart</i>
@@ -51,22 +48,20 @@
           data-bs-toggle="dropdown"
           aria-expanded="false"
         >
-          <!-- data-bs-display="static" -->
-          <i class="material-icons">person</i>
+          <i
+            class="material-icons text-white"
+            data-bs-toggle="tooltip"
+            data-bs-placement="bottom"
+            data-bs-title="Profile"
+            >person</i
+          >
         </button>
         <ul
-          class="dropdown-menu dropdown-menu-right"
-          style="
-            position: absolute;
-            inset: 0px auto auto 0px;
-            margin: 0px;
-            transform: translate3d(-100px, 45px, 0px);
-          "
+          class="dropdown-menu dropdown-menu-right logout-dropdown "
         >
           <li
-            class="dropdown-item"
-            style="cursor: pointer"
-            (click)="openLogoutConfirmationModal()"
+            class="dropdown-item cursor-pointer"
+            (click)="modal?.open()"
           >
             Logout
           </li>
@@ -75,9 +70,10 @@
       <ng-template #loginButton>
         <li class="nav-item me-2">
           <a
-            class="nav-link"
+            class="nav-link text-white"
             routerLink="/login"
             data-bs-toggle="tooltip"
+            data-bs-placement="bottom"
             data-bs-title="Login"
           >
             <i class="material-icons">login</i>
@@ -87,3 +83,8 @@
     </ul>
   </div>
 </nav>
+<app-modal
+  title="Confirm Logout"
+  message="Are you sure you want to logout?"
+  (success)="logout()"
+></app-modal>

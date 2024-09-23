@@ -1,14 +1,14 @@
 <div
   class="modal fade show"
-  [attr.id]="id"
   tabindex="-1"
-  aria-labelledby="exampleModalLabel"
+  aria-labelledby="modal"
   aria-hidden="true"
+  #modal
 >
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">{{ title }}</h1>
+        <div class="modal-title fs-4">{{ title }}</div>
         <button
           type="button"
           class="btn-close"
@@ -19,10 +19,10 @@
       <div class="modal-body">{{ message }}</div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          No
+          {{ cancelBtnLabel }}
         </button>
         <button type="button" class="btn btn-primary" (click)="handleSuccess()">
-          Yes
+          {{ successBtnMLabel }}
         </button>
       </div>
     </div>

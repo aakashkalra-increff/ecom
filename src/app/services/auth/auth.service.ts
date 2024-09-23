@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { CartService } from '../cart/cart.service';
 export interface User {
   email: string;
   password: string;
@@ -12,13 +11,15 @@ export interface User {
   providedIn: 'root',
 })
 export class AuthService {
+  private usersFilePath = '../../../assets/users.json';
   constructor(public router: Router, private http: HttpClient) {}
+  getUsers() {
+    return this.http.get<User[]>(this.usersFilePath);
+  }
   async logIn(email: String, password: string) {
-    const users = await firstValueFrom(
-      this.http.get<User[]>('../../../assets/users.json')
-    );
+    const users = await firstValueFrom(this.getUsers());
     const user = users.find(
-      (e) => e.email === email && e.password === password
+      (user) => user.email === email && user.password === password
     );
     if (user) {
       localStorage.setItem('userId', user.userId);
@@ -36,15 +37,12 @@ export class AuthService {
     return localStorage.getItem('userId');
   }
   async validateUser() {
-    if (this.isLoggedIn()) {
-      const users = await firstValueFrom(
-        this.http.get<User[]>('../../../assets/users.json')
-      );
-      const userId = localStorage.getItem('userId');
-      const user = users.find((user) => user.userId == userId);
-      if (!user) {
-        this.logOut();
-      }
+    if (!this.isLoggedIn()) return;
+    const users = await firstValueFrom(this.getUsers());
+    const userId = localStorage.getItem('userId');
+    const user = users.find((user) => user.userId == userId);
+    if (!user) {
+      this.logOut();
     }
   }
 }
