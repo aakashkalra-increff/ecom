@@ -52,10 +52,16 @@ export class ProductCardComponent {
       this.modal.open();
       return;
     }
-    this.cartService.decrementQuantity(this.product?.skuId!);
+    this.cartService.updateItem({
+      id: this.product?.skuId!,
+      quantity: Number(this.cartItem?.quantity) - 1,
+    });
   }
   incrementQuantity() {
-    this.cartService.incrementQuantity(this.product?.skuId!);
+    this.cartService.updateItem({
+      id: this.product?.skuId!,
+      quantity: Number(this.cartItem?.quantity) + 1,
+    });
   }
   removeCartItem(id: string) {
     this.cartService.removeItem(id);

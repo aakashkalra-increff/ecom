@@ -2,13 +2,13 @@
   <div class="w-50 card">
     <div class="card-header"><div class="fs-3 color-primary">Login</div></div>
     <form class="p-3" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      <label class="form-label" for="email">Username</label>
+      <label class="form-label" for="email">Email</label>
       <input
         class="form-control"
         name="email"
         formControlName="email"
         type="text"
-        placeholder="Email..."
+        placeholder="Email"
       />
       <div
         *ngIf="
@@ -24,7 +24,7 @@
         class="form-control"
         formControlName="password"
         type="password"
-        placeholder="Password..."
+        placeholder="Password"
       />
       <div
         *ngIf="

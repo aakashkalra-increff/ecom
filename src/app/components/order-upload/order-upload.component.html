@@ -5,32 +5,34 @@
   message="Are you sure you want to place your order?"
   (success)="placeOrder()"
 ></app-modal>
-<div class="row align-items-center justify-content-center h-100 m-2 mt-3">
-  <div class="col-lg-9 col-sm-12">
-    <label class="d-flex align-items-center flex-column" for="file-upload">
-      <i class="fs-10-rem material-icons text-primary"
-        >file_upload</i
-      >
+<div class="row h-100 m-2 mt-3">
+  <div class="col-lg-3 col-sm-12">
+    <div class="position-sticky top-60">
+      <!-- <label class="d-flex align-items-center flex-column" for="file-upload">
+        <i class="material-icons text-primary">file_upload</i>
+      </label> -->
       <input
-        class="mt-1 file-input"
+        class="mt-1 form-control"
         type="file"
         id="file-upload"
         accept=".csv"
         (click)="setEmptyValue($event)"
         (change)="onChange($event)"
       />
-    </label>
-    <div class="text-secondary py-1">
-      Upload CSV File (
-      <span>
-        <a href="../../../assets/sample.csv">Sample File</a>
-      </span>
-      ) to place a order.
+      <div class="text-secondary py-1">
+        Upload CSV File (
+        <span>
+          <a href="../../../assets/sample.csv">Sample File</a>
+        </span>
+        ) to place a order.
+      </div>
+      <div *ngIf="fileParseError" class="mt-1 text-danger">
+        {{ fileParseError }}
+      </div>
     </div>
-    <div *ngIf="fileParseError" class="mt-1 text-danger">
-      {{ fileParseError }}
-    </div>
-    <div *ngIf="parseError.length" class="mt-2">
+  </div>
+  <div class="px-0 col-lg-6 col-sm-12">
+    <div *ngIf="parseError.length">
       <div class="fs-3">Errors</div>
       <table class="table table-bordered">
         <thead>
@@ -49,11 +51,7 @@
         </tbody>
       </table>
     </div>
-  </div>
-</div>
-<div *ngIf="items?.length" class="row justify-content-center m-2">
-  <div class="row col-lg-9 col-sm-12 justify-content-center">
-    <div class="px-0 col-lg-8 col-sm-12">
+    <div *ngIf="items?.length">
       <div class="p-0 card">
         <div class="card-header"><div class="fs-4">Items</div></div>
         <div class="card-body p-0">
@@ -87,41 +85,47 @@
         </div>
       </div>
     </div>
-    <div class="ps-0 ps-lg-3 col-lg-4 col-sm-12 mt-2 pe-0 mt-lg-0">
-      <div class="p-0 card position-sticky top-60">
-        <div class="card-header">
-          <div class="fs-4">Order Summary</div>
+  </div>
+  <div
+    *ngIf="items?.length"
+    class="ps-0 ps-lg-3 col-lg-3 col-sm-12 mt-2 pe-0 mt-lg-0"
+  >
+    <div class="p-0 card position-sticky top-60">
+      <div class="card-header">
+        <div class="fs-4">Order Summary</div>
+      </div>
+      <div class="card-body">
+        <div class="py-2">
+          <div class="d-flex justify-content-between px-2">
+            <div class="fs-5">Price :</div>
+            <div class="fs-5">₹{{ itemsTotalPrice | number }}</div>
+          </div>
+          <hr />
         </div>
-        <div class="card-body">
-          <div class="py-2">
-            <div class="d-flex justify-content-between px-2">
-              <div class="fs-5">Price :</div>
-              <div class="fs-5">₹{{ itemsTotalPrice }}</div>
-            </div>
-            <hr />
+        <div class="py-2">
+          <div class="d-flex justify-content-between px-2">
+            <div class="fs-5">Shipping :</div>
+            <div class="fs-5">₹{{ deliveryCost }}</div>
           </div>
-          <div class="py-2">
-            <div class="d-flex justify-content-between px-2">
-              <div class="fs-5">Shipping :</div>
-              <div class="fs-5">₹{{ deliveryCost }}</div>
-            </div>
-            <hr />
-          </div>
-          <div class="py-2">
-            <div class="d-flex justify-content-between px-2">
-              <div class="fs-5">Total Amount :</div>
-              <div class="fs-5">₹{{ totalCost }}</div>
-            </div>
-            <hr />
-          </div>
-          <button
-            class="btn btn-primary w-100 my-2"
-            (click)="openConfirmationModal()"
-          >
-            Place Order
-          </button>
+          <hr />
         </div>
+        <div class="py-2">
+          <div class="d-flex justify-content-between px-2">
+            <div class="fs-5">Total Amount :</div>
+            <div class="fs-5">₹{{ totalCost | number }}</div>
+          </div>
+          <hr />
+        </div>
+        <button
+          class="btn btn-primary w-100 my-2"
+          (click)="openConfirmationModal()"
+        >
+          Place Order
+        </button>
       </div>
     </div>
   </div>
+</div>
+<div *ngIf="items?.length" class="row justify-content-center m-2">
+  <div class="row col-lg-9 col-sm-12 justify-content-center"></div>
 </div>

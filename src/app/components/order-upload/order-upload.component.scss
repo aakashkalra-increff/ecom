@@ -9,13 +9,13 @@ hr {
   cursor: pointer;
 }
 label {
-  padding: 2rem 3rem;
+  padding: 1rem;
   border: 1px dashed teal;
   cursor: pointer;
 }
-::-webkit-file-upload-button {
-  display: none;
-}
+// ::-webkit-file-upload-button {
+//   display: none;
+// }
 .file-input {
   width: 100px;
 }

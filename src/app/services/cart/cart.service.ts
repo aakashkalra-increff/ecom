@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, filter, Observable, of } from 'rxjs';
 import { CartItem } from './cartItem';
 import { AuthService } from '../auth/auth.service';
+import { ProductsService } from '../products/products.service';
+import { Product } from 'src/app/product';
 @Injectable({
   providedIn: 'root',
 })
@@ -9,7 +11,10 @@ export class CartService {
   private localStorageCartKey = 'cart';
   private cartItems = new BehaviorSubject<CartItem[]>([]);
   items: Observable<CartItem[]> = this.cartItems.asObservable();
-  constructor(private authService: AuthService) {
+  constructor(
+    private authService: AuthService,
+    private productService: ProductsService
+  ) {
     this.updateLocalStorageKey();
     try {
       const cartItems = JSON.parse(
@@ -18,13 +23,20 @@ export class CartService {
       if (!cartItems) {
         this.cartItems.next([]);
       } else {
-        const filteredCartItems = cartItems.filter(
-          (item: CartItem) => item.id && !isNaN(item.quantity) && item.quantity >= 1
+        let filteredCartItems = cartItems.filter(
+          (item: CartItem) =>
+            item.id && !isNaN(item.quantity) && item.quantity >= 1
         );
-        if (filteredCartItems.length != cartItems.length) {
-          this.saveItemsToLocalStorage(filteredCartItems);
-        }
-        this.cartItems.next(filteredCartItems);
+        const ids = filteredCartItems.map((item: any) => item.id);
+        this.productService.getProductsByID(ids).subscribe((products) => {
+          filteredCartItems = filteredCartItems.filter((item: CartItem) =>
+            products.find((p: Product) => p.skuId === item.id)
+          );
+          if (filteredCartItems.length != cartItems.length) {
+            this.saveItemsToLocalStorage(filteredCartItems);
+          }
+          this.cartItems.next(filteredCartItems);
+        });
       }
     } catch (e) {
       this.cartItems.next([]);
@@ -47,31 +59,10 @@ export class CartService {
     this.saveItemsToLocalStorage(newValue);
     this.cartItems.next(newValue);
   }
-  decrementQuantity(id: string) {
-    const index = this.cartItems.value.findIndex((item) => item.id === id);
-    const item = this.cartItems.value[index];
-    if (item?.quantity === 1) {
-      this.cartItems.next(this.cartItems.value.filter((item) => item.id !== id));
-    } else {
-      this.cartItems.value[index] = { ...item, quantity: item.quantity - 1 };
-      this.cartItems.next(this.cartItems.value);
-    }
-    this.saveItemsToLocalStorage(this.cartItems.value);
-  }
   updateLocalStorageKey() {
     this.localStorageCartKey =
       'cart' +
       (this.authService.isLoggedIn() ? '/' + this.authService.getUserId() : '');
-  }
-  incrementQuantity(id: string) {
-    const index = this.cartItems.value.findIndex((item) => item.id === id);
-    if (index > -1) {
-      this.cartItems.value[index].quantity++;
-    } else {
-      this.cartItems.value.push({ id, quantity: 1 });
-    }
-    this.cartItems.next(this.cartItems.value);
-    this.saveItemsToLocalStorage(this.cartItems.value);
   }
   getItem(id: string) {
     return this.cartItems.getValue().find((item) => item.id === id);
@@ -109,7 +100,7 @@ export class CartService {
         });
         i++;
         j++;
-      } else if (userCartItems[i].id < items[j].id) {
+      } else if (Number(userCartItems[i].id) < Number(items[j].id)) {
         newItems.push(userCartItems[i]);
         i++;
       } else {
