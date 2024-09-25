@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/services/auth/auth.service';
+import { AuthService, User } from 'src/app/services/auth/auth.service';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { ModalComponent } from '../modal/modal.component';
 declare var bootstrap: any;
@@ -12,6 +12,7 @@ declare var bootstrap: any;
 export class NavbarComponent {
   @ViewChild(ModalComponent) modal?: ModalComponent;
   totalCartItems = 0;
+  user?: any;
   constructor(
     public authService: AuthService,
     private router: Router,
@@ -20,13 +21,18 @@ export class NavbarComponent {
     this.cartService.items.subscribe((res) => {
       this.totalCartItems = res.reduce((acc, item) => acc + item.quantity, 0);
     });
+    this.authService.getUser().subscribe((user) => {
+      this.user = user;
+    });
   }
   ngAfterViewInit() {
     const tooltipElements = [].slice.call(
       document.querySelectorAll('[data-bs-toggle="tooltip"]')
     );
     tooltipElements.map((element) => {
-      new bootstrap.Tooltip(element);
+      new bootstrap.Tooltip(element, {
+        trigger: 'hover',
+      });
     });
   }
   logout() {

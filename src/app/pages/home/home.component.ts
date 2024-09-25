@@ -9,7 +9,7 @@ const sortKeys = ['featured', 'price', '-price', '-rating'];
 })
 export class HomeComponent {
   products?: Product[];
-  filters = {};
+  filters: any = {};
   sort?: string = 'featured';
   showFilter = false;
   sortItems: any[] = [

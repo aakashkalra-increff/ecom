@@ -56,13 +56,11 @@
             >person</i
           >
         </button>
-        <ul
-          class="dropdown-menu dropdown-menu-right logout-dropdown "
-        >
-          <li
-            class="dropdown-item cursor-pointer"
-            (click)="modal?.open()"
-          >
+        <ul class="dropdown-menu dropdown-menu-right logout-dropdown">
+          <li class="dropdown-item disabled">
+            {{ user?.name }}
+          </li>
+          <li class="dropdown-item cursor-pointer" (click)="modal?.open()">
             Logout
           </li>
         </ul>

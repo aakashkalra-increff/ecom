@@ -26,7 +26,7 @@ export class ProductDetailComponent {
         Validators.min(1),
         Validators.max(100),
         Validators.required,
-        Validators.pattern('^[0-9]*$'),
+        Validators.pattern('^\d+$'),
       ]),
     });
   constructor(

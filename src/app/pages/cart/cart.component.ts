@@ -23,6 +23,7 @@ export class CartComponent {
   selectedItemId?: string | null = null;
   quantityForms?: any;
   loggedIn = false;
+  totalItems = 0;
   constructor(
     private router: Router,
     public cartService: CartService,
@@ -38,10 +39,14 @@ export class CartComponent {
           product,
           ...res.find((e) => e.id === product.skuId),
         }));
-        this.itemsTotalPrice = this.items.reduce(
-          (acc, item) => acc + item.product.price * item.quantity,
-          0
-        );
+        this.items.forEach((item) => {
+          this.totalItems += item.quantity;
+          this.itemsTotalPrice += item.product.price * item.quantity;
+        });
+        // this.itemsTotalPrice = this.items.reduce(
+        //   (acc, item) => acc + item.product.price * item.quantity,
+        //   0
+        // );
         this.deliveryCost = this.itemsTotalPrice < 500 ? 40 : 0;
         this.totalCost = this.itemsTotalPrice + this.deliveryCost;
         this.quantityForms = this.items?.map((item) => {

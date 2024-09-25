@@ -23,7 +23,7 @@ export class CheckoutComponent {
       ...Object.values(item),
     ]);
     const data = {
-      fields: ['Sr. No.', 'Name', 'Price', 'quantity', 'total'],
+      fields: ['Sr. No.', 'Name', 'Price', 'Quantity', 'Total'],
       data: itemsData,
     };
     const csv = Papa.unparse(data);

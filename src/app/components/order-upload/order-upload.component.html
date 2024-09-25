@@ -4,7 +4,10 @@
   message="Are you sure you want to place your order?"
   (success)="placeOrder()"
 ></app-modal>
-<div *ngIf="authService.isLoggedIn(); else loginTemplate" class="row h-100 m-2 mt-3 ps-3">
+<div
+  *ngIf="authService.isLoggedIn(); else loginTemplate"
+  class="row h-100 m-2 mt-3 ps-3"
+>
   <div class="px-0 col-md-9 col-sm-12">
     <div class="position-sticky">
       <label for="file-upload" class="my-2 fw-bold"> Upload CSV File </label>
@@ -69,7 +72,7 @@
               </div>
               <div class="my-2">
                 <div class="fs-6">
-                  ₹ {{ item.product.price | number }}
+                  ₹ {{ item.product.price * item.quantity | number }}
                   <span class="text-success">{{
                     item.product.discountDisplayLabel
                   }}</span>
@@ -120,7 +123,11 @@
 </div>
 <ng-template #loginTemplate>
   <div class="m-2 mt-5 text-center">
-    <div class="fw-bold my-2">You need to be logged in to place an order via upload.</div>
-    <button [routerLink]="['/login']" class="btn btn-primary my-2">Login</button>
+    <div class="fw-bold my-2">
+      You need to be logged in to place an order via upload.
+    </div>
+    <button [routerLink]="['/login']" class="btn btn-primary my-2">
+      Login
+    </button>
   </div>
 </ng-template>

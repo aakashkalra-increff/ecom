@@ -1,12 +1,14 @@
 [
   {
     "email": "a@a.com",
-    "password":"useruser",
-    "userId":"12345"
+    "password": "useruser",
+    "userId": "12345",
+    "name": "Aakash"
   },
   {
     "email": "b@b.com",
-    "password":"useruser",
-    "userId":"54354"
+    "password": "useruser",
+    "userId": "54354",
+    "name": "Ayush"
   }
 ]
