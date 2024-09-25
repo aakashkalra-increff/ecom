@@ -1,6 +1,8 @@
 img {
-  width: 100%;
-  aspect-ratio: 0.8;
+  object-fit: contain;
+}
+.img-container {
+  max-height: 180px
 }
 hr {
   margin: 0;
@@ -8,14 +10,6 @@ hr {
 .cursor-pointer {
   cursor: pointer;
 }
-// label {
-//   padding: 1rem;
-//   border: 1px dashed teal;
-//   cursor: pointer;
-// }
-// ::-webkit-file-upload-button {
-//   display: none;
-// }
 .file-input {
   width: 100px;
 }

@@ -23,9 +23,10 @@ export class NotificationsComponent {
   }
   addNotification(index: number) {
     setTimeout(() => {
-      new bootstrap.Toast(
-        this.notifications?._results[index].nativeElement
-      ).show();
+      new bootstrap.Toast(this.notifications?._results[index].nativeElement, {
+        autohide: true,
+        delay: 2000,
+      }).show();
     }, 0);
   }
 }

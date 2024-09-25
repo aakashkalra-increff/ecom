@@ -5,8 +5,10 @@
   justify-content: center;
 }
 img {
-  width: 100%;
-  aspect-ratio: 0.8;
+  object-fit: contain;
+}
+.img-container {
+  height: 150px
 }
 hr {
   margin: 0;
@@ -18,6 +20,7 @@ hr {
 .top-60 {
   top: 60px;
 }
-.input-w-80px{
-  width: 80px;
+.input-w-80px {
+  max-width: 80px;
 }
+

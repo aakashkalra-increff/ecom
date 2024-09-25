@@ -19,138 +19,140 @@
   message="Are you sure you want to place your order ?"
   (success)="placeOrder()"
 ></app-modal>
-<div class="row flex-grow-1 p-3" *ngIf="this.items?.length; else noItems">
-  <div class="col-lg-8 pe-md-0">
-    <div class="p-0 card">
-      <div class="card-header d-flex justify-content-between">
-        <div class="fs-4">Your Cart ({{ totalItems }})</div>
-        <button
-          class="btn btn-outline-danger btn-sm"
-          (click)="clearCartModal.open()"
-        >
-          Clear cart
-        </button>
-      </div>
-      <div class="card-body p-0">
-        <div class="p-3">
-          <div
-            *ngFor="let item of items; let i = index"
-            class="row py-2 align-items-center"
+<div class="row flex-grow-1 p-3 justify-content-center" *ngIf="this.items?.length; else noItems">
+  <div class="row col-lg-10">
+    <div class="col-lg-8 pe-lg-0">
+      <div class="p-0 card">
+        <div class="card-header d-flex justify-content-between">
+          <div class="fs-4">Your Cart ({{ totalItems }})</div>
+          <button
+            class="btn btn-outline-danger btn-sm"
+            (click)="clearCartModal.open()"
           >
-            <div class="col-3 col-sm-3">
-              <img
-                class="cursor-pointer"
-                [src]="item.product.searchImage"
-                [routerLink]="['/product', item.id]"
-              />
-            </div>
-            <div class="col-9 col-sm-9 mt-2 mt-md-0">
-              <div class="text-secondary fs-6">{{ item.product.category }}</div>
-              <div class="card-title fs-5">
-                {{ item.product.name }}
+            Clear cart
+          </button>
+        </div>
+        <div class="card-body p-0">
+          <div class="p-3">
+            <div
+              *ngFor="let item of items; let i = index"
+              class="row py-2 align-items-start"
+            >
+              <div class="col-3 p-0 img-container">
+                <img
+                  class="cursor-pointer cart-img w-100 h-100"
+                  [src]="item.product.searchImage"
+                  [routerLink]="['/product', item.id]"
+                />
               </div>
-              <div class="my-2">
-                <span class="text-secondary">Quantity:</span>
-                {{ item.quantity }}
-              </div>
-              <div class="my-2">
-                <div class="fs-6">
-                  ₹ {{ (item.product.price * item.quantity) | number }}
-                  <span class="text-success">{{
-                    item.product.discountDisplayLabel
-                  }}</span>
+              <div class="col-9 mt-2 mt-md-0">
+                <div class="text-secondary fs-6">{{ item.product.category }}</div>
+                <div class="card-title fs-6 text-truncate mb-0">
+                  {{ item.product.name }}
                 </div>
-              </div>
-              <form class="my-2" [formGroup]="quantityForms[i]">
-                <div class="d-flex align-items-center">
-                  <input
-                    name="quantity"
-                    type="number"
-                    min="0"
-                    class="form-control h-25 input-w-80px"
-                    formControlName="quantity"
-                  />
-                  <button
-                    type="button"
-                    class="btn btn-outline-primary btn-sm py-1 ms-1"
-                    [disabled]="
-                      !quantityForms[i].controls.quantity.valid ||
-                      item.quantity === quantityForms[i].value.quantity
-                    "
-                    (click)="
-                      updateQuantity(quantityForms[i].value.quantity, item.id)
-                    "
+                <div class="my-0 my-md-2">
+                  <span class="text-secondary">Quantity:</span>
+                  {{ item.quantity }}
+                </div>
+                <div class="my-0 my-md-2">
+                  <div class="fs-6">
+                    ₹ {{ (item.product.price * item.quantity) | number }}
+                    <span class="text-success">{{
+                      item.product.discountDisplayLabel
+                    }}</span>
+                  </div>
+                </div>
+                <form class="my-0 my-md-2" [formGroup]="quantityForms[i]">
+                  <div class="d-flex align-items-center">
+                    <input
+                      name="quantity"
+                      type="number"
+                      min="0"
+                      class="form-control h-25 input-w-80px"
+                      formControlName="quantity"
+                    />
+                    <button
+                      type="button"
+                      class="btn btn-outline-primary btn-sm py-1 ms-1"
+                      [disabled]="
+                        !quantityForms[i].controls.quantity.valid ||
+                        item.quantity === quantityForms[i].value.quantity
+                      "
+                      (click)="
+                        updateQuantity(quantityForms[i].value.quantity, item.id)
+                      "
+                    >
+                      Update
+                    </button>
+                    <button
+                      class="btn btn-outline-danger btn-sm ms-1"
+                      (click)="openRemoveItemConfirmationModal(item.id)"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                  <div
+                    *ngIf="quantityForms[i].value.quantity > 100"
+                    class="text-danger mt-1"
                   >
-                    Update
-                  </button>
-                  <button
-                    class="btn btn-outline-danger btn-sm ms-1"
-                    (click)="openRemoveItemConfirmationModal(item.id)"
+                    Can't add more than 100 items.
+                  </div>
+                  <div
+                    *ngIf="quantityForms[i].value.quantity <= 0"
+                    class="text-danger mt-1"
                   >
-                    Remove
-                  </button>
-                </div>
-                <div
-                  *ngIf="quantityForms[i].value.quantity > 100"
-                  class="text-danger mt-1"
-                >
-                  Can't add more than 100 items.
-                </div>
-                <div
-                  *ngIf="quantityForms[i].value.quantity <= 0"
-                  class="text-danger mt-1"
-                >
-                  Quantity count should be positive integer.
-                </div>
-              </form>
+                    Quantity count should be positive integer.
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="col-lg-4 pt-3 pt-lg-0">
-    <div class="p-0 card position-sticky top-60">
-      <div class="card-header d-flex justify-content-between">
-        <div class="fs-4">Order Summary</div>
-      </div>
-      <div class="card-body">
-        <div class="py-2">
-          <div class="d-flex justify-content-between px-2">
-            <div class="fs-5">Price :</div>
-            <div class="fs-5">₹{{ itemsTotalPrice | number }}</div>
-          </div>
-          <hr />
+    <div class="col-lg-4 pt-3 pt-lg-0">
+      <div class="p-0 card position-sticky top-60">
+        <div class="card-header d-flex justify-content-between">
+          <div class="fs-4">Order Summary</div>
         </div>
-        <div class="py-2">
-          <div class="d-flex justify-content-between px-2">
-            <div class="fs-5">Shipping :</div>
-            <div class="fs-5">₹{{ deliveryCost | number }}</div>
+        <div class="card-body">
+          <div class="py-2">
+            <div class="d-flex justify-content-between px-2">
+              <div class="fs-5">Price :</div>
+              <div class="fs-5">₹{{ itemsTotalPrice | number }}</div>
+            </div>
+            <hr />
           </div>
-          <hr />
-        </div>
-        <div class="py-2">
-          <div class="d-flex justify-content-between px-2">
-            <div class="fs-5">Total Amount :</div>
-            <div class="fs-5">₹{{ totalCost | number }}</div>
+          <div class="py-2">
+            <div class="d-flex justify-content-between px-2">
+              <div class="fs-5">Shipping :</div>
+              <div class="fs-5">₹{{ deliveryCost | number }}</div>
+            </div>
+            <hr />
           </div>
-          <hr />
-        </div>
-        <button
-          *ngIf="loggedIn; else redirectToLogin"
-          class="btn btn-primary w-100 my-2"
-          (click)="placeOrderConfirmation.open()"
-        >
-          Place Order
-        </button>
-        <ng-template #redirectToLogin>
+          <div class="py-2">
+            <div class="d-flex justify-content-between px-2">
+              <div class="fs-5">Total Amount :</div>
+              <div class="fs-5">₹{{ totalCost | number }}</div>
+            </div>
+            <hr />
+          </div>
           <button
+            *ngIf="loggedIn; else redirectToLogin"
             class="btn btn-primary w-100 my-2"
-            (click)="navigateToLogin()"
+            (click)="placeOrderConfirmation.open()"
           >
-            Login to Place Order
+            Place Order
           </button>
-        </ng-template>
+          <ng-template #redirectToLogin>
+            <button
+              class="btn btn-primary w-100 my-2"
+              (click)="navigateToLogin()"
+            >
+              Login to Place Order
+            </button>
+          </ng-template>
+        </div>
       </div>
     </div>
   </div>

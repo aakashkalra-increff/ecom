@@ -118,7 +118,7 @@
     </form>
     <div class="d-flex pb-3">
       <button
-        class="btn btn-primary btn-sm w-75 d-flex align-items-center justify-content-center"
+        class="btn btn-primary btn-sm w-50 d-flex align-items-center justify-content-center"
         *ngIf="cartItem; else addToCart"
         routerLink="/cart"
       >
@@ -127,7 +127,7 @@
       </button>
       <ng-template #addToCart>
         <button
-          class="btn btn-primary btn-sm w-75"
+          class="btn btn-primary btn-sm w-50"
           (click)="addItem()"
           [disabled]="!quantityForm.controls.quantity.valid"
         >

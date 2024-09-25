@@ -1,4 +1,4 @@
-$carousel-transition-duration:0.1s;
+$carousel-transition-duration: 0.1s;
 .card {
   border: none;
   background-color: white;
@@ -9,7 +9,7 @@ $carousel-transition-duration:0.1s;
     transition: all 100ms;
   }
 }
-img{
+img {
   height: 100%;
 }
 button {
@@ -20,8 +20,7 @@ button {
 }
 .cart-buttons {
   display: inline-block;
-  height: 25px;
-  width: 25px;
+  height: 20px;
   margin: 0px 10px;
 }
 .card-img {
@@ -33,9 +32,13 @@ button {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.material-icons{
-  vertical-align:bottom;
-}
-.cursor-unset{
+
+.cursor-unset {
   cursor: unset;
+}
+.fs-1rem {
+  font-size: 20px !important;
+}
+.material-icons {
+  vertical-align: top;
 }
