@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { notificationsType } from 'src/app/components/notifications/notifications.component';
-declare var $: any;
-
 @Injectable({
   providedIn: 'root',
 })

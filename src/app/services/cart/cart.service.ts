@@ -25,7 +25,7 @@ export class CartService {
       } else {
         let filteredCartItems = cartItems.filter(
           (item: CartItem) =>
-            item.id && !isNaN(item.quantity) && item.quantity >= 1
+            item.id && !isNaN(item.quantity) && item.quantity >= 1 && item.quantity <= 100
         );
         const ids = filteredCartItems.map((item: any) => item.id);
         this.productService.getProductsByID(ids).subscribe((products) => {

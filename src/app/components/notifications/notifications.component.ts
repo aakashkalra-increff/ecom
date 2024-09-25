@@ -1,6 +1,5 @@
 import { Component, ElementRef, ViewChildren } from '@angular/core';
 import { NotificationsService } from 'src/app/services/notifications/notifications.service';
-declare var $: any;
 declare var bootstrap: any;
 export interface notificationsType {
   message: string;

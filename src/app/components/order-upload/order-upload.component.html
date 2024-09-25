@@ -1,18 +1,15 @@
 <app-modal
   #placeOrderConfirmationModal
-  [id]="'place-order-confirmation'"
   title="Place Order"
   message="Are you sure you want to place your order?"
   (success)="placeOrder()"
 ></app-modal>
-<div class="row h-100 m-2 mt-3">
-  <div class="col-lg-3 col-sm-12">
-    <div class="position-sticky top-60">
-      <!-- <label class="d-flex align-items-center flex-column" for="file-upload">
-        <i class="material-icons text-primary">file_upload</i>
-      </label> -->
+<div *ngIf="authService.isLoggedIn(); else loginTemplate" class="row h-100 m-2 mt-3 ps-3">
+  <div class="px-0 col-md-9 col-sm-12">
+    <div class="position-sticky">
+      <label for="file-upload" class="my-2 fw-bold"> Upload CSV File </label>
       <input
-        class="mt-1 form-control"
+        class="my-2 form-control"
         type="file"
         id="file-upload"
         accept=".csv"
@@ -20,20 +17,18 @@
         (change)="onChange($event)"
       />
       <div class="text-secondary py-1">
-        Upload CSV File (
+        Upload CSV File to place a order.(
         <span>
           <a href="../../../assets/sample.csv">Sample File</a>
         </span>
-        ) to place a order.
+        )
       </div>
       <div *ngIf="fileParseError" class="mt-1 text-danger">
         {{ fileParseError }}
       </div>
     </div>
-  </div>
-  <div class="px-0 col-lg-6 col-sm-12">
     <div *ngIf="parseError.length">
-      <div class="fs-3">Errors</div>
+      <div class="fs-4 my-2">Errors</div>
       <table class="table table-bordered">
         <thead>
           <tr>
@@ -88,7 +83,7 @@
   </div>
   <div
     *ngIf="items?.length"
-    class="ps-0 ps-lg-3 col-lg-3 col-sm-12 mt-2 pe-0 mt-lg-0"
+    class="ps-0 ps-sm-3 col-md-3 col-sm-12 mt-2 pe-0 mt-sm-0"
   >
     <div class="p-0 card position-sticky top-60">
       <div class="card-header">
@@ -116,16 +111,16 @@
           </div>
           <hr />
         </div>
-        <button
-          class="btn btn-primary w-100 my-2"
-          (click)="openConfirmationModal()"
-        >
+        <button class="btn btn-primary w-100 my-2" (click)="modal?.open()">
           Place Order
         </button>
       </div>
     </div>
   </div>
 </div>
-<div *ngIf="items?.length" class="row justify-content-center m-2">
-  <div class="row col-lg-9 col-sm-12 justify-content-center"></div>
-</div>
+<ng-template #loginTemplate>
+  <div class="m-2 mt-5 text-center">
+    <div class="fw-bold my-2">You need to be logged in to place an order via upload.</div>
+    <button [routerLink]="['/login']" class="btn btn-primary my-2">Login</button>
+  </div>
+</ng-template>

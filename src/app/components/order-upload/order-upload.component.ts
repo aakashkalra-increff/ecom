@@ -14,10 +14,9 @@ export class OrderUploadComponent {
   @ViewChild('placeOrderConfirmationModal') modal?: ModalComponent;
   dataList?: any = null;
   constructor(
-    private cartService: CartService,
     private productService: ProductsService,
     private router: Router,
-    private authService: AuthService
+    public authService: AuthService
   ) {}
   items?: any;
   itemsTotalPrice = 0;
@@ -80,10 +79,7 @@ export class OrderUploadComponent {
             if (error.length) return;
             const obj = {} as { [key: string]: any };
             res.data.forEach((e: any) => {
-              const id: string = e.id;
-              const quantity: number = Number(e.quantity);
-              if (!obj[id]) obj[id] = quantity;
-              else obj[id] += quantity;
+              obj[e.id] = obj[e.id] ? obj[e.id] + e.quantity : e.quantity;
             });
             const products = p.map((product) => ({
               product,
@@ -129,8 +125,5 @@ export class OrderUploadComponent {
     this.items = [];
     this.fileParseError = '';
     this.parseError = [];
-  }
-  openConfirmationModal() {
-    this.modal?.open();
   }
 }

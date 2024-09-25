@@ -6,7 +6,6 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-declare var $: any;
 declare var bootstrap: any;
 @Component({
   selector: 'app-modal',

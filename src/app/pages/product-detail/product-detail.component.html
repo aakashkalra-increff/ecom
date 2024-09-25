@@ -23,10 +23,10 @@
           [ngClass]="{ active: i === 0 }"
         ></button>
       </div>
-      <div class="carousel-inner carousel-img">
+      <div class="carousel-inner carousel-img h-100">
         <div
           *ngFor="let image of product?.images; let i = index"
-          class="carousel-item"
+          class="carousel-item h-100"
           data-bs-interval="2000"
           [ngClass]="{ active: i === 0 }"
         >
@@ -60,64 +60,74 @@
         <i
           class="material-icons me-1"
           [ngClass]="
-          product?.rating! <= 2.0
-            ? 'text-danger'
-            : product?.rating! <= 3.0
-            ? 'text-warning'
-            : 'text-success'
-        "
+            product?.rating! <= 2.0
+              ? 'text-danger'
+              : product?.rating! <= 3.0
+              ? 'text-warning'
+              : 'text-success'
+          "
         >
           star
         </i>
         <span>{{ product?.rating | number : "1.1-1" }}</span>
       </span>
-      <span class="pe-1">{{ product?.reviews | number }} Ratings</span>
+      <span class="pe-1">{{ product?.reviews | number }} Reviews</span>
     </div>
     <hr />
-    <div class="fs-6 text-secondary py-2">Category: {{ product?.category }}</div>
+    <div class="fs-6 text-secondary py-2">
+      Category: {{ product?.category }}
+    </div>
     <div>
       <b *ngIf="product?.discount" class="fs-4 me-2">
         ₹{{ product?.price | number }}
       </b>
-      <span class="text-secondary align-text-bottom text-success"
-        > <span class="mx-1">MRP</span><del>{{ product?.mrp }}</del>
+      <span class="text-secondary align-text-bottom text-success">
+        <span class="mx-1">MRP</span><del>{{ product?.mrp }}</del>
         <span class="ms-1 ms-2">{{ product?.discountDisplayLabel }}</span>
       </span>
     </div>
-    <form class="d-flex align-items-center my-3" [formGroup]="quantityForm">
-      <span class="me-2 fw-bold text-secondary">Quantity :</span>
-      <input
-        name="quantity"
-        type="number"
-        min="0"
-        class="form-control w-25 h-25"
-        formControlName="quantity"
-      />
-      <button
-        type="button"
-        class="btn btn-outline-primary btn-sm py-1 ms-1"
-        [disabled]="
-          !quantityForm.controls.quantity.valid ||
-          cartItem.quantity === quantityForm.value.quantity
-        "
-        (click)="updateQuantity(quantityForm.value.quantity)"
-        *ngIf="cartItem"
-      >
-        Update
-      </button>
+    <form class="my-3" [formGroup]="quantityForm">
+      <div class="d-flex align-items-center">
+        <span class="me-2 fw-bold text-secondary">Quantity :</span>
+        <input
+          name="quantity"
+          type="number"
+          min="0"
+          class="form-control w-25 h-25"
+          formControlName="quantity"
+        />
+        <button
+          type="button"
+          class="btn btn-outline-primary btn-sm py-1 ms-1"
+          [disabled]="
+            !quantityForm.controls.quantity.valid ||
+            cartItem.quantity === quantityForm.value.quantity
+          "
+          (click)="updateQuantity(quantityForm.value.quantity)"
+          *ngIf="cartItem"
+        >
+          Update
+        </button>
+      </div>
+      <div *ngIf="quantityForm.value.quantity > 100" class="text-danger mt-1">
+        Can't addmore than 100 items.
+      </div>
+      <div *ngIf="quantityForm.value.quantity <= 0" class="text-danger mt-1">
+        Quantity count should be positive.
+      </div>
     </form>
-    <div class="row mb-2">
+    <div class="d-flex pb-3">
       <button
-        class="btn btn-primary btn-sm w-75"
+        class="btn btn-primary btn-sm w-75 d-flex align-items-center justify-content-center"
         *ngIf="cartItem; else addToCart"
         routerLink="/cart"
       >
-        <i class="material-icons"> shopping_cart </i>
+        <i class="material-icons text-sm"> shopping_cart </i>
         GO TO CART
       </button>
       <ng-template #addToCart>
         <button
-          class="btn btn-primary w-75"
+          class="btn btn-primary btn-sm w-75"
           (click)="addItem()"
           [disabled]="!quantityForm.controls.quantity.valid"
         >

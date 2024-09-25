@@ -16,33 +16,30 @@ export class FiltersComponent {
   brands: string[] = [];
   constructor(private productService: ProductsService) {}
   ngOnInit() {
+    const tempFilters = { ...this.filters };
     this.productService.getProductsCategories().subscribe((res) => {
       this.categories = res;
-      const filters = { ...this.filters };
-      if (filters.category && Array.isArray(filters.category)) {
-        this.removeInvalidValues(filters, 'category', this.categories);
-        this.filterchange.emit(filters);
-      }
+      this.removeInvalidFilterValues(tempFilters, 'category', this.categories);
     });
     this.productService.getProductsBrands().subscribe((res) => {
       this.brands = res;
-      const filters = { ...this.filters };
-      if (filters.brand && Array.isArray(filters.brand)) {
-        this.removeInvalidValues(filters, 'brand', this.brands);
-        this.filterchange.emit(filters);
-      }
+      this.removeInvalidFilterValues(tempFilters, 'brand', this.brands);
+      this.filterchange.emit(tempFilters);
     });
-    const filters = { ...this.filters };
-    if (filters.gender && !genders.includes(filters.gender)) {
-      delete filters.gender;
-      this.filterchange.emit(filters);
+    if (tempFilters.gender && !genders.includes(tempFilters.gender)) {
+      delete tempFilters.gender;
+      this.filterchange.emit(tempFilters);
     }
   }
-  removeInvalidValues(obj: any, key: string, correctValues: string[]) {
-    obj[key] = obj[key].filter((e: string) => correctValues.includes(e));
-    if (!obj[key].length) {
-      delete obj[key];
+  removeInvalidFilterValues(filters: any, key: string, correctValues: string[]) {
+    if (!filters[key] || !Array.isArray(filters[key])) return;
+    filters[key] = filters[key].filter((e: string) =>
+      correctValues.includes(e)
+    );
+    if (!filters[key].length) {
+      delete filters[key];
     }
+    this.filterchange.emit(filters);
   }
   handleChange(event: any) {
     const name = event.name;

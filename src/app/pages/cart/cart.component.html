@@ -24,10 +24,7 @@
     <div class="p-0 card">
       <div class="card-header d-flex justify-content-between">
         <div class="fs-4">Your Cart</div>
-        <button
-          class="btn btn-outline-danger"
-          (click)="clearCartModal.open()"
-        >
+        <button class="btn btn-outline-danger btn-sm" (click)="clearCartModal.open()">
           Clear cart
         </button>
       </div>
@@ -37,14 +34,14 @@
             *ngFor="let item of items; let i = index"
             class="row py-2 align-items-center"
           >
-            <div class="col-4 col-sm-3">
+            <div class="col-3 col-sm-3">
               <img
                 class="cursor-pointer"
                 [src]="item.product.searchImage"
                 [routerLink]="['/product', item.id]"
               />
             </div>
-            <div class="col-8 col-sm-9 mt-2 mt-md-0">
+            <div class="col-9 col-sm-9 mt-2 mt-md-0">
               <div class="text-secondary fs-6">{{ item.product.category }}</div>
               <div class="card-title fs-5">
                 {{ item.product.name }}
@@ -62,35 +59,43 @@
                 </div>
               </div>
               <form
-                class="d-flex align-items-center my-3 my-2"
+                class="my-2"
                 [formGroup]="quantityForms[i]"
               >
-                <input
-                  name="quantity"
-                  type="number"
-                  min="0"
-                  class="form-control w-25 h-25"
-                  formControlName="quantity"
-                />
-                <button
-                  type="button"
-                  class="btn btn-outline-primary btn-sm py-1 ms-1"
-                  [disabled]="
-                    !quantityForms[i].controls.quantity.valid ||
-                    item.quantity === quantityForms[i].value.quantity
-                  "
-                  (click)="
-                    updateQuantity(quantityForms[i].value.quantity, item.id)
-                  "
-                >
-                  Update
-                </button>
-                <button
-                  class="btn btn-outline-danger btn-sm ms-1"
-                  (click)="openRemoveItemConfirmationModal(item.id)"
-                >
-                  Remove
-                </button>
+                <div class="d-flex align-items-center">
+                  <input
+                    name="quantity"
+                    type="number"
+                    min="0"
+                    class="form-control w-25 h-25"
+                    formControlName="quantity"
+                  />
+                  <button
+                    type="button"
+                    class="btn btn-outline-primary btn-sm py-1 ms-1"
+                    [disabled]="
+                      !quantityForms[i].controls.quantity.valid ||
+                      item.quantity === quantityForms[i].value.quantity
+                    "
+                    (click)="
+                      updateQuantity(quantityForms[i].value.quantity, item.id)
+                    "
+                  >
+                    Update
+                  </button>
+                  <button
+                    class="btn btn-outline-danger btn-sm ms-1"
+                    (click)="openRemoveItemConfirmationModal(item.id)"
+                  >
+                    Remove
+                  </button>
+                </div>
+                <div *ngIf="quantityForms[i].value.quantity > 100" class="text-danger mt-1">
+                   Can't add more than 100 items.
+                </div>
+                <div *ngIf="quantityForms[i].value.quantity <= 0" class="text-danger mt-1">
+                  Quantity count should be positive.
+                </div>
               </form>
             </div>
           </div>
@@ -107,14 +112,14 @@
         <div class="py-2">
           <div class="d-flex justify-content-between px-2">
             <div class="fs-5">Price :</div>
-            <div class="fs-5">₹{{ itemsTotalPrice | number}}</div>
+            <div class="fs-5">₹{{ itemsTotalPrice | number }}</div>
           </div>
           <hr />
         </div>
         <div class="py-2">
           <div class="d-flex justify-content-between px-2">
             <div class="fs-5">Shipping :</div>
-              <div class="fs-5">₹{{ deliveryCost | number }}</div>
+            <div class="fs-5">₹{{ deliveryCost | number }}</div>
           </div>
           <hr />
         </div>
@@ -147,9 +152,7 @@
 <ng-template #noItems>
   <div class="text-center">
     <div>
-      <i class="material-icons text-primary fs-10-rem">
-        shopping_cart
-      </i>
+      <i class="material-icons text-primary fs-10-rem"> shopping_cart </i>
       <div class="text-primary fs-3">No items in the cart.</div>
     </div>
     <div class="mt-2">

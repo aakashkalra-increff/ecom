@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { ModalComponent } from '../modal/modal.component';
-declare var $: any;
 declare var bootstrap: any;
 @Component({
   selector: 'app-navbar',
@@ -24,7 +23,7 @@ export class NavbarComponent {
   }
   ngAfterViewInit() {
     const tooltipElements = [].slice.call(
-      document.querySelectorAll<HTMLElement>('[data-bs-toggle="tooltip"]')
+      document.querySelectorAll('[data-bs-toggle="tooltip"]')
     );
     tooltipElements.map((element) => {
       new bootstrap.Tooltip(element);

@@ -20,14 +20,15 @@ export class ProductDetailComponent {
   product?: Product;
 
   cartItem?: CartItem;
-  quantityForm = new FormGroup({
-    quantity: new FormControl<number>(1, [
-      Validators.min(1),
-      Validators.max(100),
-      Validators.required,
-      Validators.pattern('^[0-9]*$'),
-    ]),
-  });
+  quantityForm: any =
+    new FormGroup({
+      quantity: new FormControl<number>(1, [
+        Validators.min(1),
+        Validators.max(100),
+        Validators.required,
+        Validators.pattern('^[0-9]*$'),
+      ]),
+    });
   constructor(
     private productsService: ProductsService,
     private cartService: CartService,
