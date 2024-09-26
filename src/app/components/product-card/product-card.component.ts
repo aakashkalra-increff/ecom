@@ -21,7 +21,7 @@ export class ProductCardComponent {
   @ViewChild(ModalComponent) modal!: ModalComponent;
   @ViewChild('carousel') carousel!: ElementRef;
   @Input() product?: Product;
-  cartItem?: CartItem;
+  cartItemQuantity?: number;
   showButton = false;
   showCarousel = false;
   constructor(
@@ -30,7 +30,7 @@ export class ProductCardComponent {
   ) {}
   ngOnInit() {
     this.cartService.items.subscribe((res) => {
-      this.cartItem = res.find((item) => item.id === this.product?.skuId);
+      this.cartItemQuantity = res[this.product?.skuId || ''];
     });
   }
   ngAfterViewInit() {
@@ -48,26 +48,26 @@ export class ProductCardComponent {
     });
   }
   decrementQuantity() {
-    if (this.cartItem?.quantity === 1) {
+    if (this.cartItemQuantity === 1) {
       this.modal.open();
       return;
     }
     this.cartService.updateItem({
       id: this.product?.skuId!,
-      quantity: Number(this.cartItem?.quantity) - 1,
+      quantity: Number(this.cartItemQuantity) - 1,
     });
   }
   incrementQuantity() {
     this.cartService.updateItem({
       id: this.product?.skuId!,
-      quantity: Number(this.cartItem?.quantity) + 1,
+      quantity: Number(this.cartItemQuantity) + 1,
     });
   }
   removeCartItem(id: string) {
     this.cartService.removeItem(id);
     this.notificationsService.addNotifications({
       message: this.product?.name + ' is removed from the cart.',
-      type: 'danger',
+      type: 'success',
     });
   }
   addToCart() {

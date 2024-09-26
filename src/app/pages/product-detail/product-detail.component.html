@@ -1,7 +1,7 @@
 <app-modal
   #removeItemConfirmationModal
   title="Remove Item"
-  message="Are you sure to remove item from the cart ?"
+  message="Are you sure to remove this item from the cart?"
   (success)="removeCartItem()"
 ></app-modal>
 <div
@@ -93,7 +93,7 @@
           name="quantity"
           type="number"
           min="0"
-          class="form-control w-25 h-25"
+          class="form-control h-25"
           formControlName="quantity"
         />
         <button
@@ -101,7 +101,7 @@
           class="btn btn-outline-primary btn-sm py-1 ms-1"
           [disabled]="
             !quantityForm.controls.quantity.valid ||
-            cartItem.quantity === quantityForm.value.quantity
+            cartItem === quantityForm.value.quantity
           "
           (click)="updateQuantity(quantityForm.value.quantity)"
           *ngIf="cartItem"
@@ -109,29 +109,36 @@
           Update
         </button>
       </div>
-      <div *ngIf="quantityForm.value.quantity > 100" class="text-danger mt-1">
-        Can't addmore than 100 items.
+      <div *ngIf="isInteger(quantityForm.value.quantity); else invalidInput">
+        <div *ngIf="quantityForm.value.quantity > 100" class="text-danger mt-1">
+          Can't add more than 100 items.
+        </div>
+        <div *ngIf="quantityForm.value.quantity <= 0" class="text-danger mt-1">
+          Quantity should be a positive integer.
+        </div>
       </div>
-      <div *ngIf="quantityForm.value.quantity <= 0" class="text-danger mt-1">
-        Quantity count should be positive integer.
-      </div>
+      <ng-template #invalidInput>
+        <div class="text-danger mt-1">
+          Quantity should be a positive integer.
+        </div>
+      </ng-template>
     </form>
-    <div class="d-flex pb-3">
+    <div class="d-flex pt-2 pb-3">
       <button
         class="btn btn-primary btn-sm w-50 d-flex align-items-center justify-content-center"
         *ngIf="cartItem; else addToCart"
         routerLink="/cart"
       >
-        <i class="material-icons text-sm"> shopping_cart </i>
+        <i class="material-icons text-sm icon me-2"> shopping_cart </i>
         GO TO CART
       </button>
       <ng-template #addToCart>
         <button
-          class="btn btn-primary btn-sm w-50"
+          class="btn btn-primary btn-sm w-50 d-flex align-items-center justify-content-center"
           (click)="addItem()"
           [disabled]="!quantityForm.controls.quantity.valid"
         >
-          <i class="material-icons">shopping_cart</i>
+          <i class="material-icons text-sm icon me-2">shopping_cart</i>
           ADD TO CART
         </button>
       </ng-template>
@@ -141,6 +148,7 @@
           [disabled]="!cartItem"
           (click)="removeItemConfirmationModal.open()"
         >
+          <i class="material-icons">delete</i>
           REMOVE
         </button>
       </div>

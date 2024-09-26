@@ -33,20 +33,18 @@ export class CartComponent {
   ) {}
   ngOnInit() {
     this.cartService.items.subscribe((res) => {
-      const ids = res.map(({ id }) => id);
+      const ids = Object.keys(res);
       this.productService.getProductsByID(ids).subscribe((products: any[]) => {
+        this.totalItems = 0;
         this.items = products.map((product) => ({
           product,
-          ...res.find((e) => e.id === product.skuId),
+          id: product.skuId,
+          quantity: res[product.skuId],
         }));
         this.items.forEach((item) => {
           this.totalItems += item.quantity;
           this.itemsTotalPrice += item.product.price * item.quantity;
         });
-        // this.itemsTotalPrice = this.items.reduce(
-        //   (acc, item) => acc + item.product.price * item.quantity,
-        //   0
-        // );
         this.deliveryCost = this.itemsTotalPrice < 500 ? 40 : 0;
         this.totalCost = this.itemsTotalPrice + this.deliveryCost;
         this.quantityForms = this.items?.map((item) => {
@@ -74,7 +72,7 @@ export class CartComponent {
     const item = this.items?.find((item) => item.id === this.selectedItemId);
     this.notificationsService.addNotifications({
       message: item.product.name + ' is removed from the cart.',
-      type: 'danger',
+      type: 'success',
     });
     this.selectedItemId = null;
   }
@@ -102,6 +100,13 @@ export class CartComponent {
     this.router.navigate(['/checkout']);
   }
   navigateToLogin() {
-    this.router.navigate(['/login']);
+    this.router.navigate(['/login'], {
+      queryParams: {
+        redirect: 'cart',
+      },
+    });
+  }
+  isInteger(val: any) {
+    return Number.isInteger(val);
   }
 }

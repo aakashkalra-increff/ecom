@@ -20,15 +20,14 @@ export class ProductDetailComponent {
   product?: Product;
 
   cartItem?: CartItem;
-  quantityForm: any =
-    new FormGroup({
-      quantity: new FormControl<number>(1, [
-        Validators.min(1),
-        Validators.max(100),
-        Validators.required,
-        Validators.pattern('^[0-9]*$'),
-      ]),
-    });
+  quantityForm: any = new FormGroup({
+    quantity: new FormControl<number>(1, [
+      Validators.min(1),
+      Validators.max(100),
+      Validators.required,
+      Validators.pattern('^[0-9]*$'),
+    ]),
+  });
   constructor(
     private productsService: ProductsService,
     private cartService: CartService,
@@ -42,9 +41,9 @@ export class ProductDetailComponent {
       .getProductsByID([id])
       .subscribe((res) => (this.product = res[0]));
     this.cartService.items.subscribe((res) => {
-      this.cartItem = res.find((item) => item.id === id);
+      this.cartItem = res[id];
       this.quantityForm.setValue({
-        quantity: Number(this.cartItem?.quantity || 1),
+        quantity: Number(this.cartItem || 1),
       });
     });
   }
@@ -74,7 +73,10 @@ export class ProductDetailComponent {
     this.cartService.removeItem(this.product?.skuId!);
     this.notificationsService.addNotifications({
       message: this.product?.name + ' is removed from the cart.',
-      type: 'danger',
+      type: 'success',
     });
+  }
+  isInteger(val: any) {
+    return Number.isInteger(val);
   }
 }

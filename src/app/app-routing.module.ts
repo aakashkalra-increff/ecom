@@ -35,6 +35,10 @@ const routes: Routes = [
     component: LoginComponent,
     canActivate: [loginGuard],
   },
+  {
+    path: '**',
+    redirectTo: '/',
+  },
 ];
 
 @NgModule({

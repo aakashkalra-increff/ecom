@@ -19,7 +19,10 @@ export class NavbarComponent {
     private cartService: CartService
   ) {
     this.cartService.items.subscribe((res) => {
-      this.totalCartItems = res.reduce((acc, item) => acc + item.quantity, 0);
+      this.totalCartItems = Object.values(res).reduce(
+        (acc, item) => acc as number + Number(item),
+        0
+      ) as number;
     });
     this.authService.getUser().subscribe((user) => {
       this.user = user;
@@ -38,7 +41,7 @@ export class NavbarComponent {
   logout() {
     this.authService.logOut();
     this.cartService.updateLocalStorageKey();
-    this.cartService.clearCart();
+    this.cartService.saveItems({});
     this.router.navigate(['/']);
   }
 }

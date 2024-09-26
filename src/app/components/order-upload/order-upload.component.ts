@@ -47,6 +47,10 @@ export class OrderUploadComponent {
             this.fileParseError = "Error - File can't have more than 100 rows.";
             return;
           }
+          if (res.data.length == 0) {
+            this.fileParseError = 'Error - File should have at least 1 row.';
+            return;
+          }
           const ids: string[] = res.data.map((e: any) => e.id);
           this.productService.getProductsByID(ids).subscribe((p: any[]) => {
             res.data.forEach((e: any, i: number) => {
@@ -125,5 +129,12 @@ export class OrderUploadComponent {
     this.items = [];
     this.fileParseError = '';
     this.parseError = [];
+  }
+  navigateToLogin() {
+    this.router.navigate(['/login'], {
+      queryParams: {
+        redirect: 'order-upload',
+      },
+    });
   }
 }

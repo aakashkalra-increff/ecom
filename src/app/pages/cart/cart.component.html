@@ -1,7 +1,7 @@
 <app-modal
   [id]="'remove-item'"
   title="Remove Item"
-  message="Are you sure you want to remove item from the cart ?"
+  message="Are you sure, you want to remove item from the cart?"
   (success)="removeCartItem()"
   #removeItemConfirmationModal
 ></app-modal>
@@ -9,14 +9,14 @@
   #clearCartModal
   [id]="'clear-cart-modal'"
   title="Clear Cart"
-  message="Are you sure you want to remove all items from the cart ?"
+  message="Are you sure, you want to remove all the items from the cart?"
   (success)="cartService.clearCart()"
 ></app-modal>
 <app-modal
   #placeOrderConfirmation
   [id]="'place-order-confirmation'"
   title="Place Order"
-  message="Are you sure you want to place your order ?"
+  message="Are you sure, you want to place your order?"
   (success)="placeOrder()"
 ></app-modal>
 <div class="row flex-grow-1 p-3 justify-content-center" *ngIf="this.items?.length; else noItems">
@@ -91,18 +91,19 @@
                       Remove
                     </button>
                   </div>
-                  <div
-                    *ngIf="quantityForms[i].value.quantity > 100"
-                    class="text-danger mt-1"
-                  >
-                    Can't add more than 100 items.
+                  <div *ngIf="isInteger(quantityForms[i].value.quantity); else invalidInput">
+                    <div *ngIf="quantityForms[i].value.quantity > 100" class="text-danger mt-1">
+                      Can't add more than 100 items.
+                    </div>
+                    <div *ngIf="quantityForms[i].value.quantity <= 0" class="text-danger mt-1">
+                      Quantity should be a positive integer.
+                    </div>
                   </div>
-                  <div
-                    *ngIf="quantityForms[i].value.quantity <= 0"
-                    class="text-danger mt-1"
-                  >
-                    Quantity count should be positive integer.
-                  </div>
+                  <ng-template #invalidInput>
+                    <div class="text-danger mt-1">
+                      Quantity should be a positive integer.
+                    </div>
+                  </ng-template>
                 </form>
               </div>
             </div>

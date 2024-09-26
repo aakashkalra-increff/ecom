@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { CartService } from 'src/app/services/cart/cart.service';
 
@@ -22,7 +22,8 @@ export class LoginComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private cartService: CartService
+    private cartService: CartService,
+    private route: ActivatedRoute
   ) {}
   async onSubmit() {
     const { email, password } = this.loginForm.value;
@@ -30,7 +31,8 @@ export class LoginComponent {
     try {
       await this.authService.logIn(email!, password!);
       this.authError = '';
-      this.router.navigate(['/']);
+      const redirectPage = this.route.snapshot.queryParamMap.get('redirect');
+      this.router.navigate(redirectPage ? ['/' + redirectPage] : ['/']);
       this.cartService.updateCart();
     } catch (e) {
       this.authError = 'Invalid email or password';

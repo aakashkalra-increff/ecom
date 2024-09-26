@@ -1,6 +1,6 @@
 <app-modal
   title="Remove Item"
-  message="Are you sure you want to remove this item from cart?"
+  message="Are you sure, you want to remove this item from cart?"
   [id]="'card-' + product?.skuId"
   (success)="removeCartItem(product?.skuId!)"
 >
@@ -27,32 +27,33 @@
         </div>
       </div>
       <button
-        *ngIf="cartItem;"
+        *ngIf="cartItemQuantity;"
         [ngClass]="{
-          'd-lg-none': !cartItem
+          'd-lg-none': !cartItemQuantity
         }"
         class="btn btn-primary button w-100 d-flex align-items-center justify-content-center position-absolute bottom-0 left-0 text-white cursor-unset"
       >
         <button
           class="cart-buttons btn p-0 text-white"
           (click)="decrementQuantity()"
-          [disabled]="!cartItem.quantity"
+          [disabled]="!cartItemQuantity"
         >
         <i class="material-icons fs-1rem">remove</i>
         </button>
         <i class="material-icons fs-1rem">shopping_cart</i>
-        <span class="ms-1">{{ cartItem.quantity || 0 }}</span>
+        <span class="ms-1">{{ cartItemQuantity || 0 }}</span>
         <button
           class="cart-buttons btn btn-sm p-0 text-white"
           (click)="incrementQuantity()"
+          [disabled]="cartItemQuantity >=100"
         >
         <i class="material-icons fs-1rem">add</i>
         </button>
       </button>
       <button
-        *ngIf="!cartItem"
+        *ngIf="!cartItemQuantity"
         [ngClass]="{
-          'd-lg-none': !(showButton &&  !cartItem)
+          'd-lg-none': !(showButton &&  !cartItemQuantity)
         }"
         class="btn btn-primary w-100 position-absolute bottom-0 left-0 text-white"
         (click)="addToCart()"
@@ -81,12 +82,12 @@
           <span class="ms-1">{{ product?.discountDisplayLabel }}</span>
         </span>
       </div>
-      <div class="d-inline-block">
+      <div class="d-inline-block d-flex align-items-baseline">
         <span
           class="me-2 border-end border-secondary-subtle pe-2 d-inline-block"
         >
           <i
-            class="material-icons me-1 text-success"
+            class="material-icons me-1 text-success pb-1"
             [ngClass]="
               product?.rating! <= 2.0
                 ? 'text-danger'
