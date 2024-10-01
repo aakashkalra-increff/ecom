@@ -31,7 +31,7 @@
   <div *ngIf="fileParseError" class="mt-1 text-danger text-center">
     {{ fileParseError }}
   </div>
-  <div class="col-xl-10 col-12 row mt-3 justify-content-center">
+  <div class="col-xl-10 col-12 row mt-3 justify-content-center px-2">
     <div class="px-0 col-lg-9 col-sm-12">
       <div *ngIf="parseError.length">
         <div class="fs-4 my-2">Errors</div>
@@ -40,14 +40,17 @@
             <tr>
               <th>Row No.</th>
               <th>ID</th>
-              <th>Quantity</th>
+              <th>ID Error</th>
+              <th>Quantity Error</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let error of parseError">
               <td>{{ error.row }}</td>
               <td class="text-danger">{{ error.id }}</td>
-              <td class="text-danger">{{ error.quantity }}</td>
+              <td class="text-danger">{{ error.idError }}</td>
+              <td class="text-danger">{{ error.quantityError }}</td>
+              <td *ngIf="error.extraValueError" class="text-danger">{{ error.extraValueError }}</td>
             </tr>
           </tbody>
         </table>

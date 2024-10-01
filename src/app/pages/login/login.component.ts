@@ -19,6 +19,9 @@ export class LoginComponent {
   });
   authError: string = '';
   loading: Boolean = false;
+  showError = false;
+  emailFocus = false;
+  passwordFocus = false;
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -26,18 +29,28 @@ export class LoginComponent {
     private route: ActivatedRoute
   ) {}
   async onSubmit() {
+    if (this.loginForm.invalid) {
+      this.showError = true;
+      return;
+    }
     const { email, password } = this.loginForm.value;
     this.loading = true;
     try {
       await this.authService.logIn(email!, password!);
-      this.authError = '';
+      this.setAuthError('');
       const redirectPage = this.route.snapshot.queryParamMap.get('redirect');
       this.router.navigate(redirectPage ? ['/' + redirectPage] : ['/']);
       this.cartService.updateCart();
     } catch (e) {
-      this.authError = 'Invalid email or password';
+      this.setAuthError('Invalid email or password');
     } finally {
       this.loading = false;
     }
+  }
+  setAuthError(val: string) {
+    this.authError = val;
+  }
+  removeFocus() {
+    this.emailFocus = false;
   }
 }

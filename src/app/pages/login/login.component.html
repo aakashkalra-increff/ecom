@@ -4,46 +4,60 @@
   <div class="col-lg-4 col-md-6 col-sm-8 col-10 card p-0">
     <div class="card-header"><div class="fs-3 color-primary">Login</div></div>
     <form class="p-3" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      <label class="form-label" for="email">Email</label>
+      <label class="form-label my-1" for="email">Email</label>
       <input
-        class="form-control"
+        class="form-control my-1"
         name="email"
         formControlName="email"
         type="text"
         placeholder="Email"
+        [value]="loginForm.controls.email.value"
+        (focus)="emailFocus = true"
+        (blur)="emailFocus = false"
+        (input)="setAuthError('')"
       />
       <div
         *ngIf="
           loginForm.controls.email.invalid &&
-          (loginForm.controls.email.touched || loginForm.controls.email.dirty)
+          !emailFocus &&
+          (loginForm.controls.email.touched || showError)
         "
-        class="text-danger"
+        class="text-danger my-1"
       >
-        Invalid email
+
+        {{
+          loginForm.controls.email.value === ""
+            ? "Please enter your email address."
+            : "Email address is not valid."
+        }}
       </div>
-      <label class="form-label" for="password">Password</label>
+      <label class="form-label mt-2" for="password">Password</label>
       <input
         class="form-control"
         formControlName="password"
         type="password"
         placeholder="Password"
+        [value]="loginForm.controls.password.value"
+        (focus)="passwordFocus = true"
+        (blur)="passwordFocus = false"
+        (input)="setAuthError('')"
       />
       <div
         *ngIf="
           loginForm.controls.password.invalid &&
-          (loginForm.controls.password.touched ||
-            loginForm.controls.password.dirty)
+          !passwordFocus &&
+          (loginForm.controls.password.touched || showError)
         "
         class="text-danger"
       >
-        Password should have min length of 8
+        {{
+          loginForm.controls.password.value === ""
+            ? "Please enter your password."
+            : "Password must be at least 8 characters long."
+        }}
       </div>
       <div *ngIf="authError" class="text-danger pt-3">{{ authError }}</div>
-      <button
-        class="btn btn-primary mt-3"
-        type="submit"
-        [disabled]="!loginForm.valid || loading"
-      >
+      <button class="btn btn-primary mt-3" type="submit" [disabled]="loading">
         <div
           *ngIf="loading; else submitText"
           class="spinner-border text-light"

@@ -7,6 +7,7 @@ import { CartItem } from 'src/app/services/cart/cartItem';
 import { ModalComponent } from '../../components/modal/modal.component';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationsService } from 'src/app/services/notifications/notifications.service';
+import { Router } from '@angular/router';
 declare var bootstrap: any;
 @Component({
   selector: 'app-product-detail',
@@ -25,21 +26,25 @@ export class ProductDetailComponent {
       Validators.min(1),
       Validators.max(100),
       Validators.required,
-      Validators.pattern('^[0-9]*$'),
+      Validators.pattern('^\\d+$'),
     ]),
   });
   constructor(
     private productsService: ProductsService,
     private cartService: CartService,
     private route: ActivatedRoute,
+    private router: Router,
     private notificationsService: NotificationsService
   ) {}
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id')!;
-    this.productsService
-      .getProductsByID([id])
-      .subscribe((res) => (this.product = res[0]));
+    this.productsService.getProductsByID([id]).subscribe((res) => {
+      this.product = res[0];
+      if (!res.length) {
+        this.router.navigate(['/'])
+      }
+    });
     this.cartService.items.subscribe((res) => {
       this.cartItem = res[id];
       this.quantityForm.setValue({
@@ -49,7 +54,7 @@ export class ProductDetailComponent {
   }
   ngAfterViewInit() {
     new bootstrap.Carousel(this.carousel.nativeElement, {
-      interval: 2000,
+      interval: 4000,
     });
   }
   addItem() {
@@ -77,6 +82,6 @@ export class ProductDetailComponent {
     });
   }
   isInteger(val: any) {
-    return Number.isInteger(val);
+    return Number.isInteger(Number(val));
   }
 }

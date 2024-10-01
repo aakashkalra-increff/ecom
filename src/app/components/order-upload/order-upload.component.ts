@@ -26,6 +26,7 @@ export class OrderUploadComponent {
   parseError: any[] = [];
   file: string = '';
   onChange(event: any) {
+    const numberRegex = /^\d+$/;
     const { files, value } = event.target;
     this.file = value;
     if (files[0]) {
@@ -34,13 +35,28 @@ export class OrderUploadComponent {
         skipEmptyLines: true,
         complete: (res) => {
           const error: any[] = [];
-          const columnsName = ['id', 'quantity'];
-          const columnsCheck =
-            columnsName.length !== res.meta.fields?.length ||
-            columnsName.find((c, i) => c !== res.meta.fields?.at(i));
-          if (columnsCheck) {
+          this.fileParseError = '';
+          if (res.meta.fields?.length) {
+            if (res.meta.fields[0] !== 'id') {
+              this.fileParseError += ' First column name should be id';
+            }
+            if (res.meta.fields.length == 1) {
+              this.fileParseError += ' quantity column is not present.';
+            }
+            if (res.meta.fields[1] !== 'quantity') {
+              this.fileParseError += ' Second column name should be quantity.';
+            }
+            if (res.meta.fields.length > 2) {
+              this.fileParseError +=
+                ' Extra header are present. File should contain only 2 columns.';
+            }
+          } else {
             this.fileParseError =
-              'Error - File header names are not valid. First column should be id and second column should be qunatity.';
+              ' Header are not present, first column should be id and second column should be quantity.';
+          }
+          if (this.fileParseError) {
+            this.fileParseError =
+              'Error - File header names are not valid.' + this.fileParseError;
             return;
           }
           if (res.data.length > 100) {
@@ -56,26 +72,39 @@ export class OrderUploadComponent {
             res.data.forEach((e: any, i: number) => {
               let idError = '';
               let quantityError = '';
-              if (e.id === '') {
+              let id = e.id.trim();
+              let quantity = e.quantity.trim();
+              let extraValueError;
+              if (id === '') {
                 idError = " Item id can't be empty.";
-              } else if (e.id && !p.find((p) => p.skuId === e.id)) {
+              } else if (id && !p.find((p) => p.skuId === id)) {
                 idError = ' Item id is invalid.';
               }
               if (e.quantity === '') {
                 quantityError = " Item quantity can't be empty.";
               } else {
-                const quantity = Number(e.quantity);
-                if (isNaN(quantity) || !Number.isInteger(quantity)) {
-                  quantityError = ' Item quantity must be an integer.';
+                quantity = Number(quantity);
+                if (
+                  isNaN(quantity) ||
+                  !Number.isInteger(quantity) ||
+                  !numberRegex.test(e.quantity)
+                ) {
+                  quantityError = ' Item quantity must be a number.';
                 } else if (quantity < 1) {
-                  quantityError = ' Item quantity must be greater than 0.';
+                  quantityError = ' Item quantity must be atleast 1.';
                 }
               }
-              if (idError || quantityError) {
+              if (Object.keys(e).length > 2) {
+                extraValueError =
+                  'Extra Values are present. Each row should contain only 2 values.';
+              }
+              if (idError || quantityError || extraValueError) {
                 error.push({
                   row: i + 1,
-                  id: idError,
-                  quantity: quantityError,
+                  id,
+                  idError,
+                  quantityError,
+                  extraValueError,
                 });
               }
             });
@@ -83,7 +112,9 @@ export class OrderUploadComponent {
             if (error.length) return;
             const obj = {} as { [key: string]: any };
             res.data.forEach((e: any) => {
-              obj[e.id] = obj[e.id] ? obj[e.id] + e.quantity : e.quantity;
+              obj[e.id] = obj[e.id]
+                ? Number(obj[e.id]) + Number(e.quantity)
+                : Number(e.quantity);
             });
             const products = p.map((product) => ({
               product,

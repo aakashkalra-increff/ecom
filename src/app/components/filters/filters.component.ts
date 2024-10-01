@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { filter } from 'rxjs';
 import { ProductsService } from 'src/app/services/products/products.service';
 const genders = ['Men', 'Women'];
 @Component({
@@ -12,7 +11,7 @@ export class FiltersComponent {
   @Output() showFilterChanged = new EventEmitter();
   @Input() filters?: any = {};
   @Input() showFilter = false;
-  categories?: string[] = [];
+  categories: string[] = [];
   brands: string[] = [];
   constructor(private productService: ProductsService) {}
   ngOnInit() {
@@ -31,7 +30,11 @@ export class FiltersComponent {
       this.filterchange.emit(tempFilters);
     }
   }
-  removeInvalidFilterValues(filters: any, key: string, correctValues: string[]) {
+  removeInvalidFilterValues(
+    filters: any,
+    key: string,
+    correctValues: string[]
+  ) {
     if (!filters[key] || !Array.isArray(filters[key])) return;
     filters[key] = filters[key].filter((e: string) =>
       correctValues.includes(e)
@@ -53,7 +56,11 @@ export class FiltersComponent {
   hideFilters() {
     this.showFilterChanged.emit(false);
   }
-  isFitersApplied() {
-    return Object.keys({ ...this.filters }).length;
+  filtersCount() {
+    return (
+      (this.filters?.category?.length || 0) +
+      (this.filters?.brand?.length || 0) +
+      (this.filters?.gender ? 1 : 0)
+    );
   }
 }

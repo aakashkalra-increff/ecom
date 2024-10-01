@@ -9,9 +9,6 @@ $carousel-transition-duration: 0.1s;
     transition: all 100ms;
   }
 }
-img {
-  height: 100%;
-}
 button {
   border-radius: 0px;
 }
@@ -37,7 +34,11 @@ button {
   cursor: unset;
 }
 .material-icons {
-
   font-size: 16px;
   vertical-align: middle;
+}
+@media (max-width: 576px) {
+  :host {
+    font-size: 12px;
+  }
 }

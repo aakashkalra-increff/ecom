@@ -19,7 +19,7 @@
   message="Are you sure, you want to place your order?"
   (success)="placeOrder()"
 ></app-modal>
-<div class="row flex-grow-1 p-3 justify-content-center" *ngIf="this.items?.length; else noItems">
+<div class="row flex-grow-1 p-lg-3 p-1 justify-content-center" *ngIf="this.items?.length; else noItems">
   <div class="row col-lg-10">
     <div class="col-lg-8 pe-lg-0">
       <div class="p-0 card">
@@ -54,20 +54,19 @@
                   <span class="text-secondary">Quantity:</span>
                   {{ item.quantity }}
                 </div>
-                <div class="my-0 my-md-2">
-                  <div class="fs-6">
+                <div class="my-1 my-md-2">
+                  <div class="fs-6 d-flex align-items-center">
                     ₹ {{ (item.product.price * item.quantity) | number }}
-                    <span class="text-success">{{
-                      item.product.discountDisplayLabel
-                    }}</span>
+                    <span class="text-secondary align-text-bottom text-success ps-1">
+                      <span class="mx-1">MRP</span><del>{{ item.product?.mrp }}</del>
+                      <span class="ms-1 ms-2">{{ item.product?.discountDisplayLabel }}</span>
+                    </span>
                   </div>
                 </div>
                 <form class="my-0 my-md-2" [formGroup]="quantityForms[i]">
                   <div class="d-flex align-items-center">
                     <input
                       name="quantity"
-                      type="number"
-                      min="0"
                       class="form-control h-25 input-w-80px"
                       formControlName="quantity"
                     />
@@ -76,7 +75,7 @@
                       class="btn btn-outline-primary btn-sm py-1 ms-1"
                       [disabled]="
                         !quantityForms[i].controls.quantity.valid ||
-                        item.quantity === quantityForms[i].value.quantity
+                        item.quantity == quantityForms[i].value.quantity
                       "
                       (click)="
                         updateQuantity(quantityForms[i].value.quantity, item.id)
@@ -91,19 +90,21 @@
                       Remove
                     </button>
                   </div>
-                  <div *ngIf="isInteger(quantityForms[i].value.quantity); else invalidInput">
-                    <div *ngIf="quantityForms[i].value.quantity > 100" class="text-danger mt-1">
-                      Can't add more than 100 items.
+                  <div *ngIf="quantityForms[i].invalid">
+                    <div *ngIf="isInteger(quantityForms[i].value.quantity) else invalidInput">
+                      <div *ngIf="quantityForms[i].value.quantity > 100" class="text-danger mt-1">
+                        Can't add more than 100 items.
+                      </div>
+                      <div *ngIf="quantityForms[i].value.quantity <= 0" class="text-danger mt-1">
+                        Quantity must be at least 1.
+                      </div>
                     </div>
-                    <div *ngIf="quantityForms[i].value.quantity <= 0" class="text-danger mt-1">
-                      Quantity should be a positive integer.
-                    </div>
+                    <ng-template #invalidInput>
+                      <div class="text-danger mt-1">
+                       Invalid number.
+                      </div>
+                    </ng-template>
                   </div>
-                  <ng-template #invalidInput>
-                    <div class="text-danger mt-1">
-                      Quantity should be a positive integer.
-                    </div>
-                  </ng-template>
                 </form>
               </div>
             </div>

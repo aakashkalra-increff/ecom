@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  SimpleChange,
+  SimpleChanges,
+} from '@angular/core';
 
 @Component({
   selector: 'app-checkbox-group',
@@ -7,9 +14,15 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class CheckboxGroupComponent {
   @Input() checkedOptions?: string[] = [];
-  @Input() options?: string[] = [];
+  @Input() options: string[] = [];
   @Input() name?: string;
   @Output() checkboxChange = new EventEmitter();
+  expanded = false;
+  visibleOptions: string[] = [];
+  optionsLimit = 4;
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['options']) this.visibleOptions = this.options.slice(0, this.optionsLimit);
+  }
   handleChange(event: Event) {
     const value = (event.target as HTMLInputElement).value;
     const checked = (event.target as HTMLInputElement).checked;
@@ -21,5 +34,9 @@ export class CheckboxGroupComponent {
       newValue = newValue.filter((e: string) => e !== value);
     }
     this.checkboxChange.emit({ name: this.name, value: newValue });
+  }
+  showAllOption() {
+    this.expanded = true;
+    this.visibleOptions = this.options;
   }
 }

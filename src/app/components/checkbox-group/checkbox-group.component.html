@@ -1,5 +1,5 @@
 <div>
-  <div class="form-check" *ngFor="let option of options">
+  <div class="form-check" *ngFor="let option of visibleOptions;">
     <input
       (change)="handleChange($event)"
       class="form-check-input"
@@ -12,5 +12,10 @@
     <label class="form-check-label" [for]="'category-' + option">
       {{ option }}
     </label>
+  </div>
+  <div *ngIf="options.length > optionsLimit && !expanded" class="form-check">
+    <span class="text-primary show-more-text" (click)="showAllOption()">
+      + {{ options.length - optionsLimit }} more
+    </span>
   </div>
 </div>

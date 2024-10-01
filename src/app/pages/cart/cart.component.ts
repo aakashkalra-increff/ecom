@@ -36,6 +36,7 @@ export class CartComponent {
       const ids = Object.keys(res);
       this.productService.getProductsByID(ids).subscribe((products: any[]) => {
         this.totalItems = 0;
+        this.itemsTotalPrice = 0;
         this.items = products.map((product) => ({
           product,
           id: product.skuId,
@@ -49,14 +50,21 @@ export class CartComponent {
         this.totalCost = this.itemsTotalPrice + this.deliveryCost;
         this.quantityForms = this.items?.map((item) => {
           return new FormGroup({
-            quantity: new FormControl<number>(item.quantity, [
+            quantity: new FormControl(item.quantity, [
               Validators.min(1),
               Validators.max(100),
               Validators.required,
-              Validators.pattern('^[0-9]*$'),
+              Validators.pattern('^\\d+$'),
             ]),
           });
         });
+        if (this.quantityForms.length) {
+          this.quantityForms[0].controls['quantity'].valueChanges.subscribe(
+            (e: any) => {
+              console.log(e);
+            }
+          );
+        }
       });
     });
     this.loggedIn = this.authService.isLoggedIn();
@@ -64,7 +72,7 @@ export class CartComponent {
   updateQuantity(val: any, id: string) {
     this.cartService.updateItem({
       id,
-      quantity: val,
+      quantity: Number(val),
     });
   }
   removeCartItem() {
@@ -107,6 +115,7 @@ export class CartComponent {
     });
   }
   isInteger(val: any) {
-    return Number.isInteger(val);
+    console.log(val, typeof val, Number.isInteger(val));
+    return Number.isInteger(Number(val));
   }
 }

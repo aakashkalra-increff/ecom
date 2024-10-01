@@ -3,7 +3,7 @@ import { NotificationsService } from 'src/app/services/notifications/notificatio
 declare var bootstrap: any;
 export interface notificationsType {
   message: string;
-  type: string;
+  type?: string;
 }
 @Component({
   selector: 'app-notifications',

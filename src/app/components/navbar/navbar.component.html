@@ -30,7 +30,7 @@
           <i class="material-icons">shopping_cart</i>
           <span
             *ngIf="totalCartItems"
-            class="position-absolute start-100 translate-middle badge rounded-pill border-white nav-color"
+            class="position-absolute start-75 translate-middle badge rounded-pill border-white nav-color"
           >
             {{ totalCartItems > 99 ? "99+" : totalCartItems }}
             <span class="visually-hidden"></span>
@@ -38,10 +38,15 @@
         </a>
       </li>
       <li
-        class="nav-item btn-group me-2 dropdown position-relative"
+        class="nav-item btn-group me-2 dropdown position-relative d-flex align-items-center"
         *ngIf="authService.isLoggedIn(); else loginButton"
       >
-        <button
+        <span
+          class="nav-link text-white fs-6 fw-normal cursor-pointer text-uppercase d-inline-block"
+          (click)="modal?.open()"
+          >Logout
+        </span>
+        <!-- <button
           type="button"
           role="button"
           class="nav-link dropdown-toggle"
@@ -55,7 +60,7 @@
             data-bs-title="Profile"
             >person</i
           >
-        </button>
+        </button> -->
         <ul class="dropdown-menu dropdown-menu-right logout-dropdown">
           <li class="dropdown-item disabled">
             {{ user?.name }}
@@ -66,7 +71,7 @@
         </ul>
       </li>
       <ng-template #loginButton>
-        <li class="nav-item me-2">
+        <li class="nav-item me-2 d-flex align-items-center">
           <a
             class="nav-link text-white"
             routerLink="/login"
@@ -74,7 +79,8 @@
             data-bs-placement="bottom"
             data-bs-title="Login"
           >
-            <i class="material-icons">login</i>
+            <span class="fs-6 fw-normal text-uppercase">Login</span>
+            <!-- <i class="material-icons">login</i> -->
           </a>
         </li>
       </ng-template>

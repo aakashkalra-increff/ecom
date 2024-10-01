@@ -1,4 +1,4 @@
-<div class="row w-100 mx-0 px-2 ps-md-0">
+<div class="row w-100 mx-0 px-sm-2 ps-md-0 px-0">
   <app-filters
     class="col-lg-3 col-md-3 col-sm-12 ps-0"
     [filters]="filters"
@@ -7,7 +7,7 @@
     (showFilterChanged)="setShowFilter($event)"
   ></app-filters>
   <div
-    class="col-lg-9 col-md-8 col-sm-12 items-container overflow-y-scroll flex-grow-1 py-3"
+    class="col-lg-9 col-md-8 col-sm-12 items-container overflow-y-scroll flex-grow-1 py-3 px-2"
   >
     <div
       class="d-flex align-items-center justify-content-between justify-content-md-end"
@@ -16,14 +16,23 @@
         class="btn btn-outline-primary btn-sm d-md-none d-flex align-items-center"
         (click)="setShowFilter(true)"
       >
-        <i class="material-icons">filter_alt</i> Filters
+        <i class="material-icons filter-icon">filter_alt</i>
+        <span class="position-relative pe-1 py-1">
+          Filters
+          <span
+            *ngIf="filtersCount"
+            class="filters-badge badge bg-primary rounded-pill"
+          >
+            {{ filtersCount }}
+          </span>
+        </span>
       </button>
       <div class="dropdown">
         <button
-          class="btn btn-outline-primary dropdown-toggle btn-md-sm"
+          class="btn btn-outline-primary dropdown-toggle btn-md-sm px-2"
           data-bs-toggle="dropdown"
         >
-          Sort By - {{ getSortLabel() }}
+          Sort By - {{ sortLabel }}
         </button>
         <ul class="dropdown-menu">
           <li
@@ -38,7 +47,7 @@
     </div>
     <div *ngIf="products?.length; else noData" class="row">
       <div
-        class="col-xl-3 col-lg-4 col-md-6 col-sm-6 gx-3 gy-4"
+        class="col-xl-3 col-lg-4 col-6 gx-3 gy-4"
         *ngFor="let product of products"
       >
         <app-product-card [product]="product"></app-product-card>

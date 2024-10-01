@@ -27,7 +27,6 @@
         <div
           *ngFor="let image of product?.images; let i = index"
           class="carousel-item h-100"
-          data-bs-interval="2000"
           [ngClass]="{ active: i === 0 }"
         >
           <img [src]="image.src" class="h-100 w-100" alt="..." />
@@ -54,7 +53,8 @@
     </div>
   </div>
   <div class="col-lg-7 col-md-6 ps-md-5 pt-4 pt-md-0">
-    <div class="pt-3 pb-1 fs-2 fw-normal">{{ product?.name }}</div>
+    <div class="pt-3 pb-1 fs-3">{{ product?.brand }}</div>
+    <div class="pb-1 fs-4 fw-normal text-secondary">{{ product?.name }}</div>
     <div class="d-inline-block mb-2">
       <span class="me-2 border-end border-secondary-subtle pe-2 d-inline-block">
         <i
@@ -86,13 +86,12 @@
         <span class="ms-1 ms-2">{{ product?.discountDisplayLabel }}</span>
       </span>
     </div>
+    <div class="text-success my-1">inclusive of all taxes</div>
     <form class="my-3" [formGroup]="quantityForm">
       <div class="d-flex align-items-center">
         <span class="me-2 fw-bold text-secondary">Quantity :</span>
         <input
           name="quantity"
-          type="number"
-          min="0"
           class="form-control h-25"
           formControlName="quantity"
         />
@@ -109,17 +108,24 @@
           Update
         </button>
       </div>
-      <div *ngIf="isInteger(quantityForm.value.quantity); else invalidInput">
-        <div *ngIf="quantityForm.value.quantity > 100" class="text-danger mt-1">
-          Can't add more than 100 items.
+      <div *ngIf="quantityForm.invalid">
+        <div *ngIf="isInteger(quantityForm.value.quantity) else invalidInput">
+          <div *ngIf="quantityForm.value.quantity > 100" class="text-danger mt-1">
+            Can't add more than 100 items.
+          </div>
+          <div *ngIf="quantityForm.value.quantity <= 0" class="text-danger mt-1">
+            Quantity must be at least 1.
+          </div>
         </div>
-        <div *ngIf="quantityForm.value.quantity <= 0" class="text-danger mt-1">
-          Quantity should be a positive integer.
-        </div>
+        <ng-template #invalidInput>
+          <div class="text-danger mt-1">
+           Invalid number.
+          </div>
+        </ng-template>
       </div>
       <ng-template #invalidInput>
         <div class="text-danger mt-1">
-          Quantity should be a positive integer.
+          Invalid number.
         </div>
       </ng-template>
     </form>
@@ -134,7 +140,7 @@
       </button>
       <ng-template #addToCart>
         <button
-          class="btn btn-primary btn-sm w-50 d-flex align-items-center justify-content-center"
+          class="btn btn-primary w-50 d-flex align-items-center justify-content-center"
           (click)="addItem()"
           [disabled]="!quantityForm.controls.quantity.valid"
         >
@@ -142,13 +148,12 @@
           ADD TO CART
         </button>
       </ng-template>
-      <div class="col-3 ps-2">
+      <div *ngIf="cartItem" class="col-6 col-smd-3 ps-2">
         <button
           class="btn btn-outline-danger"
-          [disabled]="!cartItem"
           (click)="removeItemConfirmationModal.open()"
         >
-          <i class="material-icons">delete</i>
+          <i class="material-icons text-sm icon me-2">delete</i>
           REMOVE
         </button>
       </div>

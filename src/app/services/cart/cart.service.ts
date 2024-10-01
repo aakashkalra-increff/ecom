@@ -4,6 +4,7 @@ import { CartItem } from './cartItem';
 import { AuthService } from '../auth/auth.service';
 import { ProductsService } from '../products/products.service';
 import { Product } from 'src/app/product';
+import { NotificationsService } from '../notifications/notifications.service';
 @Injectable({
   providedIn: 'root',
 })
@@ -13,7 +14,8 @@ export class CartService {
   items: Observable<any> = this.cartItems.asObservable();
   constructor(
     private authService: AuthService,
-    private productService: ProductsService
+    private productService: ProductsService,
+    private notificationService: NotificationsService
   ) {
     try {
       const cartObject = JSON.parse(localStorage.getItem('cart')!);
@@ -33,6 +35,14 @@ export class CartService {
         const ids = Object.keys(cartItems);
         this.productService.getProductsByID(ids).subscribe((products) => {
           const filteredCartItems = this.sanatizeCartItems(cartItems, products);
+          if (
+            Object.keys(filteredCartItems).length !==
+            Object.keys(cartItems).length
+          ) {
+            this.notificationService.addNotifications({
+              message: 'Cart udpated.',
+            });
+          }
           this.saveItems(filteredCartItems);
         });
       }
@@ -110,6 +120,14 @@ export class CartService {
       .subscribe((products) => {
         userCartItems = this.sanatizeCartItems(userCartItems, products);
         const newItems = this.mergerCartItems(userCartItems, items);
+        if (
+          Object.keys(newItems).length !==
+          Object.keys(items).length
+        ) {
+          this.notificationService.addNotifications({
+            message: 'Cart udpated.',
+          });
+        }
         this.saveItems(newItems);
         const cartObject = JSON.parse(localStorage.getItem('cart')!);
         delete cartObject.cart;

@@ -33,6 +33,7 @@ export class AuthService {
   }
   logOut() {
     localStorage.removeItem(this.authKey);
+    sessionStorage.clear();
   }
   isLoggedIn() {
     return !!localStorage.getItem(this.authKey);
